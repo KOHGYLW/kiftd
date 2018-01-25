@@ -1,0 +1,270 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en"><head><META http-equiv="Content-Type" content="text/html; charset=UTF-8"><link href="../images/docs-stylesheet.css" rel="stylesheet" type="text/css"><title>Catalina Functional Specifications (9.0.0.M17) - Default Servlet</title><meta name="author" content="Craig McClanahan"><script type="application/javascript" data-comments-identifier="tomcat-9.0-doc/funcspecs/fs-default">
+    "use strict"; // Enable strict mode
+
+    (function() {
+      var thisScript = document.currentScript;
+      if (!thisScript) { // Workaround for IE <= 11
+        var scripts = document.getElementsByTagName("script");
+        thisScript = scripts[scripts.length - 1];
+      }
+      document.addEventListener("DOMContentLoaded", (function() {
+        var commentsDiv = document.getElementById("comments_thread");
+        var commentsShortname = "tomcat";
+        var commentsIdentifier = "http://tomcat.apache.org/" +
+          thisScript.getAttribute("data-comments-identifier") + ".html";
+
+        (function(w, d) {
+          if (w.location.hostname.toLowerCase() == "tomcat.apache.org") {
+            var s = d.createElement("script");
+            s.type = "application/javascript";
+            s.async = true;
+            s.src = "https://comments.apache.org/show_comments.lua?site=" +
+              encodeURIComponent(commentsShortname) +
+              "&page=" + encodeURIComponent(commentsIdentifier);
+            d.head.appendChild(s);
+          } else {
+            commentsDiv.appendChild(d.createTextNode("Comments are disabled for this page at the moment."));
+          }
+        })(window, document);
+      }), false);
+    })();
+  </script></head><body><div id="wrapper"><header><div id="header"><div><div><div class="logo noPrint"><a href="http://tomcat.apache.org/"><img alt="Tomcat Home" src="../images/tomcat.png"></a></div><div style="height: 1px;"></div><div class="asfLogo noPrint"><a href="http://www.apache.org/" target="_blank"><img src="../images/asf-logo.svg" alt="The Apache Software Foundation" style="width: 266px; height: 83px;"></a></div><h1>Catalina Functional Specifications</h1><div class="versionInfo">
+          Version 9.0.0.M17,
+          <time datetime="2017-01-10">Jan 10 2017</time></div><div style="height: 1px;"></div><div style="clear: left;"></div></div></div></div></header><div id="middle"><div><div id="mainLeft" class="noprint"><div><nav><div><h2>Links</h2><ul><li><a href="../index.html">Docs Home</a></li><li><a href="index.html">Functional Specs</a></li><li><a href="http://wiki.apache.org/tomcat/FAQ">FAQ</a></li><li><a href="#comments_section">User Comments</a></li></ul></div><div><h2>Administrative Apps</h2><ul><li><a href="fs-admin-apps.html">Overall Requirements</a></li><li><a href="mbean-names.html">Tomcat MBean Names</a></li><li><a href="fs-admin-objects.html">Administered Objects</a></li><li><a href="fs-admin-opers.html">Supported Operations</a></li></ul></div><div><h2>Internal Servlets</h2><ul><li><a href="fs-default.html">Default Servlet</a></li></ul></div><div><h2>Realm Implementations</h2><ul><li><a href="fs-jdbc-realm.html">JDBC Realm</a></li><li><a href="fs-jndi-realm.html">JNDI Realm</a></li><li><a href="fs-memory-realm.html">Memory Realm</a></li></ul></div></nav></div></div><div id="mainRight"><div id="content"><h2>Default Servlet</h2><h3 id="Table_of_Contents">Table of Contents</h3><div class="text">
+<ul><li><a href="#Overview">Overview</a><ol><li><a href="#Introduction">Introduction</a></li><li><a href="#External_Specifications">External Specifications</a></li><li><a href="#Implementation_Requirements">Implementation Requirements</a></li></ol></li><li><a href="#Dependencies">Dependencies</a><ol><li><a href="#Environmental_Dependencies">Environmental Dependencies</a></li><li><a href="#Container_Dependencies">Container Dependencies</a></li></ol></li><li><a href="#Functionality">Functionality</a><ol><li><a href="#Initialization_Functionality">Initialization Functionality</a></li><li><a href="#Per-Request_Functionality">Per-Request Functionality</a></li><li><a href="#Finalization_Functionality">Finalization Functionality</a></li></ol></li><li><a href="#Testable_Assertions">Testable Assertions</a></li></ul>
+</div><h3 id="Overview">Overview</h3><div class="text">
+
+
+  <div class="subsection"><h4 id="Introduction">Introduction</h4><div class="text">
+
+    <p>The purpose of the <strong>Default Servlet</strong> is to serve
+    static resources of a web application in response to client requests.
+    As the name implies, it is generally configured as the "default"
+    servlet for a web application, by being mapped to a URL pattern "/".</p>
+
+  </div></div>
+
+
+  <div class="subsection"><h4 id="External_Specifications">External Specifications</h4><div class="text">
+
+    <p>The following external specifications have provisions which
+    partially define the correct behavior of the default servlet:</p>
+    <ul>
+    <li><a href="http://jcp.org/aboutJava/communityprocess/final/jsr340/index.html">
+        Servlet Specification</a> (Version 4.0)</li>
+    <li><a href="http://www.rfc-editor.org/rfc/rfc2046.txt">Multipurpose
+        Internet Mail Extensions (MIME) Part Two: Media Types</a></li>
+    <li><a href="http://www.rfc-editor.org/rfc/rfc2616.txt">Hypertext
+        Transfer Protocol &ndash; HTTP/1.1</a></li>
+    </ul>
+
+  </div></div>
+
+
+  <div class="subsection"><h4 id="Implementation_Requirements">Implementation Requirements</h4><div class="text">
+
+    <p>The implementation of this functionality shall conform to the
+    following requirements:</p>
+    <ul>
+    <li>Must be implemented as a servlet.</li>
+    <li>Must support configurable parameters for debugging detail level,
+        input buffer size, output buffer size, whether or not to produce
+        directory listings when no welcome file is present, and whether or not
+        modifications are supported via DELETE and PUT.</li>
+    <li>Log debugging and operational messages (suitably internationalized)
+        via the <code>getServletContext().log()</code> method.</li>
+    </ul>
+
+  </div></div>
+
+
+</div><h3 id="Dependencies">Dependencies</h3><div class="text">
+
+
+  <div class="subsection"><h4 id="Environmental_Dependencies">Environmental Dependencies</h4><div class="text">
+
+    <p>The following environmental dependencies must be met in order for
+    the default servlet to operate correctly:</p>
+    <ul>
+    <li>The default servlet must be registered in the application deployment
+        descriptor (or the default deployment descriptor in file
+        <code>$CATALINA_BASE/conf/web.xml</code>) using a "default servlet"
+        servlet mapping, signified by URL pattern "/".</li>
+    </ul>
+
+  </div></div>
+
+
+  <div class="subsection"><h4 id="Container_Dependencies">Container Dependencies</h4><div class="text">
+
+    <p>Correct operation of the default servlet depends on the following
+    specific features of the surrounding container:</p>
+    <ul>
+    <li>The container shall provide a servlet context attribute that
+        lists the welcome file names that have been defined for this
+        web application.</li>
+    <li>The container shall provide a servlet context attribute that
+        contains a <code>javax.naming.directory.DirContext</code>
+        implementation representing the static resources of this
+        web application.</li>
+    </ul>
+
+  </div></div>
+
+
+</div><h3 id="Functionality">Functionality</h3><div class="text">
+
+
+  <div class="subsection"><h4 id="Initialization_Functionality">Initialization Functionality</h4><div class="text">
+
+    <p>The following processing must be performed when the <code>init()</code>
+    method of the default servlet is called:</p>
+    <ul>
+    <li>Process and sanity check configuration parameters.</li>
+    </ul>
+
+  </div></div>
+
+
+  <div class="subsection"><h4 id="Per-Request_Functionality">Per-Request Functionality</h4><div class="text">
+
+
+    <p>For all HTTP request methods, the resource path is determined from
+    the path information provided to this request, either as request attribute
+    <code>javax.servlet.include.path_info</code> (for a request dispatcher
+    access to a static resource) or by calling
+    <code>request.getPathInfo()</code> directly.</p>
+
+    <p>On each HTTP DELETE request processed by this servlet, the following
+    processing shall be performed:</p>
+    <ul>
+    <li>If modifications to the static resources are not allowed (set by a
+        configuration parameter), return HTTP status 403 (forbidden).</li>
+    <li>If an attempt is made to delete a resource from <code>/META-INF</code>
+        or <code>/WEB-INF</code>, return HTTP status 403 (forbidden).</li>
+    <li>If the requested resource does not exist, return HTTP status 404
+        (not found)</li>
+    <li>Unbind the resource from the directory context containing the
+        static resources for this web application.  If successful, return
+        HTTP status 204 (no content).  Otherwise, return HTTP status 405
+        (method not allowed).</li>
+    </ul>
+
+
+    <p>On each HTTP GET request processed by this servlet, the following
+    processing shall be performed:</p>
+    <ul>
+    <li>If the request is for a resource under <code>/META-INF</code> or
+        <code>/WEB-INF</code>, return HTTP status 404 (not found).</li>
+    <li>If the requested resource does not exist, return HTTP status 404
+        (not found).</li>
+    <li>If the requested resource is not a directory, but the resource
+        path ends in "/" or "\", return HTTP status 404 (not found).</li>
+    <li>If the requested resource is a directory:
+        <ul>
+        <li>If the request path does not end with "/", redirect to a
+            corresponding path with "/" appended so that relative references
+            in welcome files are resolved correctly.</li>
+        <li>If one of the specified welcome files exists, redirect to the
+            path for that welcome file so that it will be served explicitly.
+            </li>
+        </ul></li>
+    <li>If the request being processed contains an <code>If-Range</code>
+        header, perform the processing described in the HTTP/1.1 specification
+        to determine whether the client's information is up to date.</li>
+    <li>Determine the content type of the response, by looking up the
+        corresponding MIME type in our servlet context.</li>
+    <li>If the requested resource is a directory:
+        <ul>
+        <li>If directory listings are suppressed, return HTTP status 404
+            (not found).</li>
+        <li>Set the content type to <code>text/html</code>.</li>
+        </ul></li>
+    <li>Determine the range(s) to be returned, based on the existence of
+        any <code>If-Range</code> and <code>Range</code> headers.</li>
+    <li>If the requested resource is a directory, include an <code>ETag</code>
+        header in the response, with the value calculated based on the content
+        of the directory.</li>
+    <li>Include a <code>Last-Modified</code> header in the response documenting
+        the date/time that the resource was last modified.</li>
+    <li>Unless we are processing a HEAD request, include the appropriate
+        content (or content ranges) in the response.</li>
+    </ul>
+
+    <p>On each HTTP HEAD request processed by this servlet, the following
+    processing shall be performed:</p>
+    <ul>
+    <li>Processed identically to an HTTP GET request, except that the data
+        content is not transmitted after the headers.</li>
+    </ul>
+
+    <p>On each HTTP POST request processed by this servlet, the following
+    processing shall be performed:</p>
+    <ul>
+    <li>Processed identically to an HTTP GET request.</li>
+    </ul>
+
+
+    <p>On each HTTP PUT request processed by this servlet, the following
+    processing shall be performed:</p>
+    <ul>
+    <li>If modifications to the static resources are not allowed (set by a
+        configuration parameter), return HTTP status 403 (forbidden).</li>
+    <li>If an attempt is made to delete a resource from <code>/META-INF</code>
+        or <code>/WEB-INF</code>, return HTTP status 403 (forbidden).</li>
+    <li>Create a new resource from the body of this request.</li>
+    <li>Bind or rebind the specified path to the new resource (depending on
+        whether it currently exists or not).  Return HTTP status as follows:
+        <ul>
+        <li>If binding was unsuccessful, return HTTP status 409 (conflict).
+            </li>
+        <li>If binding was successful and the resource did not previously
+            exist, return HTTP status 201 (created).</li>
+        <li>If binding was successful and the resource previously existed,
+            return HTTP status 204 (no content).</li>
+        </ul></li>
+    </ul>
+
+  </div></div>
+
+
+  <div class="subsection"><h4 id="Finalization_Functionality">Finalization Functionality</h4><div class="text">
+
+    <p>No specific processing is required when the <code>destroy()</code>
+    method is called:</p>
+
+  </div></div>
+
+
+</div><h3 id="Testable_Assertions">Testable Assertions</h3><div class="text">
+
+  <p>In addition to the assertions implied by the functionality requirements
+  listed above, the following additional assertions shall be tested to
+  validate the behavior of the default servlet:</p>
+  <ul>
+  <li>Requests for resources that do not exist in the web application must
+      return HTTP status 404 (not found).</li>
+  <li>The default servlet must operate identically for web applications that
+      are run out of a WAR file directly, or from an unpacked directory
+      structure.</li>
+  <li>If the web application is running out of an unpacked directory
+      structure, the default servlet must recognize cases where the resource
+      has been updated through external means.</li>
+  </ul>
+
+</div><div class="noprint"><h3 id="comments_section">
+                  Comments
+                </h3><div class="text"><p class="notice"><strong>Notice: </strong>This comments section collects your suggestions
+                    on improving documentation for Apache Tomcat.<br><br>
+                    If you have trouble and need help, read
+                    <a href="http://tomcat.apache.org/findhelp.html">Find Help</a> page
+                    and ask your question on the tomcat-users
+                    <a href="http://tomcat.apache.org/lists.html">mailing list</a>.
+                    Do not ask such questions here. This is not a Q&amp;A section.<br><br>
+                    The Apache Comments System is explained <a href="../comments.html">here</a>.
+                    Comments may be removed by our moderators if they are either
+                    implemented or considered invalid/off-topic.
+                  </p><div id="comments_thread"></div></div></div></div></div></div></div><footer><div id="footer">
+    Copyright &copy; 1999-2017, The Apache Software Foundation
+  </div></footer></div></body></html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8" /><title>Source Code</title></head><body><pre>&lt;%--
+ Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+--%>
+&lt;%@page contentType="text/html; charset=UTF-8" %>
+&lt;HTML>
+&lt;HEAD>&lt;TITLE>
+    Calendar: A JSP APPLICATION
+&lt;/TITLE>&lt;/HEAD>
+
+
+&lt;BODY BGCOLOR="white">
+
+&lt;%@ page language="java" import="cal.*" %>
+&lt;jsp:useBean id="table" scope="session" class="cal.TableBean" />
+
+&lt;%
+    table.processRequest(request);
+    if (table.getProcessError() == false) {
+%>
+
+&lt;!-- html table goes here -->
+&lt;CENTER>
+&lt;TABLE WIDTH=60% BGCOLOR=yellow CELLPADDING=15>
+&lt;TR>
+&lt;TD ALIGN=CENTER> &lt;A HREF=cal1.jsp?date=prev> prev &lt;/A>
+&lt;TD ALIGN=CENTER> Calendar:&lt;%= table.getDate() %>&lt;/TD>
+&lt;TD ALIGN=CENTER> &lt;A HREF=cal1.jsp?date=next> next &lt;/A>
+&lt;/TR>
+&lt;/TABLE>
+
+&lt;!-- the main table -->
+&lt;TABLE WIDTH=60% BGCOLOR=lightblue BORDER=1 CELLPADDING=10>
+&lt;TR>
+&lt;TH> Time &lt;/TH>
+&lt;TH> Appointment &lt;/TH>
+&lt;/TR>
+&lt;FORM METHOD=POST ACTION=cal1.jsp>
+&lt;%
+    for(int i=0; i&lt;table.getEntries().getRows(); i++) {
+       cal.Entry entr = table.getEntries().getEntry(i);
+%>
+    &lt;TR>
+    &lt;TD>
+    &lt;A HREF=cal2.jsp?time=&lt;%= entr.getHour() %>>
+        &lt;%= entr.getHour() %> &lt;/A>
+    &lt;/TD>
+    &lt;TD BGCOLOR=&lt;%= entr.getColor() %>>
+    &lt;% out.print(util.HTMLFilter.filter(entr.getDescription())); %>
+    &lt;/TD>
+    &lt;/TR>
+&lt;%
+    }
+%>
+&lt;/FORM>
+&lt;/TABLE>
+&lt;BR>
+
+&lt;!-- footer -->
+&lt;TABLE WIDTH=60% BGCOLOR=yellow CELLPADDING=15>
+&lt;TR>
+&lt;TD ALIGN=CENTER>  &lt;% out.print(util.HTMLFilter.filter(table.getName())); %> :
+             &lt;% out.print(util.HTMLFilter.filter(table.getEmail())); %> &lt;/TD>
+&lt;/TR>
+&lt;/TABLE>
+&lt;/CENTER>
+
+&lt;%
+    } else {
+%>
+&lt;font size=5>
+    You must enter your name and email address correctly.
+&lt;/font>
+&lt;%
+    }
+%>
+
+
+&lt;/BODY>
+&lt;/HTML>
+
+
+</pre></body></html>

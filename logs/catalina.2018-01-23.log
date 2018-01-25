@@ -1,0 +1,103 @@
+23-Jan-2018 11:03:40.821 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Server version:        Apache Tomcat/9.0.0.M17
+23-Jan-2018 11:03:40.826 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Server built:          Jan 10 2017 20:59:20 UTC
+23-Jan-2018 11:03:40.826 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Server number:         9.0.0.0
+23-Jan-2018 11:03:40.826 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log OS Name:               Mac OS X
+23-Jan-2018 11:03:40.827 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log OS Version:            10.13.2
+23-Jan-2018 11:03:40.827 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Architecture:          x86_64
+23-Jan-2018 11:03:40.827 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Java Home:             /Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/jre
+23-Jan-2018 11:03:40.827 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Version:           1.8.0_131-b11
+23-Jan-2018 11:03:40.827 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Vendor:            Oracle Corporation
+23-Jan-2018 11:03:40.827 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:         /Users/kohgylw/program/KohgylwIFT
+23-Jan-2018 11:03:40.827 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:         /Users/kohgylw/program/KohgylwIFT
+23-Jan-2018 11:03:40.828 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.config.file=/Users/kohgylw/program/KohgylwIFT/conf/logging.properties
+23-Jan-2018 11:03:40.828 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+23-Jan-2018 11:03:40.829 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djdk.tls.ephemeralDHKeySize=2048
+23-Jan-2018 11:03:40.829 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.protocol.handler.pkgs=org.apache.catalina.webresources
+23-Jan-2018 11:03:40.829 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.base=/Users/kohgylw/program/KohgylwIFT
+23-Jan-2018 11:03:40.829 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.home=/Users/kohgylw/program/KohgylwIFT
+23-Jan-2018 11:03:40.830 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.io.tmpdir=/Users/kohgylw/program/KohgylwIFT/temp
+23-Jan-2018 11:03:40.830 信息 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: /Users/kohgylw/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:.
+23-Jan-2018 11:03:40.963 信息 [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-80"]
+23-Jan-2018 11:03:40.993 信息 [main] org.apache.tomcat.util.net.NioSelectorPool.getSharedSelector Using a shared selector for servlet write/read
+23-Jan-2018 11:03:40.997 信息 [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["ajp-nio-8009"]
+23-Jan-2018 11:03:40.998 信息 [main] org.apache.tomcat.util.net.NioSelectorPool.getSharedSelector Using a shared selector for servlet write/read
+23-Jan-2018 11:03:40.998 信息 [main] org.apache.catalina.startup.Catalina.load Initialization processed in 575 ms
+23-Jan-2018 11:03:41.024 信息 [main] org.apache.catalina.core.StandardService.startInternal Starting service Catalina
+23-Jan-2018 11:03:41.024 信息 [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet Engine: Apache Tomcat/9.0.0.M17
+23-Jan-2018 11:03:41.033 信息 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /Users/kohgylw/program/KohgylwIFT/webapps/docs
+23-Jan-2018 11:03:41.333 信息 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /Users/kohgylw/program/KohgylwIFT/webapps/docs has finished in 300 ms
+23-Jan-2018 11:03:41.334 信息 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /Users/kohgylw/program/KohgylwIFT/webapps/manager
+23-Jan-2018 11:03:41.371 信息 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /Users/kohgylw/program/KohgylwIFT/webapps/manager has finished in 37 ms
+23-Jan-2018 11:03:41.371 信息 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /Users/kohgylw/program/KohgylwIFT/webapps/examples
+23-Jan-2018 11:03:41.637 信息 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /Users/kohgylw/program/KohgylwIFT/webapps/examples has finished in 266 ms
+23-Jan-2018 11:03:41.637 信息 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /Users/kohgylw/program/KohgylwIFT/webapps/ROOT
+23-Jan-2018 11:03:42.784 信息 [localhost-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+23-Jan-2018 11:03:43.140 信息 [localhost-startStop-1] org.springframework.web.context.ContextLoader.initWebApplicationContext Root WebApplicationContext: initialization started
+23-Jan-2018 11:03:43.195 信息 [localhost-startStop-1] org.springframework.web.context.support.XmlWebApplicationContext.prepareRefresh Refreshing Root WebApplicationContext: startup date [Tue Jan 23 11:03:43 CST 2018]; root of context hierarchy
+23-Jan-2018 11:03:43.294 信息 [localhost-startStop-1] org.springframework.beans.factory.xml.XmlBeanDefinitionReader.loadBeanDefinitions Loading XML bean definitions from class path resource [spring.xml]
+23-Jan-2018 11:03:44.061 信息 [localhost-startStop-1] org.springframework.jdbc.datasource.DriverManagerDataSource.setDriverClassName Loaded JDBC driver: org.h2.Driver
+23-Jan-2018 11:03:44.666 信息 [localhost-startStop-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping.register Mapped "{[/errorController/pageNotFound.do]}" onto public java.lang.String kohgylw.controller.ErrorController.handleError(javax.servlet.http.HttpServletRequest)
+23-Jan-2018 11:03:44.678 信息 [localhost-startStop-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping.register Mapped "{[/homeController/doLogin.ajax]}" onto public java.lang.String kohgylw.controller.HomeController.doLogin(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpSession)
+23-Jan-2018 11:03:44.679 信息 [localhost-startStop-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping.register Mapped "{[/homeController/deleteFile.ajax]}" onto public java.lang.String kohgylw.controller.HomeController.deleteFile(javax.servlet.http.HttpServletRequest)
+23-Jan-2018 11:03:44.679 信息 [localhost-startStop-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping.register Mapped "{[/homeController/getServerOS.ajax]}" onto public java.lang.String kohgylw.controller.HomeController.getServerOS()
+23-Jan-2018 11:03:44.680 信息 [localhost-startStop-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping.register Mapped "{[/homeController/getFolderView.ajax],produces=[text/html;charset=utf-8]}" onto public java.lang.String kohgylw.controller.HomeController.getFolderView(java.lang.String,javax.servlet.http.HttpSession,javax.servlet.http.HttpServletRequest)
+23-Jan-2018 11:03:44.680 信息 [localhost-startStop-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping.register Mapped "{[/homeController/doLogout.do]}" onto public java.lang.String kohgylw.controller.HomeController.doLogout(javax.servlet.http.HttpSession)
+23-Jan-2018 11:03:44.681 信息 [localhost-startStop-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping.register Mapped "{[/homeController/newFolder.ajax]}" onto public java.lang.String kohgylw.controller.HomeController.newFolder(javax.servlet.http.HttpServletRequest)
+23-Jan-2018 11:03:44.681 信息 [localhost-startStop-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping.register Mapped "{[/homeController/deleteFolder.ajax]}" onto public java.lang.String kohgylw.controller.HomeController.deleteFolder(javax.servlet.http.HttpServletRequest)
+23-Jan-2018 11:03:44.682 信息 [localhost-startStop-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping.register Mapped "{[/homeController/renameFolder.ajax]}" onto public java.lang.String kohgylw.controller.HomeController.renameFolder(javax.servlet.http.HttpServletRequest)
+23-Jan-2018 11:03:44.682 信息 [localhost-startStop-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping.register Mapped "{[/homeController/douploadFile.ajax],produces=[text/html;charset=utf-8]}" onto public java.lang.String kohgylw.controller.HomeController.douploadFile(javax.servlet.http.HttpServletRequest,org.springframework.web.multipart.MultipartFile)
+23-Jan-2018 11:03:44.682 信息 [localhost-startStop-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping.register Mapped "{[/homeController/checkUploadFile.ajax],produces=[text/html;charset=utf-8]}" onto public java.lang.String kohgylw.controller.HomeController.checkUploadFile(javax.servlet.http.HttpServletRequest)
+23-Jan-2018 11:03:44.683 信息 [localhost-startStop-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping.register Mapped "{[/homeController/downloadFile.do]}" onto public void kohgylw.controller.HomeController.downloadFile(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+23-Jan-2018 11:03:44.683 信息 [localhost-startStop-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping.register Mapped "{[/homeController/renameFile.ajax]}" onto public java.lang.String kohgylw.controller.HomeController.renameFile(javax.servlet.http.HttpServletRequest)
+23-Jan-2018 11:03:44.850 信息 [localhost-startStop-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.initControllerAdviceCache Looking for @ControllerAdvice: Root WebApplicationContext: startup date [Tue Jan 23 11:03:43 CST 2018]; root of context hierarchy
+23-Jan-2018 11:03:44.917 信息 [localhost-startStop-1] org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.initControllerAdviceCache Looking for @ControllerAdvice: Root WebApplicationContext: startup date [Tue Jan 23 11:03:43 CST 2018]; root of context hierarchy
+23-Jan-2018 11:03:44.941 信息 [localhost-startStop-1] org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver.initExceptionHandlerAdviceCache Detected @ExceptionHandler methods in errorController
+23-Jan-2018 11:03:45.061 信息 [localhost-startStop-1] org.springframework.web.context.ContextLoader.initWebApplicationContext Root WebApplicationContext: initialization completed in 1921 ms
+23-Jan-2018 11:03:45.108 信息 [localhost-startStop-1] org.springframework.web.servlet.DispatcherServlet.initServletBean FrameworkServlet 'dispatcher': initialization started
+23-Jan-2018 11:03:45.111 信息 [localhost-startStop-1] org.springframework.web.context.support.XmlWebApplicationContext.prepareRefresh Refreshing WebApplicationContext for namespace 'dispatcher-servlet': startup date [Tue Jan 23 11:03:45 CST 2018]; parent: Root WebApplicationContext
+23-Jan-2018 11:03:45.121 信息 [localhost-startStop-1] org.springframework.web.servlet.DispatcherServlet.initServletBean FrameworkServlet 'dispatcher': initialization completed in 13 ms
+23-Jan-2018 11:03:45.125 信息 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /Users/kohgylw/program/KohgylwIFT/webapps/ROOT has finished in 3,488 ms
+23-Jan-2018 11:03:45.126 信息 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /Users/kohgylw/program/KohgylwIFT/webapps/host-manager
+23-Jan-2018 11:03:45.146 信息 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /Users/kohgylw/program/KohgylwIFT/webapps/host-manager has finished in 20 ms
+23-Jan-2018 11:03:45.162 信息 [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler [http-nio-80]
+23-Jan-2018 11:03:45.171 信息 [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler [ajp-nio-8009]
+23-Jan-2018 11:03:45.171 信息 [main] org.apache.catalina.startup.Catalina.start Server startup in 4172 ms
+23-Jan-2018 11:05:49.378 信息 [main] org.apache.catalina.core.StandardServer.await A valid shutdown command was received via the shutdown port. Stopping the Server instance.
+23-Jan-2018 11:05:49.378 信息 [main] org.apache.coyote.AbstractProtocol.pause Pausing ProtocolHandler ["http-nio-80"]
+23-Jan-2018 11:05:51.381 信息 [main] org.apache.coyote.AbstractProtocol.pause Pausing ProtocolHandler ["ajp-nio-8009"]
+23-Jan-2018 11:05:53.384 信息 [main] org.apache.catalina.core.StandardService.stopInternal Stopping service Catalina
+23-Jan-2018 11:05:53.388 信息 [localhost-startStop-2] org.springframework.web.context.support.XmlWebApplicationContext.doClose Closing WebApplicationContext for namespace 'dispatcher-servlet': startup date [Tue Jan 23 11:03:45 CST 2018]; parent: Root WebApplicationContext
+23-Jan-2018 11:05:53.395 信息 [localhost-startStop-2] org.springframework.web.context.support.XmlWebApplicationContext.doClose Closing Root WebApplicationContext: startup date [Tue Jan 23 11:03:43 CST 2018]; root of context hierarchy
+23-Jan-2018 11:05:53.404 警告 [localhost-startStop-2] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesJdbc The web application [ROOT] registered the JDBC driver [org.h2.Driver] but failed to unregister it when the web application was stopped. To prevent a memory leak, the JDBC Driver has been forcibly unregistered.
+23-Jan-2018 11:05:53.422 信息 [main] org.apache.coyote.AbstractProtocol.stop Stopping ProtocolHandler ["http-nio-80"]
+23-Jan-2018 11:05:55.433 信息 [main] org.apache.coyote.AbstractProtocol.stop Stopping ProtocolHandler ["ajp-nio-8009"]
+23-Jan-2018 11:05:57.438 信息 [main] org.apache.coyote.AbstractProtocol.destroy Destroying ProtocolHandler ["http-nio-80"]
+23-Jan-2018 11:05:57.441 严重 [main] org.apache.catalina.util.LifecycleBase.handleSubClassException Failed to destroy component [Connector[HTTP/1.1-80]]
+ org.apache.catalina.LifecycleException: Protocol handler destroy failed
+	at org.apache.catalina.connector.Connector.destroyInternal(Connector.java:1001)
+	at org.apache.catalina.util.LifecycleBase.destroy(LifecycleBase.java:322)
+	at org.apache.catalina.core.StandardService.destroyInternal(StandardService.java:543)
+	at org.apache.catalina.util.LifecycleBase.destroy(LifecycleBase.java:322)
+	at org.apache.catalina.core.StandardServer.destroyInternal(StandardServer.java:883)
+	at org.apache.catalina.util.LifecycleBase.destroy(LifecycleBase.java:322)
+	at org.apache.catalina.startup.Catalina.stop(Catalina.java:729)
+	at org.apache.catalina.startup.Catalina.start(Catalina.java:690)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.catalina.startup.Bootstrap.start(Bootstrap.java:355)
+	at org.apache.catalina.startup.Bootstrap.main(Bootstrap.java:495)
+Caused by: java.io.IOException: Thread signal failed
+	at sun.nio.ch.NativeThread.signal(Native Method)
+	at sun.nio.ch.ServerSocketChannelImpl.implCloseSelectableChannel(ServerSocketChannelImpl.java:292)
+	at java.nio.channels.spi.AbstractSelectableChannel.implCloseChannel(AbstractSelectableChannel.java:234)
+	at java.nio.channels.spi.AbstractInterruptibleChannel.close(AbstractInterruptibleChannel.java:115)
+	at sun.nio.ch.ServerSocketAdaptor.close(ServerSocketAdaptor.java:137)
+	at org.apache.tomcat.util.net.NioEndpoint.unbind(NioEndpoint.java:307)
+	at org.apache.tomcat.util.net.AbstractEndpoint.destroy(AbstractEndpoint.java:1015)
+	at org.apache.coyote.AbstractProtocol.destroy(AbstractProtocol.java:621)
+	at org.apache.catalina.connector.Connector.destroyInternal(Connector.java:997)
+	... 13 more
+
+23-Jan-2018 11:05:57.443 信息 [main] org.apache.coyote.AbstractProtocol.destroy Destroying ProtocolHandler ["ajp-nio-8009"]

@@ -1,0 +1,79 @@
+<web-app>
+	<display-name>Archetype Created Web Application</display-name>
+
+	<!-- 内置h2数据库执行初始化 -->
+	<listener>
+		<listener-class>kohgylw.listener.H2DBinitListener</listener-class>
+	</listener>
+	<!-- end 数据库初始化 -->
+
+	<!-- 请求合法性检查 VC -->
+	<filter>
+		<filter-name>VCFilter</filter-name>
+		<filter-class>kohgylw.filter.VCFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>VCFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- end VC -->
+
+	<!-- spring MVC 配置 -->
+
+	<!-- 配置spring配置文件所在路径 -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:spring.xml</param-value>
+	</context-param>
+
+	<!-- spring MVC 核心控制器 -->
+	<servlet>
+		<servlet-name>dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet
+		</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value></param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>*.do</url-pattern>
+		<url-pattern>*.ajax</url-pattern>
+	</servlet-mapping>
+
+	<!-- spring web 的Context生成监听器 -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener
+		</listener-class>
+	</listener>
+
+	<!-- end spring MVC -->
+
+	<!-- 对文件系统进行自检 SC -->
+	<listener>
+		<listener-class>kohgylw.listener.SCListener</listener-class>
+	</listener>
+	<!-- end SC -->
+
+	<!-- session 过期时间 -->
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+	<!-- end session -->
+
+	<!-- 项目主页 -->
+	<welcome-file-list>
+		<welcome-file>/home.jsp</welcome-file>
+	</welcome-file-list>
+	<!-- end 项目主页 -->
+
+	<!-- 错误页面 -->
+	<error-page>
+		<error-code>404</error-code>
+		<location>/errorController/pageNotFound.do</location>
+	</error-page>
+	<!-- end 错误页面 -->
+
+</web-app>
