@@ -291,6 +291,15 @@ function showFolderTable(folderView) {
 									+ fi.fileName
 									+ '"'
 									+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-cloud-download'></span> 下载</button>";
+							console.log("获取的后缀名为："+getSuffix(fi.fileName));
+							if (getSuffix(fi.fileName) == "mp4" || getSuffix(fi.fileName) == "webm") {
+								fileRow = fileRow
+										+ "<button onclick='playVideo("
+										+ '"'
+										+ fi.fileId
+										+ '"'
+										+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-play'></span> 播放</button>";
+							}
 						}
 						if (aD) {
 							fileRow = fileRow
@@ -762,4 +771,17 @@ function abortUpload() {
 		xhr.abort();
 	}
 	$('#uploadFileModal').modal('hide');
+}
+
+// 获取文件名的后缀名
+function getSuffix(filename) {
+	var index1 = filename.lastIndexOf(".");
+	var index2 = filename.length;
+	var suffix = filename.substring(index1 + 1, index2);
+	return suffix;
+}
+
+//播放指定格式的视频
+function playVideo(fileId){
+	window.location.href="homeController/playVideo.do?fileId="+fileId;
 }

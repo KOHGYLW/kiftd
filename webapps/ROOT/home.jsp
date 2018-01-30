@@ -360,7 +360,7 @@
 	</div>
 	<%-- end 修改文件夹模态框 --%>
 </body>
-<script type="text/javascript" src="js/jquery-3.2.1.js"></script>
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/home.min.js"></script>
 </html>
