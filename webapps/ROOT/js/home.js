@@ -160,7 +160,6 @@ function showAccountView(folderView) {
 						"<button class='btn btn-link rightbtn' data-toggle='modal' data-target='#loginModal'>登入<span class='glyphicon glyphicon-user' aria-hidden='true'></span></button>");
 	}
 	var authList = folderView.authList;
-	console.log(folderView);
 	if (authList != null) {
 		if (checkAuth(authList, "C")) {
 			$("#parentlistbox")
@@ -291,14 +290,33 @@ function showFolderTable(folderView) {
 									+ fi.fileName
 									+ '"'
 									+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-cloud-download'></span> 下载</button>";
-							console.log("获取的后缀名为："+getSuffix(fi.fileName));
-							if (getSuffix(fi.fileName) == "mp4" || getSuffix(fi.fileName) == "webm") {
+							// 对于各种特殊格式文件提供的预览和播放功能
+							if (getSuffix(fi.fileName) == "mp4"
+									|| getSuffix(fi.fileName) == "webm") {
 								fileRow = fileRow
 										+ "<button onclick='playVideo("
 										+ '"'
 										+ fi.fileId
 										+ '"'
 										+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-play'></span> 播放</button>";
+							} else if (getSuffix(fi.fileName) == "pdf") {
+								fileRow = fileRow
+										+ "<button onclick='pdfView("
+										+ '"'
+										+ fi.fileId
+										+ '"'
+										+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-eye-open'></span> 预览</button>";
+							} else if (getSuffix(fi.fileName) == "jpg"
+									|| getSuffix(fi.fileName) == "jpeg"
+									|| getSuffix(fi.fileName) == "gif"
+									|| getSuffix(fi.fileName) == "png"
+									|| getSuffix(fi.fileName) == "bmp") {
+								fileRow = fileRow
+										+ "<button onclick='showPicture("
+										+ '"'
+										+ fi.fileId
+										+ '"'
+										+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-picture'></span> 查看</button>";
 							}
 						}
 						if (aD) {
@@ -773,15 +791,25 @@ function abortUpload() {
 	$('#uploadFileModal').modal('hide');
 }
 
-// 获取文件名的后缀名
+// 获取文件名的后缀名，以小写形式输出
 function getSuffix(filename) {
 	var index1 = filename.lastIndexOf(".");
 	var index2 = filename.length;
 	var suffix = filename.substring(index1 + 1, index2);
-	return suffix;
+	return suffix.toLowerCase();
 }
 
-//播放指定格式的视频
-function playVideo(fileId){
-	window.location.href="homeController/playVideo.do?fileId="+fileId;
+// 播放指定格式的视频
+function playVideo(fileId) {
+	window.open("homeController/playVideo.do?fileId=" + fileId);
+}
+
+// 预览PDF文档
+function pdfView(fileId) {
+	window.open("homeController/pdfView.do?fileId=" + fileId);
+}
+
+// 查看图片
+function showPicture(fileId) {
+	window.open("homeController/showPicture.do?fileId=" + fileId);
 }

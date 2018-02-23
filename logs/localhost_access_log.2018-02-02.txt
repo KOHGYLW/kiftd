@@ -1,0 +1,11 @@
+127.0.0.1 - - [02/Feb/2018:14:08:03 +0800] "GET / HTTP/1.1" 200 12056
+127.0.0.1 - - [02/Feb/2018:14:08:03 +0800] "GET /js/jquery-3.3.1.min.js HTTP/1.1" 304 -
+127.0.0.1 - - [02/Feb/2018:14:08:03 +0800] "GET /js/home.min.js HTTP/1.1" 200 19148
+127.0.0.1 - - [02/Feb/2018:14:08:03 +0800] "POST /homeController/getServerOS.ajax HTTP/1.1" 200 8
+127.0.0.1 - - [02/Feb/2018:14:08:03 +0800] "POST /homeController/getFolderView.ajax HTTP/1.1" 200 385
+127.0.0.1 - - [02/Feb/2018:14:08:45 +0800] "POST /homeController/doLogin.ajax HTTP/1.1" 200 11
+127.0.0.1 - - [02/Feb/2018:14:08:45 +0800] "GET /home.jsp HTTP/1.1" 200 12056
+127.0.0.1 - - [02/Feb/2018:14:08:45 +0800] "POST /homeController/getServerOS.ajax HTTP/1.1" 200 8
+127.0.0.1 - - [02/Feb/2018:14:08:46 +0800] "POST /homeController/getFolderView.ajax HTTP/1.1" 200 419
+127.0.0.1 - - [02/Feb/2018:14:08:54 +0800] "POST /homeController/checkUploadFile.ajax HTTP/1.1" 200 12
+127.0.0.1 - - [02/Feb/2018:14:09:13 +0800] "POST /homeController/douploadFile.ajax HTTP/1.1" 200 15

@@ -30,7 +30,7 @@
 					<span class="titletext"><em> 青阳网络视频播放器 <small><span
 								class="graytext">KIFT-Player</span></small></em></span>
 					<button class="btn btn-link rightbtn" onclick="reMainPage()">
-						返回 <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
+						关闭 <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
 					</button>
 				</div>
 				<hr />
@@ -67,7 +67,9 @@
 		this.play();
 	});
 	function reMainPage(){
-		window.location.href="home.jsp";
+		window.opener = null;
+		window.open('', '_self');
+		window.close();
 	}
 </script>
 </html>
