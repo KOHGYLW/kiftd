@@ -14,8 +14,8 @@ KIFT——快捷、强大、小巧的开源网盘系统
 
 #资源导航:
 *如果您仅仅需要马上建立一个可用的网盘，请阅读下方《1分钟快速部署》部分。
-如果您具备一定的java知识，请阅读github上的快速开始：https://github.com/KOHGYLW/kiftd/wiki 。
-下载源代码请前往这个地址：https://github.com/KOHGYLW/KohgylwIFT 。
+当然，您也可以阅读github上的快速开始：https://github.com/KOHGYLW/kiftd/wiki 。
+如果您是一位开发者，下载源代码请前往这个地址：https://github.com/KOHGYLW/KohgylwIFT 。
 
 >现在开始使用！
 
