@@ -1,0 +1,210 @@
+<h1>KIFT——快捷、强大、小巧的开源网盘系统</h1>
+
+<h2>【青阳网络文件系统自述文档】</h2>
+
+<hr />
+
+<h3>简介</h3>
+<p><strong>本应用是一款快捷的网络文件分享工具——您可以把它看成是一款简化的“网盘”，它可以运行在普通的家用PC上，而且即使是没有什么经验的用户也能成功安装并使用它。它具备很多高级功能，例如视频的在线播放，而且还在不断地添加新功能。</strong></p>
+<p>本应用的作者相信，不仅仅是他本人，还有很多人需要在局域网内搭建起一个简便的网盘系统以便让所有在同一局域网内的同事或同学都能够使用随处可见的浏览器去访问、上传或下载若干文件——无论是不足1MB的文本，还是超过4GB的1080p视频，而且它最好安装简单，界面便捷，还要有必备的管理功能。实际上，kiftd的设计初衷正是为了满足这一需求。作者最初编写它的目的是能够在办公室和教室内将自己的资料快速分发给学生或其他老师，在作者成功弄丢了几次U盘之后，便萌生了设计这样一款应用的想法。 本应用使用java开发，因此可以部署在windows/Linux/Unix(包括Mac os X)之中的任意系统上，只要安装java 8及以上环境。</p>
+
+<h4>kift有哪些亮点？</h4>
+<ul>
+	<li>kift是一款使用简单、功能齐全的小型网盘搭建系统(解压即用版本叫做kiftd)。只需一个浏览器，您就可以在您的办公室内、家中或小型局域网内共享您的任何文件，甚至是让您的朋友在线播放其中的视频而无需下载。</li>
+
+	<li>kift是一款功能齐全的网盘。您只想将删除文件的权利给与您信任的人？您想让您的学生只能上传自己的作业而不能下载抄袭其他人的作业？kitf的权限管理能力能轻松完成您的需求。</li>
+
+	<li>kift还是一款开源免费的网盘。您无需任何投入，您需要做的仅仅是下载，解压，然后开始使用。就是这么简单。害怕它隐藏不知名的代码偷用您的资源“挖矿”？现在，您可以在github上随时查看和拷贝本应用的全部源代码，并自己动手编译它。您还可以根据自己的喜好随意修改它，无论如何，一切任由您操作。</li>
+</ul>
+<hr />
+<h3>资源导航</h3>
+<a href="https://github.com/KOHGYLW/kiftd/wiki">立即搭建一个网盘：您可以阅读github上的快速开始：https://github.com/KOHGYLW/kiftd/wiki</a>。
+<p>如果您无法访问互联网，也可以阅读下面的<a href="#quickstart">现在开始使用！</a>一章。
+</p>
+<p>如果需要查看各项设置的设置方式，请参阅<a href="#baseconf">基本设置</a>一章。 </p>
+<em>作为开发者：下载源代码请前往这个地址：<a href="https://github.com/KOHGYLW/KohgylwIFT">https://github.com/KOHGYLW/KohgylwIFT</a> 。</em>
+<hr />
+
+<h3 id="quickstart">现在开始使用！</h3>
+<p>
+	<strong>如果您使用本应用，即视为同意下列条款：</strong>
+	<ul>
+		<li>本应用无使用限制，但使用本应用所造成的任何后果需由使用者本人承担（包括但不限于：非法传播文件导致的后果）。</li>
+		<li>任何人均可以复制、修改和编译本应用的源代码，但所造成的任何后果均由修改者本人自行承担。</li>
+	</ul>
+</p>
+
+<h3>1分钟快速部署：</h3>
+
+<p>第一步：首先，您需要在您的计算机上安装java 8或以上版本的java环境，这是本应用运行的先决条件。java的安装并不麻烦，您可以很快完成它。</p>
+
+<p>第二步：按照下列操作启动您的服务器：
+	<ol>
+		<li>首先，进入本应用的主目录。</li>
+		<li>进入bin目录，以管理员权限运行startup.bat文件(适用于windows用户)/在终端执行命令：<code>$ sudo ./startup.sh</code> (适用于Linux、Unix、Mac OS X用户)。这一步会启动服务器。</li>
+		<li>如果服务器启动成功，则可以使用浏览器（推荐使用Chrome或FireFox或其内核的浏览器）访问127.0.0.1进入到本应用主页。<em>（如果您用的是360安全浏览器，那么您应该使用“极速模式”访问本应用）</em></li>
+	</ol>
+	<em><small>注：部署过程毫无难度，而且即使失败了也不会对您的系统产生任何负面影响，您可以放心大胆地多次尝试。</small></em>
+</p>
+<p>如果您访问成功，会看到如下效果：</p>
+<div style="text-align:center"><img width="900" src="./img/mainpage.png" /></div>
+<p>现在，您已经可以让他人访问您的网盘了。就是这么简单。</p>
+<p>*如何让他人访问：如果您需要他人访问您的网盘，请在局域网内其他主机上，使用浏览器访问您本机IP地址，即可进入本系统。 例如 http://192.168.1.2/ 其中IP地址部分需根据您的计算机IP地址进行替换。</p>
+<p>*如何使用上传、修改等功能：您可以先使用内置用户(admin,000000)进行登录并进行全部权限的操作。至于如何修改用户密码或添加更多的用户，请阅读后面的
+	<a>《用户授权》</a>部分。</p>
+	<hr />
+<h3>如何关闭服务器</h3>
+<p>如果您需要关闭本应用，请bin目录，运行shutdown.bat文件（适用于windows用户）/在终端执行命令：<code>$ ./shutdown.sh</code> (适用于Linux、Unix、Mac OS X用户)。这一步会关闭服务器。</p>
+<hr />
+<h3>查看运行日志</h3>
+<p>本应用记录的日志文件存放在“~/文档/KohgylwIFT/log”路径下。日志文件的标题为日志产生的日期，以“klog”作为后缀。日志文件的内容以纯文本格式进行记录，您可以使用文本编辑器（例如“记事本”）打开它们并查看其内容。</p>
+<hr />
+<h3 id="mf">主要功能介绍及展示</h3>
+<h4>各种文件的上传、下载、删除和管理</h4>
+<p>这些都是一个网盘最基本的功能， 本系统尽可能的将它们做的简单易用，让您在使用部署时几乎没有学习成本。 界面简单高效也是本系统的特色之一：本人相信对于大多数喜欢体验开源技术的用户而言，一个高速、流畅、干净又足够硬派的系统远比一个界面华丽却相应缓慢的系统更具有吸引力。如下图，这是文件列表的基本效果，其中可以点击的是文件夹，不可点击的为文件。
+</p>
+<div style="text-align:center"><img width="900" src="./img/filesystem.png" /></div>
+<h4>mp4与webm格式资源在线播放</h4>
+<p>上传至本系统的全部mp4资源和webm资源均可使用在线播放功能（用户需具备[下载]权限才可播放视频），不限大小和长度。操作方式为：点击文件后方操作栏中的“播放”按钮，会自动打开播放页面并在线播放。点击页面右上方“关闭”按钮停止播放并关闭播放页面。效果如下：</p>
+<div style="text-align:center"><img width="900" src="./img/palymovie.png" /></div>
+<h4>PDF文档在线预览</h4>
+<p>您可以直接查看PDF文档的内容而无需下载它。在线查看提供了页数跳转、旋转、搜索等功能。这个功能是为了方便办公环境下更好的区分不同版本的PDF文档，有些文档可能看上去很像但是内容有细微差别，例如不同日期的工作报表。这种情况下，使用在线预览功能会方便许多。效果如下：</p>
+<div style="text-align:center"><img width="900" src="./img/seepdf.png" /></div>
+<h4>图片在线查看</h4>
+<p>本应用也支持bmp、jpg、jpeg、png、gif五种常见图片格式的在线查看。您可以通过它快速查找全部文件列表中您所中意的那张图片。效果如下：</p>
+<div style="text-align:center"><img width="900" src="./img/showpicture.png" /></div>
+<hr />
+<h3 id="baseconf">基本设置</h3>
+<p>为了方便个人操作，本应用的全部设置都基于文件配置。您可能对这种配置方式不太熟悉甚至觉得它很高深，不过不用担心，请跟着下面的说明大胆尝试一下，之后，您可能会喜欢上这种配置方式并体会到它的优点。</p>
+<h4>增加用户</h4>
+<ol>
+	<li>请进入:“ 应用主目录/webapps/ROOT/etc ”这个目录。</li>
+	<li>使用文本编辑器（例如记事本）打开名为“ configure.properties ”的文件。</li>
+	<li>在该文件中找到如下内容：</li>
+	<pre>
+		...
+		#[Set the account(who can login) list]
+		#Example:
+		#account.list = user1,user2,user3...
+		accounts.list = admin
+		...
+	</pre>
+	<li>增加一个用户名为“test”：</li>
+	<pre>
+		...
+		accounts.list = admin,test
+		...
+	</pre>
+	<em>注意：分割两个用户名的逗号必须是英文逗号</em>
+</ol>
+<p>至此，一个名为test的用户已经创建完毕。</p>
+<h4>设置用户密码</h4>
+<ol>
+	<li>在该文件中找到如下内容：</li>
+	<pre>
+		...
+		#[Set the password for every account]
+		#Example:
+		#pwd.user1 = 123456
+		#pwd.user2 = abcdef
+		#...
+		pwd.admin = 000000
+		...
+	</pre>
+	<li>为“test”用户设置登录密码为“123456”：</li>
+	<pre>
+		...
+		pwd.test = 123456
+		...
+	</pre>
+</ol>
+<p>现在，用户test可以使用密码123456进行登陆了。</p>
+<h4>设置用户操作权限</h4>
+<ol>
+	<li>在该文件中找到如下内容：</li>
+	<pre>
+		#[Set the permission for accounts]
+		#c = Create the new folder
+		#u = Upload files
+		#d = Delete files or folders
+		#r = Rename files or folders
+		#l = downLoad files
+		#Defult setting:l
+		#Example:
+		#auth.admin = cudr
+		#auth.user1 = u
+		#...
+		auth.admin = cudr
+		#overall -- this value set the permission for all user (include visitor who not login)
+		#Example:
+		#authOverall = none
+		authOverall = l
+	</pre>
+	<li>设置test用户除了可以下载文件之外，还可以上传文件（但他无法创建文件夹，无法进行删除操作，也无法对已有文件进行重命名）：</li>
+	<pre>
+		...
+		auth.admin = cudr
+		auth.test = u （增加这一行）
+		...
+	</pre>
+</ol>
+<p>最终，我们新创建的用户test就可以在登陆后进行上传操作了<em>（authOverall一项设置的是匿名用户和全部用户共有的基本权限，例如默认设置为l的意思是所有用户和匿名用户均可执行下载操作）</em>。</p>
+<p>注：各个字母代表的权限如下：</p>
+<ul>
+	<li>c 创建文件夹</li>
+	<li>u 上传文件</li>
+	<li>d 删除文件或整个文件夹</li>
+	<li>r 对已经存在的文件或文件夹进行重命名</li>
+	<li>l 下载文件</li>
+</ul>
+<h4>修改下载缓冲区大小</h4>
+<p>所谓下载缓冲区：它的设置决定了服务器为每位执行下载的用户开辟多大的内存作为其下载数据的缓冲区。默认情况下您无需修改这个值，除非您的内存过小或者您需要同时服务规模庞大的用户。</p>
+<ol>
+	<li>还是在配置文件“ configure.properties ”中，找到以下内容：</li>
+	<pre>
+		...
+		#[Set the size of the buffer memory for file download by byte]
+		#This value depending on your network speed and your memory size
+		#Example:
+		#buff.size=1048576
+		#Default value:1048576
+		#Bigger buffer size will use bigger memory and provide users faster download speed(No faster than network speed)
+		buff.size=1048576
+		...
+	</pre>
+	<li>将每位用户的下载缓冲区改为512KB：</li>
+	<pre>
+		...
+		buff.size = 524288
+		...
+	</pre>
+</ol>
+<P>该值越大，对内存的需求量就越高，同时硬盘的读取次数就越低，您应该根据您的硬盘性能、内存大小和网络速度三者进行综合考虑，并设置该值。如果您对此不了解，请勿修改默认值。</P>
+<h4>设置日志记录方式</h4>
+<p>本日志分为两种类型，分别为“异常”和“事件”。其中，“异常”记录的是服务器运行中产生的意外错误，“事件”记录的是用户的操作历史。</p>
+<ol>
+	<li>在配置文件中找到如下内容：</li>
+	<pre>
+		...
+		#[Set the logging level]
+		#This setting determines what info need to log.
+		#R = Runtime exception only.
+		#E = important Events include runtime exception,operation of delete download rename and upload(create).
+		#N = No activity will be logged.
+		#default setting(if program not found this setting):R.
+		#Example:
+		#log=E
+		log=E
+		...
+	</pre>
+	<li>将日志记录方式改为不记录任何信息：</li>
+	<pre>
+		...
+		log=N
+		...
+	</pre>
+</ol>
+<p>我们推荐使用默认的日志记录方式，它会记录所有异常信息和用户的操作过程，您可以通过这些记录更好地进行管理。</p>
+<hr />
+
+<em>@kohgylw 青阳龙野</em>
