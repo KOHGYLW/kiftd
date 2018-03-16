@@ -31,7 +31,8 @@ _注：kift的解压即用版就叫做kiftd_
 
 * 马上下载本网盘服务器？请点击右上方绿色按钮“Clone or Download”，之后选择“Download ZIP”进行下载。
 * 率先预览？请访问主页：https://github.com/KOHGYLW/kiftd/wiki 浏览如何一分钟快速开始。
-* 深入了解？请先将本应用下载下来，并阅读其中的《说明文档》。
+* 在线阅读说明文档？请直接点击上方文件列表中的《说明文档》来在线预览本应用的完全体说明说。
+* 立刻获取开源代码？请访问本应用代码托管地址：https://github.com/KOHGYLW/KohgylwIFT _本应用实质上是一个由Maven构建的java web项目，您需要将其部署到Tomcat上运行。_
 * 使用中遇到问题？请将您的发现提交到 https://github.com/KOHGYLW/kiftd/issues 
 * 需要联系作者？请发件至 kohgylw@163.com 
 
