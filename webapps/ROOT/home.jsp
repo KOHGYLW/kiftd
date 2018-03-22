@@ -13,7 +13,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>KIFT</title>
 <link rel="stylesheet" href="css/bootstrap.min.css">
-<link rel="stylesheet" href="css/overrall.min.css">
+<link rel="stylesheet" href="css/overrall.css">
 <link rel="icon" type="image/x-icon" href="css/icon.png" />
 </head>
 
@@ -45,15 +45,15 @@
 				<p class="subtitle">
 					OS：<span id="serverOS"><span class="graytext">加载中...</span></span>
 				</p>
-				<div class="panel panel-default">
+				<div id="filetable" class="panel panel-default">
 					<!-- Default panel contents -->
 					<div class="panel-heading">
 						<p class="heading" id="parentlistbox"></p>
 					</div>
-					<table class="table">
+					<table class="table table-hover">
 						<thead>
 							<tr>
-								<th>文件名</th>
+								<th onclick="checkallfile()">文件名</th>
 								<th>创建日期</th>
 								<th>大小</th>
 								<th>创建者</th>
@@ -235,9 +235,9 @@
 	</div>
 	<%-- end 修改文件夹模态框 --%>
 	<%-- 上传文件模态框 --%>
-	<div class="modal fade bs-example-modal-sm" id="uploadFileModal"
-		tabindex="-1" role="dialog" aria-labelledby="uploadFileMolderTitle">
-		<div class="modal-dialog modal-sm" role="document">
+	<div class="modal fade" id="uploadFileModal" tabindex="-1"
+		role="dialog" aria-labelledby="uploadFileMolderTitle">
+		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"
@@ -249,24 +249,33 @@
 					</h4>
 				</div>
 				<div class="modal-body">
-					<h5>选择文件：</h5>
+					<h5>选择文件：<span id="selectcount"></span></h5>
 					<input type="text" id="filepath" class="form-control"
 						onclick="checkpath()" onfocus="this.blur()"
 						placeholder="请点击选择要上传的文件……"> <input type="file"
-						id="uploadfile" style="display: none;" onchange="showfilepath()">
-					<br />
-					<h5>上传进度：</h5>
+						id="uploadfile" style="display: none;" onchange="showfilepath()"
+						multiple="multiple"> <br />
+					<h5>
+						上传进度：<span id="filecount"></span>
+					</h5>
 					<div class="progress">
 						<div id="pros" class="progress-bar" role="progressbar"
 							aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
 							style="width: 0%;">
-							<span class="sr-only">0% Complete</span>
+							<span class="sr-only"></span>
+						</div>
+					</div>
+					<h5>上传状态：</h5>
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div id="uploadstatus" class="uploadstatusbox"></div>
 						</div>
 					</div>
 					<div id="uploadFileAlert" role="alert"></div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" onclick='abortUpload()'>取消</button>
+					<button type="button" class="btn btn-default"
+						onclick='abortUpload()'>取消</button>
 					<button id="umbutton" type='button' class='btn btn-primary'
 						onclick='checkUploadFile()'>开始上传</button>
 				</div>
@@ -362,5 +371,5 @@
 </body>
 <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/home.min.js"></script>
+<script type="text/javascript" src="js/home.js"></script>
 </html>

@@ -17,6 +17,17 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	<!-- end VC -->
+	
+	<!-- 用户身份检查 -->
+	<filter>
+		<filter-name>MastLoginFilter</filter-name>
+		<filter-class>kohgylw.filter.MastLoginFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>MastLoginFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- end 用户身份检查 -->
 
 	<!-- spring MVC 配置 -->
 
