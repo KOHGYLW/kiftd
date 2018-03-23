@@ -13,7 +13,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>KIFT</title>
 <link rel="stylesheet" href="css/bootstrap.min.css">
-<link rel="stylesheet" href="css/overrall.css">
+<link rel="stylesheet" href="css/overrall.min.css">
 <link rel="icon" type="image/x-icon" href="css/icon.png" />
 </head>
 
@@ -371,5 +371,5 @@
 </body>
 <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/home.js"></script>
+<script type="text/javascript" src="js/home.min.js"></script>
 </html>
