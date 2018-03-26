@@ -1,7 +1,8 @@
 # kiftd——青阳网络文件系统 #
 ## 一款小型、便捷、开源的个人网盘系统。 ##
 
-_外网访问太慢？可以转至国内托管地址进行下载： https://gitee.com/kohgylw/kiftd 需要从github上浏览项目？可以访问github上的项目主页： https://github.com/KOHGYLW/kiftd_
+* 外网访问太慢？可以转至国内托管地址进行下载： https://gitee.com/kohgylw/kiftd 
+* 需要从github上浏览项目？可以访问github上的项目主页： https://github.com/KOHGYLW/kiftd
 
 ### 什么是kift?
 * 您还在使用U盘分享软件么？
@@ -41,10 +42,10 @@ _这是kift完全具备完整功能的第一个版本，推荐所有用户更新
 ### 只需抽出3分钟时间，您就可以在您自己的电脑上搭建出一个专业快捷的网盘服务器了。
 
 * 马上下载本网盘服务器？请点击右上方绿色按钮“Clone or Download”，之后选择“Download ZIP”进行下载,也可以前往国内托管的下载地址： https://gitee.com/kohgylw/kiftd （码云）
-* 率先预览？请访问主页：https://github.com/KOHGYLW/kiftd/wiki 浏览如何一分钟快速开始。
+* 率先预览？请访问主页：https://github.com/KOHGYLW/kiftd/wiki 浏览如何一分钟快速开始（Github）。
 * 在线阅读《说明文档》？请直接点击上方文件列表中的《说明文档》来在线预览，它是本应用的完全体说明说，您可以通过它来了解关于本应用的全部内容。
-* 立刻获取开源代码？请访问本应用代码托管地址：https://github.com/KOHGYLW/KohgylwIFT 
-* 使用中遇到问题？请将您的发现提交到 https://github.com/KOHGYLW/kiftd/issues 
+* 立刻获取开源代码？请访问本应用代码托管地址：https://github.com/KOHGYLW/KohgylwIFT （Github）
+* 使用中遇到问题？请将您的发现提交到 https://github.com/KOHGYLW/kiftd/issues (Github)
 * 需要联系作者？请发件至 kohgylw@163.com 
 
 @kohgylw 青阳龙野
