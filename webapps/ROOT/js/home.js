@@ -938,47 +938,79 @@ function checkallfile() {
 	}
 }
 
+// 显示打包下载模态框
 function showDownloadAllCheckedModel() {
-	$("#downloadFileBox").html("");
+	$("#downloadAllCheckedBox").html("");
+	$("#downloadAllCheckedLoad").text("");
 	var checkedfiles = $(".info").get();
 	if (checkedfiles.length == 0) {
-		$("#downloadFileName")
+		$("#downloadAllCheckedName")
 				.text(
 						"提示：您还未选择任何文件，请先选中一些文件后再执行本操作（您可以通过点击某一文件行来选中/取消选中文件，也可以通过点击列表上的“文件名”一栏来选中/取消选中所有文件）");
 	} else {
-		$("#downloadFileName").text(
+		$("#downloadAllCheckedName").text(
 				"提示：您确认要打包并下载这" + checkedfiles.length + "项么？");
-		$("#downloadFileBox")
+		$("#downloadAllCheckedBox")
 				.html(
-						"<button id='dlmbutton' type='button' class='btn btn-primary' onclick='downloadAllChecked()'>开始下载</button>");
-		$("#dlmbutton").attr('disabled', false);
+						"<button id='dclmbutton' type='button' class='btn btn-primary' onclick='downloadAllChecked()'>开始下载</button>");
+		$("#dclmbutton").attr('disabled', false);
 	}
-	$("#downloadModal").modal('toggle');
+	$("#downloadAllCheckedModal").modal('toggle');
 }
 
 // 下载选中的所有文件
 function downloadAllChecked() {
+	$("#dclmbutton").attr('disabled', true);
 	var checkedfiles = $(".info").get();
 	var downloadIdArray = new Array();
 	for (var i = 0; i < checkedfiles.length; i++) {
 		downloadIdArray[i] = checkedfiles[i].id;
 	}
 	var strIdList = JSON.stringify(downloadIdArray);
-	$("#dlmbutton").attr('disabled', true);
-	$("#downloadFileName").text(
-			"提示：准备开始下载（共" + checkedfiles.length + "项），请稍候...");
-	var t = setTimeout("$('#downloadModal').modal('hide');", 1000);
-	// POST提交全部下载请求
-	var temp = document.createElement("form");
-	temp.action = 'homeController/downloadCheckedFiles.do';
-	temp.method = "post";
-	temp.style.display = "none";
-	var sl = document.createElement("input");
-	sl.name = 'strIdList';
-	sl.value = strIdList;
-	temp.appendChild(sl);
-	document.body.appendChild(temp);
-	temp.submit();
+	$("#downloadAllCheckedName").text(
+			"提示：正在进行压缩（共" + checkedfiles.length + "项），这可能需要一些时间（文件越大时间越长）。压缩完成后自动开始下载");
+	var count = 0;
+	var c = new Array(".", "..", "...","");
+	setInterval(function() {
+		if(count > c.length) {
+			count = 0;
+		}
+		$("#downloadAllCheckedLoad").text(c[count]);
+		count++;
+	}, 500);
+	$.ajax({
+		type : "POST",
+		url : "homeController/downloadCheckedFiles.ajax",
+		data : {
+			strIdList : strIdList
+		},
+		dataType : "text",
+		success : function(result) {
+			if (result == "ERROR") {
+				$("#downloadAllCheckedName")
+						.text("提示：压缩过程出错。无法完成压缩，请重试或告知管理员。");
+			} else {
+				$("#downloadAllCheckedLoad").text("");
+				$("#downloadAllCheckedName").text("提示：压缩完成！准备开始下载...");
+				var t = setTimeout(
+						"$('#downloadAllCheckedModal').modal('hide');", 800);
+				// POST提交全部下载请求
+				var temp = document.createElement("form");
+				temp.action = 'homeController/downloadCheckedFilesZip.do';
+				temp.method = "post";
+				temp.style.display = "none";
+				var sl = document.createElement("input");
+				sl.name = 'zipId';
+				sl.value = result;
+				temp.appendChild(sl);
+				document.body.appendChild(temp);
+				temp.submit();
+			}
+		},
+		error : function() {
+			$("#downloadAllCheckedName").text("提示：请求失败。无法完成压缩，请重试或告知管理员。");
+		}
+	});
 }
 
 // 删除选中的所有文件

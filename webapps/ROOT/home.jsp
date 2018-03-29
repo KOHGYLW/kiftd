@@ -249,7 +249,9 @@
 					</h4>
 				</div>
 				<div class="modal-body">
-					<h5>选择文件：<span id="selectcount"></span></h5>
+					<h5>
+						选择文件：<span id="selectcount"></span>
+					</h5>
 					<input type="text" id="filepath" class="form-control"
 						onclick="checkpath()" onfocus="this.blur()"
 						placeholder="请点击选择要上传的文件……"> <input type="file"
@@ -368,8 +370,33 @@
 		</div>
 	</div>
 	<%-- end 修改文件夹模态框 --%>
+	<%-- 打包下载模态框 --%>
+	<div class="modal fade bs-example-modal-sm" id="downloadAllCheckedModal"
+		tabindex="-1" role="dialog" aria-labelledby="downloadAllCheckedModalTitle">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="downloadAllCheckedModalTitle">
+						<span class="glyphicon glyphicon-cloud-download"></span> 打包下载
+					</h4>
+				</div>
+				<div class="modal-body">
+					<h5><span id="downloadAllCheckedName"></span><span id="downloadAllCheckedLoad" style="text-align: center;"></span></h5>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<span id="downloadAllCheckedBox"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<%-- end 打包下载模态框 --%>
 </body>
 <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/home.min.js"></script>
+<script type="text/javascript" src="js/home.js"></script>
 </html>
