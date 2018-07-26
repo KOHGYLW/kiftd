@@ -1,0 +1,454 @@
+<!doctype html>
+<!-- kiftd 主页面 by 青阳龙野 -->
+<html>
+<head>
+<base href="/">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KIFT</title>
+<!-- Bootstrap基本框架 -->
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<!-- 全局样式 -->
+<link rel="stylesheet" href="css/overrall.min.css">
+<!-- 图片查看器插件 -->
+<link rel="stylesheet" href="css/viewer.min.css">
+<!-- 音乐播放器插件 -->
+<link rel="stylesheet" href="css/APlayer.min.css">
+<!-- 页面图标 -->
+<link rel="icon" type="image/x-icon" href="css/icon.png" />
+<!-- 尴尬的支持老古董浏览器专用设置（我最终还是决定加上了，因为确实不能保证每个人都有一个chrome） -->
+<!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+      <script src="js/respond.min.js"></script>
+<![endif]-->
+</head>
+
+<body>
+	<!-- 显示主体 -->
+	<div class="container">
+		<!-- 页面标题 -->
+		<div class="row">
+			<div class="col-md-12">
+				<div class="titlebox">
+					<span class="titletext"><em> 青阳网络文件传输系统 <small><span
+								class="graytext">KIFT</span></small></em></span> <span id="tb" class="rightbtn"></span>
+					<button class="btn btn-link rightbtn" onclick="refreshFolderView()">
+						刷新 <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+					</button>
+				</div>
+				<hr />
+			</div>
+		</div>
+		<!-- 信息栏、操作栏与文件列表 -->
+		<div class="row">
+			<div class="col-md-12">
+				<p class="subtitle">
+					文件同步时间：<span id="publishTime"></span>
+				</p>
+				<p class="subtitle">
+					OS：<span id="serverOS"><span class="graytext">加载中...</span></span>
+				</p>
+				<div id="filetable" class="panel panel-default" unselectable="on"
+					onselectstart="return false;" style="-moz-user-select: none;">
+					<!-- Default panel contents -->
+					<div class="panel-heading">
+						<p class="heading" id="parentlistbox"></p>
+					</div>
+					<table class="table table-hover">
+						<thead>
+							<tr onclick="checkallfile()">
+								<th>文件名</th>
+								<th>创建日期</th>
+								<th>大小</th>
+								<th>创建者</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody id="foldertable"></tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end 显示主体 -->
+
+	<!-- 登录模态框 -->
+	<div class="modal fade bs-example-modal-sm" id="loginModal"
+		tabindex="-1" role="dialog" aria-labelledby="loginModelTitle">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="loginModelTitle">
+						<span class="glyphicon glyphicon-user"></span> 账户登录
+					</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal">
+						<div class="form-group" id="accountidbox">
+							<label for="accountid" id="accountidtitle"
+								class="col-sm-3 control-label">账户：</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="accountid"
+									placeholder="请输入账户……">
+							</div>
+						</div>
+						<div class="form-group" id="accountpwdbox">
+							<label for="accountpwd" id="accountpwdtitle"
+								class="col-sm-3 control-label">密码：</label>
+							<div class="col-sm-9">
+								<input type="password" class="form-control" id="accountpwd"
+									placeholder="请输入密码……">
+							</div>
+						</div>
+						<div id="alertbox" role="alert"></div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<button type="button" class="btn btn-primary" onclick="dologin()">登录</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end 登录 -->
+	<!-- 注销提示框 -->
+	<div class="modal fade bs-example-modal-sm" id="logoutModal"
+		tabindex="-1" role="dialog" aria-labelledby="logoutModelTitle">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="logoutModelTitle">
+						<span class="glyphicon glyphicon-comment"></span> 注销
+					</h4>
+				</div>
+				<div class="modal-body">
+					<h5>提示：您确认要注销么？</h5>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<button type="button" class="btn btn-danger" onclick="dologout()">注销</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end 注销 -->
+	<!-- 新建文件夹框 -->
+	<div class="modal fade bs-example-modal-sm" id="newFolderModal"
+		tabindex="-1" role="dialog" aria-labelledby="newFolderlMolderTitle">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="newFolderlMolderTitle">
+						<span class="glyphicon glyphicon-folder-open"></span> 新建文件夹
+					</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal">
+						<div class="form-group" id="foldernamebox">
+							<label for="folderid" id="foldernametitle"
+								class="col-sm-3 control-label">名称：</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="foldername"
+									placeholder="请输入新文件夹的名称……">
+							</div>
+						</div>
+						<div id="folderalert" role="alert"></div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<button type="button" class="btn btn-primary"
+						onclick="createfolder()">创建</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end 创建文件夹 -->
+	<!-- 删除文件夹提示框 -->
+	<div class="modal fade bs-example-modal-sm" id="deleteFolderModal"
+		tabindex="-1" role="dialog" aria-labelledby="deleteFolderModelTitle">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="deleteFolderModelTitle">
+						<span class="glyphicon glyphicon-comment"></span> 删除文件夹
+					</h4>
+				</div>
+				<div class="modal-body">
+					<h5 id="deleteFolderMessage"></h5>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<span id="deleteFolderBox"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end 删除文件夹 -->
+	<!-- 重命名文件夹框 -->
+	<div class="modal fade bs-example-modal-sm" id="renameFolderModal"
+		tabindex="-1" role="dialog" aria-labelledby="renameFolderMolderTitle">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="renameFolderMolderTitle">
+						<span class="glyphicon glyphicon-wrench"></span> 重命名文件夹
+					</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal">
+						<div class="form-group" id="folderrenamebox">
+							<label for="folderid" id="foldernametitle"
+								class="col-sm-3 control-label">名称：</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="newfoldername"
+									placeholder="请输入文件夹的名称……">
+							</div>
+						</div>
+						<div id="newfolderalert" role="alert"></div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<span id="renameFolderBox"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end 重命名文件夹 -->
+	<!-- 上传文件框 -->
+	<div class="modal fade" id="uploadFileModal" tabindex="-1"
+		role="dialog" aria-labelledby="uploadFileMolderTitle">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="uploadFileMolderTitle">
+						<span class="glyphicon glyphicon-cloud-upload"></span> 上传文件
+					</h4>
+				</div>
+				<div class="modal-body">
+					<h5>
+						选择文件：<span id="selectcount"></span>
+					</h5>
+					<input type="text" id="filepath" class="form-control"
+						onclick="checkpath()" onfocus="this.blur()"
+						placeholder="请点击选择要上传的文件……"> <input type="file"
+						id="uploadfile" style="display: none;" onchange="showfilepath()"
+						multiple="multiple"> <br />
+					<h5>
+						上传进度：<span id="filecount"></span>
+					</h5>
+					<div class="progress">
+						<div id="pros" class="progress-bar" role="progressbar"
+							aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+							style="width: 0%;">
+							<span class="sr-only"></span>
+						</div>
+					</div>
+					<h5>上传状态：</h5>
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div id="uploadstatus" class="uploadstatusbox"></div>
+						</div>
+					</div>
+					<div id="uploadFileAlert" role="alert"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default"
+						onclick='abortUpload()'>取消</button>
+					<button id="umbutton" type='button' class='btn btn-primary'
+						onclick='checkUploadFile()'>开始上传</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end 上传文件 -->
+	<!-- 下载提示框 -->
+	<div class="modal fade bs-example-modal-sm" id="downloadModal"
+		tabindex="-1" role="dialog" aria-labelledby="downloadModelTitle">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="downloadModelTitle">
+						<span class="glyphicon glyphicon-cloud-download"></span> 下载
+					</h4>
+				</div>
+				<div class="modal-body">
+					<h5 id="downloadFileName">提示：您确认要下载文件：[]么？</h5>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<span id="downloadFileBox"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end 下载 -->
+	<!-- 删除提示框 -->
+	<div class="modal fade bs-example-modal-sm" id="deleteFileModal"
+		tabindex="-1" role="dialog" aria-labelledby="deleteFileModelTitle">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="deleteFileModelTitle">
+						<span class="glyphicon glyphicon-comment"></span> 删除文件
+					</h4>
+				</div>
+				<div class="modal-body">
+					<h5 id="deleteFileMessage"></h5>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<span id="deleteFileBox"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end 删除提示框 -->
+	<!-- 重命名框 -->
+	<div class="modal fade bs-example-modal-sm" id="renameFileModal"
+		tabindex="-1" role="dialog" aria-labelledby="renameFileMolderTitle">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="renameFileMolderTitle">
+						<span class="glyphicon glyphicon-wrench"></span> 重命名文件
+					</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal">
+						<div class="form-group" id="filerenamebox">
+							<label for="folderid" id="filenametitle"
+								class="col-sm-3 control-label">名称：</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="newfilename"
+									placeholder="请输入文件的名称……">
+							</div>
+						</div>
+						<div id="newFileNamealert" role="alert"></div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<span id="renameFileBox"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end 重命名 -->
+	<!-- 打包下载提示框 -->
+	<div class="modal fade bs-example-modal-sm"
+		id="downloadAllCheckedModal" tabindex="-1" role="dialog"
+		aria-labelledby="downloadAllCheckedModalTitle">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="downloadAllCheckedModalTitle">
+						<span class="glyphicon glyphicon-cloud-download"></span> 打包下载
+					</h4>
+				</div>
+				<div class="modal-body">
+					<h5>
+						<span id="downloadAllCheckedName"></span><span
+							id="downloadAllCheckedLoad" style="text-align: center;"></span>
+					</h5>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<span id="downloadAllCheckedBox"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end 打包下载 -->
+	<!--音乐播放模态框-->
+	<div class="modal fade" id="audioPlayerModal" tabindex="-1"
+		role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div id="aplayer" class="aplayer"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default"
+						onclick="audio_vulome_down()">
+						<span class="glyphicon glyphicon-volume-down" aria-hidden="true"></span>
+					</button>
+					<button type="button" class="btn btn-default"
+						onclick="audio_vulome_up()">
+						<span class="glyphicon glyphicon-volume-up" aria-hidden="true"></span>
+					</button>
+					<button type="button" class="btn btn-default" onclick="audio_bw()">
+						<span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
+					</button>
+					<button type="button" class="btn btn-primary" id="playOrPause"
+						onclick="audio_playOrPause()">
+						<span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
+					</button>
+					<button type="button" class="btn btn-default" onclick="audio_fw()">
+						<span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
+					</button>
+					<button type="button" class="btn btn-default"
+						onclick="closeAudioPlayer()">
+						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end 音乐播放 -->
+</body>
+<!-- jquery基本框架 -->
+<script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+<!-- bootstrap基本框架 -->
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<!-- 加密插件 -->
+<script type="text/javascript" src="js/jsencrypt.min.js"></script>
+<!-- 图片查看器 -->
+<script type="text/javascript" src="js/viewer.min.js"></script>
+<!-- 音乐播放器 -->
+<script type="text/javascript" src="js/APlayer.min.js"></script>
+<!-- 页面操作定义 -->
+<script type="text/javascript" src="js/home.js"></script>
+</html>

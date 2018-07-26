@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kohgylw.kiftd.server.mapper.FolderMapper">
+  <resultMap id="BaseResultMap" type="kohgylw.kiftd.server.model.Folder">
+    <result column="folder_id" jdbcType="VARCHAR" property="folderId" />
+    <result column="folder_name" jdbcType="VARCHAR" property="folderName" />
+    <result column="folder_creation_date" jdbcType="VARCHAR" property="folderCreationDate" />
+    <result column="folder_creator" jdbcType="VARCHAR" property="folderCreator" />
+    <result column="folder_parent" jdbcType="VARCHAR" property="folderParent" />
+  </resultMap>
+  
+  <select id="queryById" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	SELECT * FROM FOLDER WHERE folder_id = #{fid,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="queryByParentId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	SELECT * FROM FOLDER WHERE folder_parent = #{pid,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="queryByParentIdAndFolderName" parameterType="java.util.Map" resultMap="BaseResultMap">
+  	SELECT * FROM FOLDER WHERE folder_parent = #{parentId,jdbcType=VARCHAR} AND folder_name = #{folderName,jdbcType=VARCHAR}
+  </select>
+  
+  <insert id="insertNewFolder" parameterType="kohgylw.kiftd.server.model.Folder">
+  	INSERT INTO FOLDER VALUES(#{folderId,jdbcType=VARCHAR},#{folderName,jdbcType=VARCHAR},#{folderCreationDate,jdbcType=VARCHAR},#{folderCreator,jdbcType=VARCHAR},#{folderParent,jdbcType=VARCHAR});
+  </insert>
+  
+  <delete id="deleteById" parameterType="java.lang.String">
+  	DELETE FROM FOLDER WHERE folder_id=#{folderId,jdbcType=VARCHAR}
+  </delete>
+  
+  <update id="updateFolderNameById" parameterType="java.util.Map">
+  	UPDATE FOLDER SET folder_name = #{newName,jdbcType=VARCHAR} WHERE folder_id = #{folderId,jdbcType=VARCHAR}
+  </update>
+  
+</mapper>

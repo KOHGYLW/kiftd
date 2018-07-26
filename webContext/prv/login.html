@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+<base href="/">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KIFT</title>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/overrall.min.css">
+<link rel="icon" type="image/x-icon" href="css/icon.png" />
+<!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+      <script src="js/respond.min.js"></script>
+<![endif]-->
+</head>
+
+<body>
+	<div class="container">
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="titlebox">
+					<span class="titletext"><em> 青阳网络文件传输系统 <small><span
+								class="graytext">KIFT</span></small></em></span>
+				</div>
+				<hr />
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-4 col-md-offset-4">
+				<p class="centerText" style="font-size: 30px; color: #4D4D4D">
+					<strong>欢迎使用青阳网络文件传输系统</strong><em>KIFT</em>
+				</p>
+				<p class="centerText" style="font-size: 18px; color: #9C9C9C">
+					<span class="glyphicon glyphicon-user"></span> 您需要登录以进入系统
+				</p>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">请登录</h3>
+					</div>
+					<div class="panel-body">
+						<form class="form-horizontal">
+							<div class="form-group" id="accountidbox">
+								<label for="accountid" id="accountidtitle"
+									class="col-sm-3 control-label">账户：</label>
+								<div class="col-sm-9">
+									<input type="text" class="form-control" id="accountid"
+										placeholder="请输入账户……">
+								</div>
+							</div>
+							<div class="form-group" id="accountpwdbox">
+								<label for="accountpwd" id="accountpwdtitle"
+									class="col-sm-3 control-label">密码：</label>
+								<div class="col-sm-9">
+									<input type="password" class="form-control" id="accountpwd"
+										placeholder="请输入密码……">
+								</div>
+							</div>
+							<br />
+							<div id="alertbox" role="alert"></div>
+							<input class="form-control btn-success" type="button" value="登录"
+								onclick="dologin()"> <br />
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</body>
+<script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/jsencrypt.min.js"></script>
+<script type="text/javascript" src="js/login.js"></script>
+</html>

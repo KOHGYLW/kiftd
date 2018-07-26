@@ -1,0 +1,55 @@
+@charset "UTF-8";
+
+.titlebox {
+	height: 30px;
+	line-height: 30px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+	position: relative;
+	bottom: -7px;
+}
+
+.titletext {
+	color: #000000;
+	font-size: 22px;
+}
+
+.graytext {
+	color: #8b8b8b;
+}
+
+.subtitle {
+	color: #5cacee;
+	text-align: center;
+}
+
+.rightbtn {
+	border-right: 10px;
+	float: right;
+	margin-left: 10px;
+}
+
+.heading {
+	height: 8px;
+}
+
+.centerText {
+	text-align: center;
+}
+
+.uploadstatusbox {
+	color: #9C9C9C;
+	font-size: 4px;
+	height: 48px;
+	overflow: auto;
+}
+
+html {
+	height: 100%;
+}
+
+body {
+	height: 100%;
+}
