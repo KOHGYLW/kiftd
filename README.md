@@ -1,11 +1,11 @@
 # kiftd——青阳网络文件系统 #
 ## 一款小型、便捷、开源的个人网盘系统。 ##
 
-![主界面展示](http://m.qpic.cn/psb?/V102epzF1ea2hN/YQM*9LdIGsq3FUma*dyMnBkJGLUKvtfqsHqEMHpLkNU!/b/dDABAAAAAAAA&bo=pAg4BAAAAAADJ5I!&rf=viewer_4&t=5)
-
 ### 快速导航
 * 外网访问太慢？可以转至国内托管地址进行下载： https://gitee.com/kohgylw/kiftd 
 * 需要从github上浏览项目？可以访问github上的项目主页： https://github.com/KOHGYLW/kiftd
+
+![主界面展示](http://m.qpic.cn/psb?/V102epzF1ea2hN/YQM*9LdIGsq3FUma*dyMnBkJGLUKvtfqsHqEMHpLkNU!/b/dDABAAAAAAAA&bo=pAg4BAAAAAADJ5I!&rf=viewer_4&t=5)
 
 ### 什么是kift?
 * 您还在使用U盘分享软件么？
@@ -31,7 +31,7 @@ _注：kift的解压即用版就叫做kiftd_
 * 马上下载本网盘服务器？请点击右上方绿色按钮“Clone or Download”，之后选择“Download ZIP”进行下载,也可以前往国内托管的下载地址： https://gitee.com/kohgylw/kiftd （码云）
 * 在线阅读《说明文档》？请直接点击上方文件列表中的《说明文档》来在线预览，它是本应用的完全体说明说，您可以通过它来了解关于本应用的全部内容。
 * 立刻获取开源代码？请访问本应用代码托管地址：https://github.com/KOHGYLW/KohgylwIFT （Github）
-（_注：该资源还是v1.0.1老版本的源代码。之所以没有v1.0.2的源代码不是因为作者不想公开，而是因为在作者喝了点酒之后打算将新版本上传至github，于是修改了eclipse的本地库位置，但是上传失败了，于是作者觉得这个本地库也不需要保留了，就随手删了还清空了垃圾桶。然后当他再去找源代码时，发现eclipse竟然是把源代码和资源库存在一个位置的...而且之前还没有备份。_）
+（_注：该资源是v1.0.1的源代码。v1.0.2版本的源代码将在近期整理好之后发布_）
 * 使用中遇到问题？请将您的发现提交到 https://github.com/KOHGYLW/kiftd/issues (Github)
 * 需要联系作者？请发件至 kohgylw@163.com 
 
