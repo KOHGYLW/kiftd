@@ -1,9 +1,7 @@
 # kiftd——青阳网络文件系统 #
 ## 一款小型、便捷、开源的个人网盘系统。 ##
 
-_kiftd: An mini、easy and open sourc cloud driver._
-
--------------
+![主界面展示](http://m.qpic.cn/psb?/V102epzF1ea2hN/YQM*9LdIGsq3FUma*dyMnBkJGLUKvtfqsHqEMHpLkNU!/b/dDABAAAAAAAA&bo=pAg4BAAAAAADJ5I!&rf=viewer_4&t=5)
 
 ### 快速导航
 * 外网访问太慢？可以转至国内托管地址进行下载： https://gitee.com/kohgylw/kiftd 
@@ -28,6 +26,30 @@ _kiftd: An mini、easy and open sourc cloud driver._
 _注：kift的解压即用版就叫做kiftd_
 
 -------------------
+### 只需抽出3分钟时间，您就可以在您自己的电脑上搭建出一个专业快捷的网盘服务器了。
+
+* 马上下载本网盘服务器？请点击右上方绿色按钮“Clone or Download”，之后选择“Download ZIP”进行下载,也可以前往国内托管的下载地址： https://gitee.com/kohgylw/kiftd （码云）
+* 在线阅读《说明文档》？请直接点击上方文件列表中的《说明文档》来在线预览，它是本应用的完全体说明说，您可以通过它来了解关于本应用的全部内容。
+* 立刻获取开源代码？请访问本应用代码托管地址：https://github.com/KOHGYLW/KohgylwIFT （Github）
+（_注：该资源还是v1.0.1老版本的源代码。之所以没有v1.0.2的源代码不是因为作者不想公开，而是因为在作者喝了点酒之后打算将新版本上传至github，于是修改了eclipse的本地库位置，但是上传失败了，于是作者觉得这个本地库也不需要保留了，就随手删了还清空了垃圾桶。然后当他再去找源代码时，发现eclipse竟然是把源代码和资源库存在一个位置的...而且之前还没有备份。_）
+* 使用中遇到问题？请将您的发现提交到 https://github.com/KOHGYLW/kiftd/issues (Github)
+* 需要联系作者？请发件至 kohgylw@163.com 
+
+-------------------
+
+### 功能速览v1.0.2
+>注：所示资源均来源于网络，版权归其作者所有。如有侵权请联系kohgylw@163.com，会在第一时间更换演示内容。
+
++ 视频播放
+![Vadio](http://m.qpic.cn/psb?/V102epzF1ea2hN/602PtSWxOYx*RglE*LqYtKfcnaneZy98cYUKBg9sk5I!/b/dDEBAAAAAAAA&bo=oQg4BAAAAAADN4c!&rf=viewer_4&t=5)
++ 音乐播放
+![Audio](http://m.qpic.cn/psb?/V102epzF1ea2hN/l98HGCikn.RzCU80faplH7hKvsgQEYsYRFzpAN5STHA!/b/dFoAAAAAAAAA&bo=pwg4BAAAAAADN4E!&rf=viewer_4&t=5)
++ 图片查看
+![Picture](http://m.qpic.cn/psb?/V102epzF1ea2hN/avVkAHi6Foxk6WDaDpOYM2lpB3RLJhW.sspHbsgN8*c!/b/dGEBAAAAAAAA&bo=ogg4BAAAAAADhzQ!&rf=viewer_4&t=5)
++ PDF预览
+![PDF](http://m.qpic.cn/psb?/V102epzF1ea2hN/VQ07hYkhZ96HbBILL14OU.EsOyIM2rImW6hBA4bQpg8!/b/dDMBAAAAAAAA&bo=ngg4BAAAAAADN7g!&rf=viewer_4&t=5)
++ 此外还有：打包下载、批量上传、用户权限管理...能够基本满足您的网络文件传输需求。
+
 最新讯息：
 ### 新版本v1.0.2
 新的kiftd v 1.0.2使用 Spring Boot 框架进行了重构，并全面升级了其功能，该版本建议所有用户升级体验。
@@ -50,14 +72,5 @@ _注：kift的解压即用版就叫做kiftd_
 * 功能专业，不要被它看似“简单”的页面给蒙蔽了。kift在页面响应速度如丝般顺滑的基础上，具备着视频播放、PDF预览、图片查看等主流公共网盘所具有的功能。光是这一点，就已经很有吸引力了。
 * 开源免费，爱护用户硬件设施从开源开始。此外它不会产生任何遗留，能够做到轻轻地走就如轻轻地来，卸载仅需删除文件夹，且不会和你卖萌。
 * 快捷方便，kiftd的目标是让最小白的用户也能随时使用它，令传输文件毫无障碍。
--------------------
-### 只需抽出3分钟时间，您就可以在您自己的电脑上搭建出一个专业快捷的网盘服务器了。
-
-* 马上下载本网盘服务器？请点击右上方绿色按钮“Clone or Download”，之后选择“Download ZIP”进行下载,也可以前往国内托管的下载地址： https://gitee.com/kohgylw/kiftd （码云）
-* 在线阅读《说明文档》？请直接点击上方文件列表中的《说明文档》来在线预览，它是本应用的完全体说明说，您可以通过它来了解关于本应用的全部内容。
-* 立刻获取开源代码？请访问本应用代码托管地址：https://github.com/KOHGYLW/KohgylwIFT （Github）
-（_注：该资源还是v1.0.1老版本的源代码。之所以没有v1.0.2的源代码不是因为作者不想公开，而是因为在作者喝了点酒之后打算将新版本上传至github，于是修改了eclipse的本地库位置，但是上传失败了，于是作者觉得这个本地库也不需要保留了，就随手删了还清空了垃圾桶。然后当他再去找源代码时，发现eclipse竟然是把源代码和资源库存在一个位置的...而且之前还没有备份。_）
-* 使用中遇到问题？请将您的发现提交到 https://github.com/KOHGYLW/kiftd/issues (Github)
-* 需要联系作者？请发件至 kohgylw@163.com 
 
 @kohgylw 青阳龙野
