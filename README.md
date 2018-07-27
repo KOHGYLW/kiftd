@@ -25,24 +25,30 @@
 _注：kift的解压即用版就叫做kiftd_
 
 -------------------
+
+## Download and install
+
 ### 只需抽出3分钟时间，您就可以在您自己的电脑上搭建出一个专业快捷的网盘服务器了。
 
 * 马上下载本网盘服务器？请点击右上方绿色按钮“Clone or Download”，之后选择“Download ZIP”进行下载,也可以前往国内托管的下载地址： https://gitee.com/kohgylw/kiftd （码云）
-* 在线阅读《说明文档》？请直接点击上方文件列表中的《说明文档》来在线预览，它是本应用的完全体说明说，您可以通过它来了解关于本应用的全部内容。
+* 在线阅读《说明文档》？请直接点击上方文件列表中的《kiftd说明文档》来在线预览，它是本应用的完全体说明说，您可以通过它来了解关于本应用的全部内容（该操作仅GitHub有效）。
 * 立刻获取开源代码？请访问本应用代码托管地址：https://github.com/KOHGYLW/KohgylwIFT （Github）
 （_注：该资源是v1.0.1的源代码。v1.0.2版本的源代码将在近期整理好之后发布_）
 * 使用中遇到问题？请将您的发现提交到 https://github.com/KOHGYLW/kiftd/issues (Github)
-* 需要联系作者？请发件至 kohgylw@163.com 
+* 需要联系作者？请立即发件至 kohgylw@163.com ，描述您所遇到的任何问题
 
 -------------------
+## Learn more?
+
 马上知道kift的优势：
 * 安装快速，只需3分钟即可将网盘服务器安装完毕，解压就好，不能更快速了。
-* 跨越平台，无论是Windows还是Linux又或是Mac，都能随时开启这个网盘服务器。
-* 功能专业，不要被它看似“简单”的页面给蒙蔽了。kift在页面响应速度如丝般顺滑的基础上，具备着视频播放、PDF预览、图片查看等主流公共网盘所具有的功能。光是这一点，就已经很有吸引力了。
-* 开源免费，爱护用户硬件设施从开源开始。此外它不会产生任何遗留，能够做到轻轻地走就如轻轻地来，卸载仅需删除文件夹，且不会和你卖萌。
-* 快捷方便，kiftd的目标是让最小白的用户也能随时使用它，令传输文件毫无障碍。
+* 跨越平台，无论是Windows、Linux又或是Mac OS X，您都可以随时开启这个网盘服务器并获得完全版一样的体验。
+* 功能丰富，简约的界面是为了更加高效，但这巨绝不代表它“不专业”。kift在页面响应速度如丝般顺滑的基础上，具备着视频在线播放、音乐在线播放、PDF预览、图片在线查看等主流公共网盘所具有的强大功能。光是这一点，它就已经值得您一试了。
+* 开源免费，这款功能丰富的网盘完全免费，无论您将其用在哪个领域。同时，爱护用户硬件设施从开源开始，你可以随时浏览kiftd的源代码。此外，它不会在使用过程中产生任何遗留，能够做到轻轻地走就如轻轻地来，仅需删除其文件夹即可从您的系统中完全清除它，不会和你卖萌。
+* 快捷方便，kiftd的目标就是让最小白的用户也能随时使用它，令传输文件毫无障碍。无论是办公室、家庭或是其他任何地方，您都无需关心它太多，开启即用。
 
 -------------------
+## News
 
 最新讯息：
 ### 新版本v1.0.2
@@ -59,22 +65,31 @@ _注：kift的解压即用版就叫做kiftd_
 + 增加了对IE8的支持（实验性）。这是一个很尴尬的功能：作者最终还是决定将其添加上，但不保证效果。他已经意识到让每个人都装一个chrome确实很难，且很多人连如何切换“极速模式”浏览都无从下手。
 + 一些性能上的和细节上的完善，使得kiftd更加可靠。
 
+--------------------
+## Quick View
+
 ### 功能速览v1.0.2
 >注：图中涉及资源均来源于网络，仅用于展示kiftd功能，版权归其作者所有。
 
-+ 主界面
++ 网盘主界面
+
 ![主界面展示](http://m.qpic.cn/psb?/V102epzF1ea2hN/YQM*9LdIGsq3FUma*dyMnBkJGLUKvtfqsHqEMHpLkNU!/b/dDABAAAAAAAA&bo=pAg4BAAAAAADJ5I!&rf=viewer_4&t=5)
-+ 视频播放
++ 强大的视频播放功能
+
 ![Vadio](http://m.qpic.cn/psb?/V102epzF1ea2hN/602PtSWxOYx*RglE*LqYtKfcnaneZy98cYUKBg9sk5I!/b/dDEBAAAAAAAA&bo=oQg4BAAAAAADN4c!&rf=viewer_4&t=5)
-+ 音乐播放
++ 专业的音乐播放功能
+
 ![Audio](http://m.qpic.cn/psb?/V102epzF1ea2hN/l98HGCikn.RzCU80faplH7hKvsgQEYsYRFzpAN5STHA!/b/dFoAAAAAAAAA&bo=pwg4BAAAAAADN4E!&rf=viewer_4&t=5)
-+ 图片查看
++ 便捷的图片查看功能
+
 ![Picture](http://m.qpic.cn/psb?/V102epzF1ea2hN/avVkAHi6Foxk6WDaDpOYM2lpB3RLJhW.sspHbsgN8*c!/b/dGEBAAAAAAAA&bo=ogg4BAAAAAADhzQ!&rf=viewer_4&t=5)
-+ PDF预览
++ 面向工作的PDF预览功能
+
 ![PDF](http://m.qpic.cn/psb?/V102epzF1ea2hN/VQ07hYkhZ96HbBILL14OU.EsOyIM2rImW6hBA4bQpg8!/b/dDMBAAAAAAAA&bo=ngg4BAAAAAADN7g!&rf=viewer_4&t=5)
 + 简单易用的服务器操作界面
+
 ![UI](http://m.qpic.cn/psb?/V102epzF1ea2hN/Xaexd9jnOpIyGujn9*f0eaDbxVTfWikLi7UHhTkIe5g!/b/dDABAAAAAAAA&bo=WAJMBAAAAAADFyA!&rf=viewer_4&t=5)
-+ 更多功能详见《kiftd说明文档》...
++ 想要了解更多功能？详见《kiftd说明文档》...
 
 -------------------
 
