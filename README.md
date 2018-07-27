@@ -5,8 +5,6 @@
 * 外网访问太慢？可以转至国内托管地址进行下载： https://gitee.com/kohgylw/kiftd 
 * 需要从github上浏览项目？可以访问github上的项目主页： https://github.com/KOHGYLW/kiftd
 
-![主界面展示](http://m.qpic.cn/psb?/V102epzF1ea2hN/YQM*9LdIGsq3FUma*dyMnBkJGLUKvtfqsHqEMHpLkNU!/b/dDABAAAAAAAA&bo=pAg4BAAAAAADJ5I!&rf=viewer_4&t=5)
-
 ### 什么是kift?
 * 您还在使用U盘分享软件么？
 > 很不幸，U盘易丢，同时又无法兼容各种平台的文件系统，在需要大规模分享时--通过U盘拷贝简直就像是接力赛一样原始又低效。
@@ -36,19 +34,14 @@ _注：kift的解压即用版就叫做kiftd_
 * 需要联系作者？请发件至 kohgylw@163.com 
 
 -------------------
+马上知道kift的优势：
+* 安装快速，只需3分钟即可将网盘服务器安装完毕，解压就好，不能更快速了。
+* 跨越平台，无论是Windows还是Linux又或是Mac，都能随时开启这个网盘服务器。
+* 功能专业，不要被它看似“简单”的页面给蒙蔽了。kift在页面响应速度如丝般顺滑的基础上，具备着视频播放、PDF预览、图片查看等主流公共网盘所具有的功能。光是这一点，就已经很有吸引力了。
+* 开源免费，爱护用户硬件设施从开源开始。此外它不会产生任何遗留，能够做到轻轻地走就如轻轻地来，卸载仅需删除文件夹，且不会和你卖萌。
+* 快捷方便，kiftd的目标是让最小白的用户也能随时使用它，令传输文件毫无障碍。
 
-### 功能速览v1.0.2
->注：所示资源均来源于网络，版权归其作者所有。如有侵权请联系kohgylw@163.com，会在第一时间更换演示内容。
-
-+ 视频播放
-![Vadio](http://m.qpic.cn/psb?/V102epzF1ea2hN/602PtSWxOYx*RglE*LqYtKfcnaneZy98cYUKBg9sk5I!/b/dDEBAAAAAAAA&bo=oQg4BAAAAAADN4c!&rf=viewer_4&t=5)
-+ 音乐播放
-![Audio](http://m.qpic.cn/psb?/V102epzF1ea2hN/l98HGCikn.RzCU80faplH7hKvsgQEYsYRFzpAN5STHA!/b/dFoAAAAAAAAA&bo=pwg4BAAAAAADN4E!&rf=viewer_4&t=5)
-+ 图片查看
-![Picture](http://m.qpic.cn/psb?/V102epzF1ea2hN/avVkAHi6Foxk6WDaDpOYM2lpB3RLJhW.sspHbsgN8*c!/b/dGEBAAAAAAAA&bo=ogg4BAAAAAADhzQ!&rf=viewer_4&t=5)
-+ PDF预览
-![PDF](http://m.qpic.cn/psb?/V102epzF1ea2hN/VQ07hYkhZ96HbBILL14OU.EsOyIM2rImW6hBA4bQpg8!/b/dDMBAAAAAAAA&bo=ngg4BAAAAAADN7g!&rf=viewer_4&t=5)
-+ 此外还有：打包下载、批量上传、用户权限管理...能够基本满足您的网络文件传输需求。
+-------------------
 
 最新讯息：
 ### 新版本v1.0.2
@@ -65,12 +58,21 @@ _注：kift的解压即用版就叫做kiftd_
 + 增加了对IE8的支持（实验性）。这是一个很尴尬的功能：作者最终还是决定将其添加上，但不保证效果。他已经意识到让每个人都装一个chrome确实很难，且很多人连如何切换“极速模式”浏览都无从下手。
 + 一些性能上的和细节上的完善，使得kiftd更加可靠。
 
--------------------
-马上知道kift的优势：
-* 安装快速，只需3分钟即可将网盘服务器安装完毕，解压就好，不能更快速了。
-* 跨越平台，无论是Windows还是Linux又或是Mac，都能随时开启这个网盘服务器。
-* 功能专业，不要被它看似“简单”的页面给蒙蔽了。kift在页面响应速度如丝般顺滑的基础上，具备着视频播放、PDF预览、图片查看等主流公共网盘所具有的功能。光是这一点，就已经很有吸引力了。
-* 开源免费，爱护用户硬件设施从开源开始。此外它不会产生任何遗留，能够做到轻轻地走就如轻轻地来，卸载仅需删除文件夹，且不会和你卖萌。
-* 快捷方便，kiftd的目标是让最小白的用户也能随时使用它，令传输文件毫无障碍。
+### 功能速览v1.0.2
+>注：图中涉及资源均来源于网络，仅用于展示kiftd功能，版权归其作者所有。
 
-@kohgylw 青阳龙野
++ 主界面
+![主界面展示](http://m.qpic.cn/psb?/V102epzF1ea2hN/YQM*9LdIGsq3FUma*dyMnBkJGLUKvtfqsHqEMHpLkNU!/b/dDABAAAAAAAA&bo=pAg4BAAAAAADJ5I!&rf=viewer_4&t=5)
++ 视频播放
+![Vadio](http://m.qpic.cn/psb?/V102epzF1ea2hN/602PtSWxOYx*RglE*LqYtKfcnaneZy98cYUKBg9sk5I!/b/dDEBAAAAAAAA&bo=oQg4BAAAAAADN4c!&rf=viewer_4&t=5)
++ 音乐播放
+![Audio](http://m.qpic.cn/psb?/V102epzF1ea2hN/l98HGCikn.RzCU80faplH7hKvsgQEYsYRFzpAN5STHA!/b/dFoAAAAAAAAA&bo=pwg4BAAAAAADN4E!&rf=viewer_4&t=5)
++ 图片查看
+![Picture](http://m.qpic.cn/psb?/V102epzF1ea2hN/avVkAHi6Foxk6WDaDpOYM2lpB3RLJhW.sspHbsgN8*c!/b/dGEBAAAAAAAA&bo=ogg4BAAAAAADhzQ!&rf=viewer_4&t=5)
++ PDF预览
+![PDF](http://m.qpic.cn/psb?/V102epzF1ea2hN/VQ07hYkhZ96HbBILL14OU.EsOyIM2rImW6hBA4bQpg8!/b/dDMBAAAAAAAA&bo=ngg4BAAAAAADN7g!&rf=viewer_4&t=5)
++ 此外还有：打包下载、批量上传、用户权限管理等。
+
+-------------------
+
+2018-07-27 kohgylw@青阳龙野 作者保留著作权
