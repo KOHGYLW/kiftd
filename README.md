@@ -4,23 +4,6 @@
 _kiftd: An mini、easy and open sourc cloud driver._
 
 -------------
-## 1分钟功能预览
-
-### 服务器界面
-![服务器主界面示例](http://m.qpic.cn/psb?/V102epzF1ea2hN/SSHhPbhBZoreBr8oZNgEN76KDxczE8aTkkQXdUWcKrg!/b/dC8BAAAAAAAA&bo=WAJMBAAAAAADFyA!&rf=viewer_4&t=5)
-
-### 文件列表
-![主页展示](http://m.qpic.cn/psb?/V102epzF1ea2hN/YQM*9LdIGsq3FUma*dyMnBkJGLUKvtfqsHqEMHpLkNU!/b/dDABAAAAAAAA&bo=pAg4BAAAAAADJ5I!&rf=viewer_4&t=5)
-
-### 图片查看
-![图片查看](http://m.qpic.cn/psb?/V102epzF1ea2hN/0NWuqL7W4gopSStithKGCWh*ssR6aHD0lS6ryiv3xwE!/b/dGEBAAAAAAAA&bo=ogg4BAAAAAADhzQ!&rf=viewer_4&t=5)
-
-### 音乐播放
-![音乐播放](http://m.qpic.cn/psb?/V102epzF1ea2hN/CdHbJt*oLD01K6IS8TeVPQcYdpAOEQXa6GNFzyCYm3w!/b/dC8BAAAAAAAA&bo=pwg4BAAAAAADN4E!&rf=viewer_4&t=5)
-
-...
-
--------------
 
 ### 快速导航
 * 外网访问太慢？可以转至国内托管地址进行下载： https://gitee.com/kohgylw/kiftd 
