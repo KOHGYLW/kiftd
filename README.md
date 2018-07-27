@@ -4,6 +4,7 @@
 ### 快速导航
 * 外网访问太慢？可以转至国内托管地址进行下载： https://gitee.com/kohgylw/kiftd 
 * 需要从github上浏览项目？可以访问github上的项目主页： https://github.com/KOHGYLW/kiftd
+* 图示预览：请见本页面最下方。
 
 ### 什么是kift?
 * 您还在使用U盘分享软件么？
@@ -71,8 +72,14 @@ _注：kift的解压即用版就叫做kiftd_
 ![Picture](http://m.qpic.cn/psb?/V102epzF1ea2hN/avVkAHi6Foxk6WDaDpOYM2lpB3RLJhW.sspHbsgN8*c!/b/dGEBAAAAAAAA&bo=ogg4BAAAAAADhzQ!&rf=viewer_4&t=5)
 + PDF预览
 ![PDF](http://m.qpic.cn/psb?/V102epzF1ea2hN/VQ07hYkhZ96HbBILL14OU.EsOyIM2rImW6hBA4bQpg8!/b/dDMBAAAAAAAA&bo=ngg4BAAAAAADN7g!&rf=viewer_4&t=5)
-+ 此外还有：打包下载、批量上传、用户权限管理等。
++ 简单易用的服务器操作界面
+![UI](http://m.qpic.cn/psb?/V102epzF1ea2hN/Xaexd9jnOpIyGujn9*f0eaDbxVTfWikLi7UHhTkIe5g!/b/dDABAAAAAAAA&bo=WAJMBAAAAAADFyA!&rf=viewer_4&t=5)
++ 更多功能详见《kiftd说明文档》...
 
 -------------------
+
+### 有意见建议或问题需要联系作者？欢迎随时至信：kohgylw@163.com，作者会恭候您的来信！
+
+_作者会每隔1-3周浏览一次邮箱，如未能及时回复请耐心等待。回复或许会迟到，但它不会缺席。_
 
 2018-07-27 kohgylw@青阳龙野 作者保留著作权
