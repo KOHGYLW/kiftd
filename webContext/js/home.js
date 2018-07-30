@@ -56,6 +56,7 @@ function getServerOS() {
 
 // 获取实时文件夹视图
 function showFolderView(fid) {
+	startLoading();
 	$.ajax({
 		type : 'POST',
 		dataType : 'text',
@@ -65,6 +66,7 @@ function showFolderView(fid) {
 		url : 'homeController/getFolderView.ajax',
 		success : function(result) {
 			if (result == "mustLogin") {
+				endLoading();
 				window.location.href = "login.html";
 			} else {
 				var folderView = eval("(" + result + ")");
@@ -74,6 +76,7 @@ function showFolderView(fid) {
 				showAccountView(folderView);
 				showPublishTime(folderView);
 				showFolderTable(folderView);
+				endLoading();
 			}
 		},
 		error : function() {
@@ -81,8 +84,19 @@ function showFolderView(fid) {
 			$("#publishTime").html("<span class='graytext'>获取失败，请尝试刷新</span>");
 			$("#parentlistbox")
 					.html("<span class='graytext'>获取失败，请尝试刷新</span>");
+			endLoading();
 		}
 	});
+}
+
+// 开始加载动画
+function startLoading(){
+	$('#loadingModal').modal('show');
+}
+
+// 结束加载动画
+function endLoading(){
+	$('#loadingModal').modal('hide');
 }
 
 // 登录操作
