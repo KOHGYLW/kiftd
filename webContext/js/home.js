@@ -31,7 +31,17 @@ $(function() {
 			window.clearInterval(zipTimer);
 		}
 	});
+	// 关闭登陆模态框自动清空输入数据
+	$('#loginModal').on('hidden.bs.modal', function(e) {
+		$("#accountid").val('');
+		$("#accountpwd").val('');
+	});
 });
+
+//全局请求失败提示
+function doAlert(){
+	alert("kiftd错误：无法连接到服务器，请检查网络连接或服务器运行状态。");
+}
 
 // 获取服务器操作系统
 function getServerOS() {
@@ -65,8 +75,8 @@ function showFolderView(fid) {
 		},
 		url : 'homeController/getFolderView.ajax',
 		success : function(result) {
+			endLoading();
 			if (result == "mustLogin") {
-				endLoading();
 				window.location.href = "login.html";
 			} else {
 				var folderView = eval("(" + result + ")");
@@ -76,27 +86,42 @@ function showFolderView(fid) {
 				showAccountView(folderView);
 				showPublishTime(folderView);
 				showFolderTable(folderView);
-				endLoading();
 			}
 		},
 		error : function() {
+			endLoading();
+			doAlert();
 			$("#tb").html("<span class='graytext'>获取失败，请尝试刷新</span>");
 			$("#publishTime").html("<span class='graytext'>获取失败，请尝试刷新</span>");
 			$("#parentlistbox")
 					.html("<span class='graytext'>获取失败，请尝试刷新</span>");
-			endLoading();
 		}
 	});
 }
 
-// 开始加载动画
+// 开始文件视图加载动画
 function startLoading(){
+	$('#loadingModal').modal({backdrop:'static', keyboard: false}); 
 	$('#loadingModal').modal('show');
 }
 
-// 结束加载动画
+// 结束文件视图加载动画
 function endLoading(){
 	$('#loadingModal').modal('hide');
+}
+
+//开始登陆加载动画
+function startLogin(){
+	$("#accountid").attr('disabled','disabled');
+	$("#accountpwd").attr('disabled','disabled');
+	$("#dologinButton").attr('disabled','disabled');
+}
+
+//结束登陆加载动画
+function finishLogin(){
+	$("#accountid").removeAttr('disabled','disabled');
+	$("#accountpwd").removeAttr('disabled','disabled');
+	$("#dologinButton").removeAttr('disabled','disabled');
 }
 
 // 登录操作
@@ -117,6 +142,7 @@ function dologin() {
 		$("#accountpwdbox").removeClass("has-error");
 	}
 	if (check == "y") {
+		startLogin();
 		// 加密认证-获取公钥并将请求加密发送给服务器，避免中途被窃取
 		$.ajax({
 			url : 'homeController/getPublicKey.ajax',
@@ -134,6 +160,7 @@ function dologin() {
 				sendLoginInfo(encrypted);
 			},
 			error : function() {
+				finishLogin();
 				$("#alertbox").addClass("alert");
 				$("#alertbox").addClass("alert-danger");
 				$("#alertbox").text("提示：登录请求失败，请检查网络或服务器运行状态");
@@ -152,6 +179,7 @@ function sendLoginInfo(encrypted) {
 			encrypted : encrypted
 		},
 		success : function(result) {
+			finishLogin();
 			$("#alertbox").removeClass("alert");
 			$("#alertbox").removeClass("alert-danger");
 			$("#alertbox").text("");
@@ -159,7 +187,8 @@ function sendLoginInfo(encrypted) {
 			case "permitlogin":
 				$("#accountidbox").removeClass("has-error");
 				$("#accountpwdbox").removeClass("has-error");
-				window.location.href = "home.html";
+				$('#loginModal').modal('hide');
+				showFolderView(locationpath);
 				break;
 			case "accountnotfound":
 				$("#accountidbox").addClass("has-error");
@@ -188,6 +217,7 @@ function sendLoginInfo(encrypted) {
 			}
 		},
 		error : function() {
+			finishLogin();
 			$("#alertbox").addClass("alert");
 			$("#alertbox").addClass("alert-danger");
 			$("#alertbox").text("提示：登录请求失败，请检查网络或服务器运行状态");
@@ -198,7 +228,20 @@ function sendLoginInfo(encrypted) {
 // 注销操作
 function dologout() {
 	$('#logoutModal').modal('hide');
-	window.location.href = "homeController/doLogout.do";
+	$.ajax({
+		url:'homeController/doLogout.ajax',
+		type:'POST',
+		data:{},
+		dataType:'text',
+		success:function(result){
+			if(result=="SUCCESS"){
+				showFolderView(locationpath);
+			}
+		},
+		error:function(){
+			doAlert();
+		}
+	});
 }
 
 // 显示当前文件夹的父级路径
