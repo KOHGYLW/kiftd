@@ -91,22 +91,22 @@ _注：kift为功能性内核的开发代号，其应用版本被称为kiftd_
 
 + 网盘主界面
 
-![主界面展示](http://m.qpic.cn/psb?/V102epzF1ea2hN/YQM*9LdIGsq3FUma*dyMnBkJGLUKvtfqsHqEMHpLkNU!/b/dDABAAAAAAAA&bo=pAg4BAAAAAADJ5I!&rf=viewer_4&t=5)
+![主界面展示](http://pic.caigoubao.cc/605641/kiftd-homepage2.png)
 + 强大的视频播放功能
 
-![Vadio](http://m.qpic.cn/psb?/V102epzF1ea2hN/602PtSWxOYx*RglE*LqYtKfcnaneZy98cYUKBg9sk5I!/b/dDEBAAAAAAAA&bo=oQg4BAAAAAADN4c!&rf=viewer_4&t=5)
+![Vadio](http://pic.caigoubao.cc/605641/vadio.png)
 + 专业的音乐播放功能
 
-![Audio](http://m.qpic.cn/psb?/V102epzF1ea2hN/l98HGCikn.RzCU80faplH7hKvsgQEYsYRFzpAN5STHA!/b/dFoAAAAAAAAA&bo=pwg4BAAAAAADN4E!&rf=viewer_4&t=5)
+![Audio](http://pic.caigoubao.cc/605641/audio.png)
 + 便捷的图片查看功能
 
-![Picture](http://m.qpic.cn/psb?/V102epzF1ea2hN/avVkAHi6Foxk6WDaDpOYM2lpB3RLJhW.sspHbsgN8*c!/b/dGEBAAAAAAAA&bo=ogg4BAAAAAADhzQ!&rf=viewer_4&t=5)
+![Picture](http://pic.caigoubao.cc/605641/kiftd-picture.png)
 + 面向工作的PDF预览功能
 
-![PDF](http://m.qpic.cn/psb?/V102epzF1ea2hN/VQ07hYkhZ96HbBILL14OU.EsOyIM2rImW6hBA4bQpg8!/b/dDMBAAAAAAAA&bo=ngg4BAAAAAADN7g!&rf=viewer_4&t=5)
+![PDF](http://pic.caigoubao.cc/605641/pdf.png)
 + 简单易用的服务器操作界面
 
-![UI](http://m.qpic.cn/psb?/V102epzF1ea2hN/Xaexd9jnOpIyGujn9*f0eaDbxVTfWikLi7UHhTkIe5g!/b/dDABAAAAAAAA&bo=WAJMBAAAAAADFyA!&rf=viewer_4&t=5)
+![UI](http://pic.caigoubao.cc/605641/kiftd-ui2.png)
 + 想要了解更多功能？详见《kiftd说明文档》...
 
 -------------------
