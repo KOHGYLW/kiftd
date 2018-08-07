@@ -4,9 +4,6 @@
 ### 快速导航
 * 外网访问太慢？可以转至国内托管地址进行下载： https://gitee.com/kohgylw/kiftd 
 * 需要从github上浏览项目？可以访问github上的项目主页： https://github.com/KOHGYLW/kiftd
-* 图示预览：请见本页面最下方。
-
-![主界面展示](http://pic.caigoubao.cc/605641/kiftd-homepage2.png)
 
 ### 什么是kiftd?
 * 您还在使用U盘分享软件么？
@@ -40,6 +37,9 @@ _注：kift为功能性内核的开发代号，其应用版本被称为kiftd_
 ### 使用kiftd都能让您得心应手。
 
 --实际上，作者最初编写kift的目的就是为了能实现上述功能，毕竟作为老师的他需要时常在班级里分享文件给学生。在他成功弄丢了几次U盘之后，便萌生了利用闲暇时间设计一款这样的应用的想法。
+
++ 主界面展示
+![主界面展示](http://pic.caigoubao.cc/605641/kiftd-homepage2.png)
 
 -------------------
 
