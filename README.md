@@ -47,7 +47,7 @@ _注：kift为功能性内核的开发代号，其应用版本被称为kiftd_
 ### 现在，您只需抽出3分钟时间，就可以立即体验这款专业快捷的网盘服务器了。
 
 * 马上下载本网盘服务器？请点击右上方绿色按钮“Clone or Download”，之后选择“Download ZIP”进行下载（Github）,也可以前往国内托管的下载地址： https://gitee.com/kohgylw/kiftd （码云）
-* 在线阅读《说明文档》？请直接点击上方文件列表中的《kiftd说明文档》来在线预览，它是本应用的完全体说明说，您可以通过它来了解关于本应用的全部内容（该操作仅GitHub有效）。
+* 想要开始使用？您应该从阅读《kiftd说明文档》开始，这是一份十分全面的官方介绍文档，简单易懂且图文并茂，相信您能很快学会它。想在线阅读？请直接点击上方文件列表中的《kiftd说明文档》来在线预览（该操作仅GitHub有效）。
 * 立刻获取源代码？请访问本应用代码托管地址：https://github.com/KOHGYLW/kiftd-source （Github）
 * 使用中遇到问题？请将您的发现提交到 https://github.com/KOHGYLW/kiftd/issues (Github)
 * 需要联系作者？请立即发件至 kohgylw@163.com ，描述您所遇到的任何问题
