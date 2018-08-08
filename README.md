@@ -96,19 +96,19 @@ _注：kift为功能性内核的开发代号，其应用版本被称为kiftd_
 
 + 强大的视频播放功能
 
-![Vadio](http://pic.caigoubao.cc/605641/vadio.png)
+![Vadio](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/vadio.png?raw=true)
 + 专业的音乐播放功能
 
-![Audio](http://pic.caigoubao.cc/605641/audio.png)
+![Audio](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/audio.png?raw=true)
 + 便捷的图片查看功能
 
-![Picture](http://pic.caigoubao.cc/605641/kiftd-picture.png)
+![Picture](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/kiftd-picture.png?raw=true)
 + 面向工作的PDF预览功能
 
-![PDF](http://pic.caigoubao.cc/605641/pdf.png)
+![PDF](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/pdf.png?raw=true)
 + 简单易用的服务器操作界面
 
-![UI](http://pic.caigoubao.cc/605641/kiftd-ui2.png)
+![UI](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/kiftd-ui2.png?raw=true)
 
 ### 想要了解更多功能？详见《kiftd说明文档》...
 您可以阅读说明文档来了解整个kiftd的全貌。
