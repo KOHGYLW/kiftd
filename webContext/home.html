@@ -57,12 +57,16 @@
 					</div>
 					<table class="table table-hover">
 						<thead>
-							<tr onclick="checkallfile()">
-								<th>文件名</th>
-								<th>创建日期</th>
-								<th>大小</th>
-								<th>创建者</th>
-								<th>操作</th>
+							<tr>
+								<th onclick="sortbyfn()">文件名<span id="sortByFN"
+									aria-hidden="true" style="float: right"></span></th>
+								<th onclick="sortbycd()">创建日期<span id="sortByCD"
+									aria-hidden="true" style="float: right"></span></th>
+								<th onclick="sortbyfs()">大小<span id="sortByFS"
+									aria-hidden="true" style="float: right"></span></th>
+								<th onclick="sortbycn()">创建者<span id="sortByCN"
+									aria-hidden="true" style="float: right"></span></th>
+								<th onclick="showOriginFolderView()">操作</th>
 							</tr>
 						</thead>
 						<tbody id="foldertable"></tbody>
@@ -110,7 +114,8 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-					<button type="button" id="dologinButton" class="btn btn-primary" onclick="dologin()">登录</button>
+					<button type="button" id="dologinButton" class="btn btn-primary"
+						onclick="dologin()">登录</button>
 				</div>
 			</div>
 		</div>
@@ -258,7 +263,7 @@
 					<input type="text" id="filepath" class="form-control"
 						onclick="checkpath()" onfocus="this.blur()"
 						placeholder="请点击选择要上传的文件……"> <input type="file"
-						id="uploadfile" style="display: none;" onchange="showfilepath()"
+						id="uploadfile" style="display: none;" onchange="getInputUpload()"
 						multiple="multiple"> <br />
 					<h5>
 						上传进度：<span id="filecount"></span>
@@ -446,6 +451,31 @@
 		</div>
 	</div>
 	<!-- end 加载提示框 -->
+	<!-- 移动文件提示框 -->
+	<div class="modal fade bs-example-modal-sm" id="moveFilesModal"
+		tabindex="-1" role="dialog" aria-labelledby="moveFolderModalTitle">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="moveFolderModalTitle">
+						<span class="glyphicon glyphicon-import"></span> 移动文件
+					</h4>
+				</div>
+				<div class="modal-body">
+					<h5 id="moveFilesMessage"></h5>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<span id="moveFilesBox"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end 移动文件提示框 -->
 </body>
 <!-- jquery基本框架 -->
 <script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
