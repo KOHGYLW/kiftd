@@ -147,9 +147,9 @@
 	</div>
 	<!-- end 注销 -->
 	<!-- 新建文件夹框 -->
-	<div class="modal fade bs-example-modal-sm" id="newFolderModal"
-		tabindex="-1" role="dialog" aria-labelledby="newFolderlMolderTitle">
-		<div class="modal-dialog modal-sm" role="document">
+	<div class="modal fade" id="newFolderModal" tabindex="-1" role="dialog"
+		aria-labelledby="newFolderlMolderTitle">
+		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"
@@ -164,10 +164,23 @@
 					<form class="form-horizontal">
 						<div class="form-group" id="foldernamebox">
 							<label for="folderid" id="foldernametitle"
-								class="col-sm-3 control-label">名称：</label>
+								class="col-sm-3 control-label">新建文件夹：</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control" id="foldername"
-									placeholder="请输入新文件夹的名称……">
+								<div class="input-group">
+									<input type="text" class="form-control" id="foldername"
+										placeholder="请输入新文件夹的名称……" folderConstraintLevel="0">
+									<div class="input-group-btn">
+										<button type="button" class="btn btn-default dropdown-toggle"
+											data-toggle="dropdown" aria-haspopup="true"
+											aria-expanded="false">
+											&nbsp;<span id="newfoldertype">公开的</span>&nbsp;<span
+												class="caret"></span>
+										</button>
+										<ul id="foldertypelist"
+											class="dropdown-menu dropdown-menu-right">
+										</ul>
+									</div>
+								</div>
 							</div>
 						</div>
 						<div id="folderalert" role="alert"></div>
@@ -208,9 +221,9 @@
 	</div>
 	<!-- end 删除文件夹 -->
 	<!-- 重命名文件夹框 -->
-	<div class="modal fade bs-example-modal-sm" id="renameFolderModal"
-		tabindex="-1" role="dialog" aria-labelledby="renameFolderMolderTitle">
-		<div class="modal-dialog modal-sm" role="document">
+	<div class="modal fade" id="renameFolderModal" tabindex="-1"
+		role="dialog" aria-labelledby="renameFolderMolderTitle">
+		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"
@@ -218,17 +231,30 @@
 						<span aria-hidden="true">&times;</span>
 					</button>
 					<h4 class="modal-title" id="renameFolderMolderTitle">
-						<span class="glyphicon glyphicon-wrench"></span> 重命名文件夹
+						<span class="glyphicon glyphicon-wrench"></span> 编辑文件夹
 					</h4>
 				</div>
 				<div class="modal-body">
 					<form class="form-horizontal">
 						<div class="form-group" id="folderrenamebox">
 							<label for="folderid" id="foldernametitle"
-								class="col-sm-3 control-label">名称：</label>
+								class="col-sm-3 control-label">编辑文件夹：</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control" id="newfoldername"
-									placeholder="请输入文件夹的名称……">
+								<div class="input-group">
+									<input type="text" class="form-control" id="newfoldername"
+										placeholder="请输入文件夹的名称……" folderConstraintLevel="0">
+									<div class="input-group-btn">
+										<button type="button" class="btn btn-default dropdown-toggle"
+											data-toggle="dropdown" aria-haspopup="true"
+											aria-expanded="false">
+											&nbsp;<span id="editfoldertype">公开的</span>&nbsp;<span
+												class="caret"></span>
+										</button>
+										<ul id="editfoldertypelist"
+											class="dropdown-menu dropdown-menu-right">
+										</ul>
+									</div>
+								</div>
 							</div>
 						</div>
 						<div id="newfolderalert" role="alert"></div>

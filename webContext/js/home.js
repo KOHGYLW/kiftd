@@ -10,11 +10,13 @@ var folderView;// 返回的文件系统视图对象
 var originFolderView;// 保存原始的文件视图对象
 var fs;// 选中的要上传的文件列表
 var checkedMovefiles;// 移动文件的存储列表
+var constraintLevel;// 当前文件夹限制等级
+var account;//用户账户
 
 // 页面初始化
 $(function() {
 	getServerOS();// 得到服务器操作系统信息
-	showFolderView(locationpath);// 显示根节点页面视图
+	showFolderView("root");// 显示根节点页面视图
 	// 点击空白处取消选中文件并重新加载文件视图（不支持火狐）
 	$(document).click(function(e) {
 		var filetable = $("#filetable")[0];
@@ -45,6 +47,42 @@ $(function() {
 		var keyCode = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
  		if (keyCode == 13){
  			dologin();
+		}
+	});
+	// 开启登陆模态框自动聚焦账户输入框
+	$('#loginModal').on('shown.bs.modal', function(e) {
+		$("#accountid").focus();
+	});
+	// 开启新建文件夹框自动初始化状态
+	$('#newFolderModal').on('show.bs.modal', function(e) {
+		$("#folderalert").removeClass("alert");
+		$("#folderalert").removeClass("alert-danger");
+		$("#foldernamebox").removeClass("has-error");
+		$("#foldername").val("");
+		$("#foldertypelist").html("");
+		if(account!=null){
+			$("#foldername").attr("folderConstraintLevel",constraintLevel+"");
+			$("#newfoldertype").text(folderTypes[constraintLevel]);
+			for(var i=constraintLevel;i<folderTypes.length;i++){
+				$("#foldertypelist").append("<li><a onclick='changeNewFolderType("+i+")'>"+folderTypes[i]+"</a></li>");
+			}
+		}else{
+			$("#foldertypelist").append("<li><a onclick='changeNewFolderType(0)'>"+folderTypes[0]+"</a></li>");
+		}
+	});
+	// 开启编辑文件夹框自动初始化状态
+	$('#renameFolderModal').on('show.bs.modal', function(e) {
+		$("#newfolderalert").removeClass("alert");
+		$("#newfolderalert").removeClass("alert-danger");
+		$("#folderrenamebox").removeClass("has-error");
+		$("#newfolderalert").text("");
+		$("#editfoldertypelist").html("");
+		if(account!=null){
+			for(var i=constraintLevel;i<folderTypes.length;i++){
+				$("#editfoldertypelist").append("<li><a onclick='changeEditFolderType("+i+")'>"+folderTypes[i]+"</a></li>");
+			}
+		}else{
+			$("#editfoldertypelist").append("<li><a onclick='changeEditFolderType(0)'>"+folderTypes[0]+"</a></li>");
 		}
 	});
 	// 响应拖动上传文件
@@ -169,10 +207,13 @@ function showFolderView(fid) {
 			endLoading();
 			if (result == "mustLogin") {
 				window.location.href = "login.html";
+			}else if(result == "notAccess"){
+				window.location.href="/";
 			} else {
 				folderView = eval("(" + result + ")");
 				locationpath = folderView.folder.folderId;
 				parentpath = folderView.folder.folderParent;
+				constraintLevel=folderView.folder.folderConstraint;
 				showParentList(folderView);
 				showAccountView(folderView);
 				showPublishTime(folderView);
@@ -364,6 +405,7 @@ function showParentList(folderView) {
 // 显示用户视图，包括文件列表、登录信息、操作权限接口等
 function showAccountView(folderView) {
 	$("#tb").html("");
+	account=folderView.account;
 	if (folderView.account != null) {
 		// 说明已经等陆，显示注销按钮
 		$("#tb")
@@ -472,7 +514,6 @@ function showFolderTable(folderView) {
 	if (checkAuth(authList, "L")) {
 		aL = true;
 	}
-
 	$
 			.each(
 					folderView.folderList,
@@ -500,8 +541,9 @@ function showFolderTable(folderView) {
 									+ f.folderId
 									+ '","'
 									+ f.folderName
-									+ '"'
-									+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-wrench'></span> 重命名</button>";
+									+ '",'
+									+ f.folderConstraint
+									+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-wrench'></span> 编辑</button>";
 						}
 						if (!aR && !aD) {
 							folderRow = folderRow + "--";
@@ -596,15 +638,23 @@ function showFolderTable(folderView) {
 					});
 }
 
+var folderTypes=['公开的','仅小组','仅创建者'];// 文件夹约束条件（由小至大）
+
 // 显示新建文件夹模态框
 function showNewFolderModel() {
-	$("#foldername").val("");
-	$('#newFolderModal').modal('toggle');
+	$('#newFolderModal').modal('show');
+}
+
+// 修改新建文件夹约束等级
+function changeNewFolderType(type){
+	$("#newfoldertype").text(folderTypes[type]);
+	$("#foldername").attr("folderConstraintLevel",type+"");
 }
 
 // 创建新的文件夹
 function createfolder() {
 	var fn = $("#foldername").val();
+	var fc=$("#foldername").attr("folderConstraintLevel");
 	var reg = new RegExp("^[0-9a-zA-Z_\\u4E00-\\u9FFF]+$", "g");
 	if (fn.length == 0) {
 		showFolderAlert("提示：文件夹名称不能为空。");
@@ -620,7 +670,8 @@ function createfolder() {
 			dataType : "text",
 			data : {
 				parentId : locationpath,
-				folderName : fn
+				folderName : fn,
+				folderConstraint : fc
 			},
 			url : "homeController/newFolder.ajax",
 			success : function(result) {
@@ -719,21 +770,25 @@ function deleteFolder(folderId) {
 }
 
 // 显示重命名文件夹模态框
-function showRenameFolderModel(folderId, folderName) {
-	$("#newfolderalert").removeClass("alert");
-	$("#newfolderalert").removeClass("alert-danger");
-	$("#folderrenamebox").removeClass("has-error");
-	$("#newfolderalert").text("");
+function showRenameFolderModel(folderId, folderName, type) {
 	$("#renameFolderBox").html(
 			"<button type='button' class='btn btn-primary' onclick='renameFolder("
 					+ '"' + folderId + '"' + ")'>修改</button>");
 	$("#newfoldername").val(folderName);
-	$("#renameFolderModal").modal('toggle');
+	changeEditFolderType(type);
+	$("#renameFolderModal").modal('show');
+}
+
+//修改编辑文件夹的约束等级
+function changeEditFolderType(type){
+	$("#editfoldertype").text(folderTypes[type]);
+	$("#newfoldername").attr("folderConstraintLevel",type+"");
 }
 
 // 执行重命名文件夹
 function renameFolder(folderId) {
 	var newName = $("#newfoldername").val();
+	var fc=$("#newfoldername").attr("folderConstraintLevel");
 	var reg = new RegExp("^[0-9a-zA-Z_\\u4E00-\\u9FFF]+$", "g");
 	if (newName.length == 0) {
 		showRenameFolderAlert("提示：文件夹名称不能为空。");
@@ -749,7 +804,8 @@ function renameFolder(folderId) {
 			dataType : "text",
 			data : {
 				folderId : folderId,
-				newName : newName
+				newName : newName,
+				folderConstraint : fc
 			},
 			url : "homeController/renameFolder.ajax",
 			success : function(result) {
@@ -757,21 +813,19 @@ function renameFolder(folderId) {
 					window.location.href = "login.html";
 				} else {
 					if (result == "noAuthorized") {
-						showRenameFolderAlert("提示：您的操作未被授权，重命名失败");
+						showRenameFolderAlert("提示：您的操作未被授权，编辑失败");
 					} else if (result == "errorParameter") {
-						showRenameFolderAlert("提示：参数不正确，重命名失败");
-					} else if (result == "cannotRenameFolder") {
-						showRenameFolderAlert("提示：出现意外错误，可能未能重命名文件夹");
+						showRenameFolderAlert("提示：参数不正确，编辑失败");
 					} else if (result == "renameFolderSuccess") {
 						$('#renameFolderModal').modal('hide');
 						showFolderView(locationpath);
 					} else {
-						showRenameFolderAlert("提示：出现意外错误，可能未能重命名文件夹");
+						showRenameFolderAlert("提示：出现意外错误，可能未能编辑文件夹");
 					}
 				}
 			},
 			error : function() {
-				showRenameFolderAlert("提示：出现意外错误，可能未能重命名文件夹");
+				showRenameFolderAlert("提示：出现意外错误，可能未能编辑文件夹");
 			}
 		});
 	} else {
@@ -1146,7 +1200,12 @@ function showPicture(fileId) {
 				var imageslist = document.createElement("ul");
 				$.each(pvl.pictureViewList, function(n, val) {
 					var image = new Image();
-					image.src = "fileblocks/" + val.filePath;
+					// 判断直接显示原图还是请求压缩流
+					if(val.filePath.startsWith("homeController")){
+						image.src = val.filePath;
+					}else{
+						image.src = "fileblocks/"+val.filePath;
+					}
 					image.alt = val.fileName;
 					var imagerow = document.createElement("li");
 					imagerow.appendChild(image);
