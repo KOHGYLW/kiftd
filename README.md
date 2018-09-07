@@ -28,12 +28,12 @@ _注：kift为功能性内核的开发代号，其应用版本被称为kiftd_
 
 -------
 
-## 为什么要选择kiftd？
-> ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 不限文件大小——1MB的文档和超过4GB的高清电影资源？均能够随意上传和下载。
-
-> ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 操作系统全兼容——无论是Windows、Linux还是Unix(包括Mac OS X)，均可运行使用。
+## kiftd有哪些优势？
+> ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) “无限”文件——1MB的文档和超过4GB的高清电影资源？均能够随意上传和下载。
 
 > ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 主流商业网盘特有的高级功能甚至需要收费的功能——文件夹访问权限控制、MP4视频在线影院、MP3音乐在线欣赏、图片文件在线预览、PDF文档在线阅读...这些，对kiftd来说都是“标配”。
+
+> ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 操作系统全兼容——无论是Windows、Linux还是Unix(包括Mac OS X)，均可运行使用。
 
 > ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 同时满足日常需求or专业需求——kiftd同时具备了图形界面模式和纯命令模式的双操作模式，无论您是喜欢点击鼠标的电脑小白还是需要使用命令在远程Linux上部署的运维人员，均能完美操作。
 
