@@ -1,5 +1,5 @@
 # kiftd——青阳网络文件传输系统 #
-## 一款便捷、开源、功能完善的个人&团队&小型组织网盘服务器系统。 ##
+## 一款面向个人、团队、小型组织的网盘应用系统，免费、开源、完善。 ##
 ### 欢迎访问kiftd官方资源站！Welcome to visit kiftd home page! ###
 
 -------
@@ -8,18 +8,18 @@
 
 -------
 
-### 快速导航
+## 快速导航
 * 外网访问太慢？可以转至国内托管地址进行下载： https://gitee.com/kohgylw/kiftd -- [点击下载](https://gitee.com/kohgylw/kiftd/repository/archive/master.zip)
 * 需要从github上浏览项目？可以访问github上的项目主页： https://github.com/KOHGYLW/kiftd -- [点击下载](https://github.com/KOHGYLW/kiftd/archive/master.zip)
 
-### 什么是kiftd?
-* 您还在使用U盘分享软件么？
+## 什么是kiftd?
+* ### 您还在使用U盘分享软件么？###
 > 很不幸，U盘易丢，同时又无法兼容各种平台的文件系统，在需要大规模分享时--通过U盘拷贝简直就像是接力赛一样原始又低效。
 
-* 您还在使用免费的公用网盘么？
+* ### 您还在使用免费的公用网盘么？###
 > 时不时传来的网盘关停热潮令人担忧，而其由外人管理的特性则让您不敢轻易把隐私文件存放在上面。
 
-* 您需要利用自己的资源搭建起一个网盘系统而苦于没有好的选择？
+* ### 您需要利用自己的资源搭建起一个网盘系统而苦于没有好的选择？###
 > 使用破解软件同样无法确保安全性，闭源的特性令人担忧。同时，很多已有的网盘服务器软件性能笨重、功能简单、语言的障碍更是使用中不可忽视的问题。
 
 _注：kift为功能性内核的开发代号，其应用版本被称为kiftd_
@@ -28,24 +28,29 @@ _注：kift为功能性内核的开发代号，其应用版本被称为kiftd_
 
 -------
 
-### 为什么选择kiftd？
-* 1MB的文档和超过4GB的高清电影资源？均能够随意上传和下载。
-* 担心操作系统不兼容？无论是Windows、Linux还是Unix(包括Mac OS X)，均可运行使用。
-* 主流商业网盘的高级功能？MP4视频在线影院、MP3音乐在线欣赏、图片文件在线预览、PDF文档在线阅读...这些，kiftd都一一具备，当然，还不仅于此。
-* 日常需求or专业需求？kiftd同时具备了图形界面模式和纯命令模式的双操作模式，无论您是喜欢点击鼠标的电脑小白还是需要使用命令在远程Linux上部署的运维人员，均能完美操作。
-* 担心使用成本？kiftd完全开源免费，因此唯一的使用成本就是需要安装它。至于之后您想将其用于什么领域，哪怕是商业领域——均无任何限制。
-* 担心代码中的隐患？kiftd在开源的基础上，能够确保用户解压即用，删除即走，绝不和你撒娇卖萌。
+## 为什么要选择kiftd？
+> ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 不限文件大小——1MB的文档和超过4GB的高清电影资源？均能够随意上传和下载。
 
-### 总之，无论您是想：
+> ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 操作系统全兼容——无论是Windows、Linux还是Unix(包括Mac OS X)，均可运行使用。
+
+> ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 主流商业网盘特有的高级功能甚至需要收费的功能——文件夹访问权限控制、MP4视频在线影院、MP3音乐在线欣赏、图片文件在线预览、PDF文档在线阅读...这些，对kiftd来说都是“标配”。
+
+> ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 同时满足日常需求or专业需求——kiftd同时具备了图形界面模式和纯命令模式的双操作模式，无论您是喜欢点击鼠标的电脑小白还是需要使用命令在远程Linux上部署的运维人员，均能完美操作。
+
+> ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 无任何使用成本——kiftd完全开源免费，因此唯一的使用成本就是需要安装它。至于之后您想将其用于什么领域，哪怕是商业领域——均无任何限制。
+
+> ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 无隐患——kiftd完全开源，您可以随意下载其源代码；删除即走，绝不和你撒娇卖萌。保护用户硬件环境，从开源做起。
+
+## 总之，无论您是想：
 + 安装在自己的笔记本电脑上，用于替代老旧的U盘……
 + 利用家用台式机，来搭建一个家庭存储云……
 + 利用办公室中的服务器，为同事们提供一个团队资料分享网盘……
 + 利用公网托管的云服务器，搭建一个能够随时随地访问的快捷云……
 + ……
 
-### 使用kiftd都能让您得心应手。
+## 使用kiftd都能让您得心应手。
 
-您可以随时开始使用它，只要您需要。
+想要眼见为实？您可以通过下方的《功能速览》一节来查看kiftd特色功能的演示。
 
 ------
 
@@ -84,7 +89,7 @@ _注：kift为功能性内核的开发代号，其应用版本被称为kiftd_
 --------------------
 ## Functional Examples
 
-### 功能速览v1.0.2
+### 功能速览
 >注：图中涉及资源均来源于网络，仅用于展示kiftd功能，版权归其作者所有。
 
 + 强大的视频播放功能
