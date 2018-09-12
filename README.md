@@ -29,7 +29,7 @@ _注：kift为功能性内核的开发代号，其应用版本被称为kiftd_
 -------
 
 ## kiftd有哪些优势？
- ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 传你想传——1MB的文档和超过4GB的高清电影资源？均能够随意上传和下载。
+ ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 无上传限制——1MB的文档和超过4GB的高清电影资源？均能够随意上传和下载。
 
  ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 主流商业网盘特有的高级功能甚至需要收费的功能——文件夹访问权限控制、MP4视频在线影院、MP3音乐在线欣赏、图片文件在线预览、PDF文档在线阅读...kiftd均一一具备，每一份kiftd均是“完全版”。
 
@@ -39,7 +39,7 @@ _注：kift为功能性内核的开发代号，其应用版本被称为kiftd_
 
  ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 无任何使用成本——kiftd完全开源免费，因此唯一的使用成本就是需要安装它。至于之后您想将其用于什么领域，哪怕是商业领域——均无任何限制。
 
- ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 无隐患——kiftd完全开源，您可以随意下载其源代码；删除即走，绝不和你撒娇卖萌。保护用户硬件环境，从开源做起。
+ ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 无内置代码的隐患——kiftd完全开源，您可以随意下载其源代码，并用它自己编译一份kiftd；同时，它删除即走，绝不和你撒娇卖萌。保护用户硬件环境，从开源做起。
 
 ## 总之，无论您是想：
 + 安装在自己的笔记本电脑上，用于替代老旧的U盘……
