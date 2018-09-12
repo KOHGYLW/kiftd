@@ -4,7 +4,7 @@
 
 -------
 
-![主界面展示](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/kiftd-homepage2.png?raw=true)
+![主界面展示](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/kiftd-mainpage.png?raw=true)
 
 -------
 
@@ -64,6 +64,14 @@ _注：kift为功能性内核的开发代号，其应用版本被称为kiftd_
 
 最新讯息：
 
+> 提示：当您更新版本后，请手动清除浏览器的缓存，之后刷新网盘主页以确保数据文件保持最新！否则可能导致新版页面功能无法使用。
+
+### 新版本v1.0.5
+本次更新加入了搜索功能，同时优化了界面使用体验，推荐所有用户升级。
++ 全新界面风格——现在，kiftd拥有了更加“复杂”的页面，这也使得kiftd现在看起来更加专业了。
++ 搜索！——搜索功能是最早被提出的功能之一，现在，它终于到来了。您可以在文件列表内搜索关键字来快速查询文件或文件夹。
++ 界面操作优化——现在，所有提示框的蓝色按钮均可使用回车进行快速操作了。这能让您更加流畅地操作。
+
 ### 新版本v1.0.4
 本次更新主要针对于一些新功能，使其能够应对更加多样化的需求。推荐所有用户升级体验。
 + 增加了文件夹访问级别——现在，您可以为文件夹设定访问级别了：“公开的”、“仅小组”和“仅创建者”。您可以通过该功能更加灵活地限制他人查看您的资料，使其更加适用于团队使用。
@@ -72,34 +80,31 @@ _注：kift为功能性内核的开发代号，其应用版本被称为kiftd_
 + 优化了登录过程——现在，打开登录窗口将直接选中“账户”输入框。
 + 优化了上传提示的字体——使其能够自适应屏幕分辨率。
 
-### 新版本v1.0.3
-新的kiftd v 1.0.3增加了更多便捷的操作功能，并修复了一些Bug。该版本建议所有用户升级体验。
-+ 拖拽，上传！——需要上传已经在文件夹中找好的文件？现在，您可以把它们拖入文件列表试试。
-+ 移动文件——需要把一些上传好的文件移动到另一个文件夹中？现在您可以像您喜欢的那样进行“剪切”和“粘贴”了。
-+ 文件排序——需要将文件列表按照名称、大小、创建日期或者是创建者进行排序显示？仅需点击文件列表的相应标题栏就行。
-+ 更快登录——输入账户、密码，然后回车。
-+ 一些Bug修复——完善了纯命令模式下的错误提示信息。修正了文件系统选择相关的一些Bug，修正了IE浏览器下无法上传文件的Bug。
-+ 更新了《kiftd说明文档》使其更加易读——指引内容更加全面，还增加了如何升级kiftd至最新版本的提示。
-
 --------------------
 ## Functional Examples
 
-### 功能速览v1.0.2
+### 功能速览
 >注：图中涉及资源均来源于网络，仅用于展示kiftd功能，版权归其作者所有。
 
-+ 强大的视频播放功能
++ 主页与基本功能展示……
+
+![MainPage](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/kiftd-mainpage.png?raw=true)
+
+![UploadFile](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/kiftd-upload2.png?raw=true)
+
+![CreateFolder](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/kiftd-newfolder.png?raw=true)
+
++ 各种高级功能展示……
 
 ![Vadio](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/vadio.png?raw=true)
-+ 专业的音乐播放功能
 
 ![Audio](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/audio.png?raw=true)
-+ 便捷的图片查看功能
 
 ![Picture](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/kiftd-picture.png?raw=true)
-+ 面向工作的PDF预览功能
 
 ![PDF](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/pdf.png?raw=true)
-+ 简单易用的服务器操作界面
+
++ 人性化的服务器控制面板
 
 ![UI](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/kiftd-ui2.png?raw=true)
 
@@ -114,4 +119,4 @@ _注：kift为功能性内核的开发代号，其应用版本被称为kiftd_
 
 _作者会每隔1-3周浏览一次邮箱，如未能及时回复请耐心等待。回复或许会迟到，但它不会缺席。_
 
-2018-07-27 kohgylw@青阳龙野 作者保留版权
+2018-09-12 kohgylw@青阳龙野 作者保留版权

@@ -11,7 +11,7 @@ var originFolderView;// 保存原始的文件视图对象
 var fs;// 选中的要上传的文件列表
 var checkedMovefiles;// 移动文件的存储列表
 var constraintLevel;// 当前文件夹限制等级
-var account;//用户账户
+var account;// 用户账户
 
 // 页面初始化
 $(function() {
@@ -42,11 +42,17 @@ $(function() {
 		$("#accountid").val('');
 		$("#accountpwd").val('');
 	});
-	// 回车键快捷登录响应
-	$("#loginModal").keypress(function (e) {
+	// 各个模态框的回车响应功能。该功能仅对“首选”的按钮有效，对其他按钮无效，以避免用户误操作。
+	$('.modal').on('shown.bs.modal', function(e) {
+		$(this).addClass("shown");
+	});
+	$('.modal').on('hidden.bs.modal', function(e) {
+		$(this).removeClass("shown");
+	});
+	$("body").keypress(function(e) {
 		var keyCode = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
- 		if (keyCode == 13){
- 			dologin();
+		if(keyCode == 13) {
+			$(".shown .btn-primary").click();
 		}
 	});
 	// 开启登陆模态框自动聚焦账户输入框
@@ -69,6 +75,10 @@ $(function() {
 		}else{
 			$("#foldertypelist").append("<li><a onclick='changeNewFolderType(0)'>"+folderTypes[0]+"</a></li>");
 		}
+	});
+	// 开启新建文件夹模态框自动聚焦文件名输入框
+	$('#newFolderModal').on('shown.bs.modal', function(e) {
+		$("#foldername").focus();
 	});
 	// 开启编辑文件夹框自动初始化状态
 	$('#renameFolderModal').on('show.bs.modal', function(e) {
@@ -155,8 +165,7 @@ $(function() {
 	$('#moveFilesModal').on('hidden.bs.modal', function(e) {
 		checkedMovefiles=undefined;
 		$("#cutSignTx").text("剪切");
-		$("#cutSignSp").removeClass();
-		$("#cutSignSp").addClass("glyphicon glyphicon-scissors");
+		$("#cutSignTx").removeClass("cuted");
 		$('#moveFilesBox').html("");
 	});
 	// IE内核浏览器内的startsWith方法的自实现
@@ -165,6 +174,14 @@ $(function() {
 			return this.indexOf(suffix, this.length - suffix.length) !== -1;
 		};
 	}
+	// 开启详细信息模态框自动显示信息内容
+	$('#folderInfoModal').on('show.bs.modal', function(e) {
+		var f=folderView.folder;
+		$("#fim_name").text(f.folderName);
+		$("#fim_creator").text(f.folderCreator);
+		$("#fim_folderCreationDate").text(f.folderCreationDate);
+		$("#fim_statistics").text("共包含 "+folderView.folderList.length+" 个文件夹， "+folderView.fileList.length+" 个文件。");
+	});
 });
 
 // 全局请求失败提示
@@ -214,6 +231,8 @@ function showFolderView(fid) {
 				locationpath = folderView.folder.folderId;
 				parentpath = folderView.folder.folderParent;
 				constraintLevel=folderView.folder.folderConstraint;
+				screenedFoldrView=null;
+				$("#sreachKeyWordIn").val("");
 				showParentList(folderView);
 				showAccountView(folderView);
 				showPublishTime(folderView);
@@ -383,23 +402,27 @@ function dologout() {
 
 // 显示当前文件夹的父级路径
 function showParentList(folderView) {
-	$("#parentlistbox").html("");
+	$("#parentFolderList").html("");
 	var f = folderView.folder;
-	var index = 0;
-	$.each(folderView.parentList, function(n, val) {
-		if (index <= 3) {
-			$("#parentlistbox").append(
-					"<button onclick='entryFolder(" + '"' + val.folderId + '"'
-							+ ")' class='btn btn-link btn-xs'>"
-							+ val.folderName + "</button> / ");
-			index++;
-		} else {
-		}
-	});
-	if (index > 3) {
-		$("#parentlistbox").append("... / ");
+	if(folderView.parentList.length>0){
+		$.each(folderView.parentList, function(n, val) {
+			$("#parentFolderList").append("<li><a href='javascript:void(0);' onclick='entryFolder("+'"' + val.folderId +'"'+")'>"+val.folderName+"</a></li>");
+		});
+	}else{
+		$("#parentFolderList").html("<li class='disabled'><a>无</a></li>");
 	}
-	$("#parentlistbox").append(f.folderName);
+	if(f.folderName.length>6){
+		$("#currentFolderName").text(f.folderName.substr(0,6)+"...");
+	}else{
+		$("#currentFolderName").text(f.folderName);
+	}
+	if(f.folderName=="ROOT"){
+		$("#folderIconSpan").removeClass("glyphicon-folder-close");
+		$("#folderIconSpan").addClass("glyphicon-home");
+	}else{
+		$("#folderIconSpan").removeClass("glyphicon-home");
+		$("#folderIconSpan").addClass("glyphicon-folder-close");
+	}
 }
 
 // 显示用户视图，包括文件列表、登录信息、操作权限接口等
@@ -420,33 +443,36 @@ function showAccountView(folderView) {
 						"<button class='btn btn-link rightbtn' data-toggle='modal' data-target='#loginModal'>登入<span class='glyphicon glyphicon-user' aria-hidden='true'></span></button>");
 	}
 	var authList = folderView.authList;
+	// 对操作菜单进行初始化，根据权限显示可操作的按钮（并非约束）。
+	$("#fileListDropDown li").addClass("disabled");
+	$("#fileListDropDown li a").attr("onclick","");
+	$("#fileListDropDown li a").attr("href","javascript:void(0);");
 	if (authList != null) {
 		if (checkAuth(authList, "C")) {
-			$("#parentlistbox")
-					.append(
-							"<button onclick='showNewFolderModel()' class='btn btn-link btn-xs rightbtn'><span class='glyphicon glyphicon-folder-open'></span> 新建文件夹</button>");
+			$("#createFolderButtonLi").removeClass("disabled");
+			$("#createFolderButtonLi a").attr("onclick","showNewFolderModel()");
 		}
 		if (checkAuth(authList, "U")) {
-			$("#parentlistbox")
-					.append(
-							"<button onclick='showUploadFileModel()' class='btn btn-link btn-xs rightbtn'><span class='glyphicon glyphicon-cloud-upload'></span> 上传文件</button>");
+			$("#uploadFileButtonLi").removeClass("disabled");
+			$("#uploadFileButtonLi a").attr("onclick","showUploadFileModel()");
 		}
 		if (checkAuth(authList, "L")) {
-			$("#parentlistbox")
-					.append(
-							"<button onclick='showDownloadAllCheckedModel()' class='btn btn-link btn-xs rightbtn'><span class='glyphicon glyphicon-cloud-download'></span> 打包下载</button>");
+			$("#packageDownloadBox")
+					.html(
+							"<button class='btn btn-link navbar-btn' onclick='showDownloadAllCheckedModel()'><span class='glyphicon glyphicon-briefcase'></span> 打包下载</button>");
+		}else{
+			$("#packageDownloadBox").html("");
 		}
 		if (checkAuth(authList, "D")) {
-			$("#parentlistbox")
-					.append(
-							"<button onclick='showDeleteAllCheckedModel()' class='btn btn-link btn-xs rightbtn'><span class='glyphicon glyphicon-trash'></span> 批量删除</button>");
+			$("#deleteSeelectFileButtonLi").removeClass("disabled");
+			$("#deleteSeelectFileButtonLi a").attr("onclick","showDeleteAllCheckedModel()");
 		}
 		if (checkAuth(authList, "M")) {
-			$("#parentlistbox").append("<button onclick='startMoveFile()' class='btn btn-link btn-xs rightbtn'><span id='cutSignSp' class='glyphicon glyphicon-scissors'></span> <span id='cutSignTx'>剪切</span></button>");
+			$("#cutFileButtonLi").removeClass("disabled");
+			$("#cutFileButtonLi a").attr("onclick","startMoveFile()");
 			if(checkedMovefiles!==undefined&&checkedMovefiles.length>0){
 				$("#cutSignTx").text("粘贴（"+checkedMovefiles.length+"）");
-				$("#cutSignSp").removeClass();
-				$("#cutSignSp").addClass("glyphicon glyphicon-import");
+				$("#cutSignTx").addClass("cuted");
 			}
 		}
 	}
@@ -779,7 +805,7 @@ function showRenameFolderModel(folderId, folderName, type) {
 	$("#renameFolderModal").modal('show');
 }
 
-//修改编辑文件夹的约束等级
+// 修改编辑文件夹的约束等级
 function changeEditFolderType(type){
 	$("#editfoldertype").text(folderTypes[type]);
 	$("#newfoldername").attr("folderConstraintLevel",type+"");
@@ -1572,13 +1598,17 @@ function showOriginFolderView(){
 	$("#sortByCD").removeClass();
 	$("#sortByFS").removeClass();
 	$("#sortByCN").removeClass();
-	folderView=$.extend(true, {}, originFolderView);
+	if(screenedFoldrView!=null){
+		folderView=$.extend(true, {}, screenedFoldrView);
+	}else{
+		folderView=$.extend(true, {}, originFolderView);
+	}
 	showFolderTable(folderView);
 }
 
 // 确认文件移动（剪切-粘贴）操作
 function startMoveFile(){
-	if($("#cutSignSp").hasClass("glyphicon glyphicon-import")&&checkedMovefiles!==undefined){
+	if($("#cutSignTx").hasClass("cuted")&&checkedMovefiles!==undefined){
 		var moveIdArray = new Array();
 		for (var i = 0; i < checkedMovefiles.length; i++) {
 			moveIdArray[i] = checkedMovefiles[i].id;
@@ -1588,14 +1618,13 @@ function startMoveFile(){
 		$('#moveFilesBox').html("<button id='dmvfbutton' type='button' class='btn btn-danger' onclick='doMoveFiles()'>全部移动</button>");
 		$('#moveFilesModal').modal('show');
 	}else{
-		checkedMovefiles = $(".info").get();
+		checkedMovefiles = $("#foldertable .info").get();
 		if (checkedMovefiles==undefined||checkedMovefiles.length == 0) {
 			$('#moveFilesMessage').text("提示：您还未选择任何文件，请先选中一些文件后再执行本操作（点击某一文件行来选中单一文件；按住Shift并点击文件行选中多个文件；使用Shift+A选中/取消选中所有文件）。");
 			$('#moveFilesModal').modal('show');
 		} else {
 			$("#cutSignTx").text("粘贴（"+checkedMovefiles.length+"）");
-			$("#cutSignSp").removeClass();
-			$("#cutSignSp").addClass("glyphicon glyphicon-import");
+			$("#cutSignTx").addClass("cuted");
 		}
 	}
 }
@@ -1644,4 +1673,42 @@ function doMoveFiles(){
 			$("#dmvfbutton").attr('disabled', false);
 		}
 	});
+}
+
+var screenedFoldrView;// 经过排序的文件视图
+
+// 执行搜索功能
+function doSearchFile(){
+	startLoading();
+	try{
+		var keyworld=$("#sreachKeyWordIn").val();
+		if(keyworld.length!=0){
+			var reg=new RegExp(keyworld+"+");
+			screenedFoldrView=$.extend(true, {}, originFolderView);
+			screenedFoldrView.folderList=[];
+			screenedFoldrView.fileList=[];
+			for(var i=0,j=originFolderView.folderList.length;i<j;i++){
+				if(reg.test(originFolderView.folderList[i].folderName)){
+					screenedFoldrView.folderList.push(originFolderView.folderList[i]);
+				}
+			}
+			for(var i=0,j=originFolderView.fileList.length;i<j;i++){
+				if(reg.test(originFolderView.fileList[i].fileName)){
+					screenedFoldrView.fileList.push(originFolderView.fileList[i]);
+				}
+			}
+			$("#sortByFN").removeClass();
+			$("#sortByCD").removeClass();
+			$("#sortByFS").removeClass();
+			$("#sortByCN").removeClass();
+			folderView=$.extend(true, {}, screenedFoldrView);
+			showFolderTable(folderView);
+		}else{
+			screenedFoldrView=null;
+			showOriginFolderView();
+		}
+	}catch(e){
+		alert("错误：搜索关键字有误。请在特殊符号（例如“*”）前加上“\\”进行转义。");
+	}
+	endLoading();
 }

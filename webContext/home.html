@@ -51,9 +51,47 @@
 				</p>
 				<div id="filetable" class="panel panel-default" unselectable="on"
 					onselectstart="return false;" style="-moz-user-select: none;">
-					<!-- Default panel contents -->
+					<!-- 文件列表头部，也就是操作栏 -->
 					<div class="panel-heading">
-						<p class="heading" id="parentlistbox"></p>
+						<div class="heading">
+							<div class="navbar-header">
+								<a href="javascript:void(0);" class="navbar-text" data-toggle="modal"
+									data-target="#folderInfoModal"><span id="folderIconSpan"
+									class="glyphicon glyphicon-folder-close"></span>&ensp;&ensp;<span
+									id="currentFolderName"></span></a>
+							</div>
+							<div class="collapse navbar-collapse">
+								<ul class="nav navbar-nav">
+									<li class="dropdown"><a href="javascript:void(0);" class="dropdown-toggle"
+										data-toggle="dropdown" role="button" aria-haspopup="true"
+										aria-expanded="false">上一级 <span class="caret"></span></a>
+										<ul class="dropdown-menu" id="parentFolderList"></ul></li>
+								</ul>
+								<form class="navbar-form navbar-left">
+									<div class="form-group">
+										<input id="sreachKeyWordIn" type="text" class="form-control"
+											placeholder="请输入文件名...">
+									</div>
+									<button type="button" class="btn btn-default" onclick="doSearchFile()">搜索</button>
+								</form>
+								<ul class="nav navbar-nav navbar-right">
+									<li id="packageDownloadBox"></li>
+									<li class="dropdown"><a class="dropdown-toggle"
+										data-toggle="dropdown" role="button" aria-haspopup="true"
+										aria-expanded="false"><span
+											class="glyphicon glyphicon-cog"></span> 操作 <span
+											class="caret"></span></a>
+										<ul class="dropdown-menu" id="fileListDropDown">
+											<li id="createFolderButtonLi"><a>新建文件夹</a></li>
+											<li role="separator" class="divider"></li>
+											<li id="uploadFileButtonLi"><a>上传文件</a></li>
+											<li role="separator" class="divider"></li>
+											<li id="cutFileButtonLi"><a><span id='cutSignTx'>剪切</span></a></li>
+											<li id="deleteSeelectFileButtonLi"><a>批量删除</a></li>
+										</ul></li>
+								</ul>
+							</div>
+						</div>
 					</div>
 					<table class="table table-hover">
 						<thead>
@@ -502,6 +540,37 @@
 		</div>
 	</div>
 	<!-- end 移动文件提示框 -->
+	<!-- 文件夹详情模态框 -->
+	<div class="modal fade" id="folderInfoModal" tabindex="-1"
+		role="dialog" aria-labelledby="Folder Informaction Modal">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">详细信息...</h4>
+				</div>
+				<div class="modal-body">
+					<dl>
+						<dt>文件夹名称：</dt>
+						<dd id="fim_name"></dd>
+						<dt>创建者：</dt>
+						<dd id="fim_creator"></dd>
+						<dt>创建时间：</dt>
+						<dd id="fim_folderCreationDate"></dd>
+						<dt>文件统计：</dt>
+						<dd id="fim_statistics"></dd>
+					</dl>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end 文件夹详情模态框 -->
 </body>
 <!-- jquery基本框架 -->
 <script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
