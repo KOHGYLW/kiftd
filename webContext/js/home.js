@@ -12,6 +12,7 @@ var fs;// 选中的要上传的文件列表
 var checkedMovefiles;// 移动文件的存储列表
 var constraintLevel;// 当前文件夹限制等级
 var account;// 用户账户
+var isUpLoading=false;// 是否正在执行其他上传操作
 
 // 页面初始化
 $(function() {
@@ -97,59 +98,82 @@ $(function() {
 	});
 	// 响应拖动上传文件
 	document.ondragover = function(e) {
-		e.preventDefault();
-		e.stopPropagation();
+		if(e.preventDefault){
+			e.preventDefault();
+			e.stopPropagation();
+		}else{
+			window.event.cancelBubble=true;
+			window.event.returnValue=false;
+		}
 	}
 	document.ondrop = function(e) {
-		e.preventDefault();
-		e.stopPropagation();
+		if(e.preventDefault){
+			e.preventDefault();
+			e.stopPropagation();
+		}else{
+			window.event.cancelBubble=true;
+			window.event.returnValue=false;
+		}
 		if (folderView.authList != null) {
-			if (checkAuth(folderView.authList, "U")) {// 如果有上传权限
-				var dt=e.dataTransfer;
-				var testFile=true;
-				if(dt.items!==undefined){
-					for(var i=0;i<dt.items.length;i++){
-						var item = dt.items[i];
-						if(item.kind === "file" && item.webkitGetAsEntry().isFile) {
-							
+			if (checkAuth(folderView.authList, "U")) {// 如果有上传权限且未进行其他上传
+				if(isUpLoading){
+					alert("提示：您正在执行另一项上传任务，请在上传窗口关闭后再试。");
+				}else{
+					if (!(window.ActiveXObject||"ActiveXObject" in window)){// 判断是否为IE
+						var dt;
+						if(e.dataTransfer != null){
+							dt = e.dataTransfer; // 获取到拖入上传的文件对象
 						}else{
-							testFile=false;
+							dt = window.event.dataTransfer;
 						}
+						var testFile=true;
+						if(dt.items!==undefined){
+							for(var i=0;i<dt.items.length;i++){
+								var item = dt.items[i];
+								if(item.kind === "file" && item.webkitGetAsEntry().isFile) {
+									
+								}else{
+									testFile=false;
+								}
+							}
+						}else{
+							for(var i = 0; i < dt.files.length; i++){
+					            var dropFile = df.files[i];
+					            if ( dropFile.type ) {
+					               
+					            } else {
+					                try {
+					                    var fileReader = new FileReader();
+					                    fileReader.readAsDataURL(dropFile.slice(0, 10));
+					                    fileReader.addEventListener('load', function (e) {
+					                        
+					                    }, false);
+					                    fileReader.addEventListener('error', function (e) {
+					                    		testFile=false;
+					                    }, false);
+					                } catch (e) {
+					                		testFile=false;
+					                }
+					            }
+					        }
+						}
+						if(testFile){
+							fs = e.dataTransfer.files; // 获取到拖入上传的文件对象
+							showfilepath();
+							showUploadFileModel();
+							checkUploadFile();
+						}else{
+							alert("提示：您拖入的文件中包含了一个或多个文件夹，无法进行上传。");
+						}
+					}else{
+						alert("提示：IE浏览器不支持拖拽上传。您可以使用现代浏览器或将浏览模式切换为“极速模式”来体验该功能。");
 					}
-				}else{
-					for(var i = 0; i < dt.files.length; i++){
-			            var dropFile = df.files[i];
-			            if ( dropFile.type ) {
-			               
-			            } else {
-			                try {
-			                    var fileReader = new FileReader();
-			                    fileReader.readAsDataURL(dropFile.slice(0, 10));
-			                    fileReader.addEventListener('load', function (e) {
-			                        
-			                    }, false);
-			                    fileReader.addEventListener('error', function (e) {
-			                    		testFile=false;
-			                    }, false);
-			                } catch (e) {
-			                		testFile=false;
-			                }
-			            }
-			        }
-				}
-				if(testFile){
-					fs = e.dataTransfer.files; // 获取到拖入上传的文件对象
-					showfilepath();
-					showUploadFileModel();
-					checkUploadFile();
-				}else{
-					alert("提示：您拖入的文件中包含了一个或多个文件夹，无法进行上传。");
 				}
 			}else{
-				alert("您不具备上传权限，无法上传文件。");
+				alert("提示：您不具备上传权限，无法上传文件。");
 			}
 		}else{
-			alert("您不具备上传权限，无法上传文件。");
+			alert("提示：您不具备上传权限，无法上传文件。");
 		}
 	}
 	// Shift+A全选文件/反选文件
@@ -169,6 +193,11 @@ $(function() {
 		$('#moveFilesBox').html("");
 	});
 	// IE内核浏览器内的startsWith方法的自实现
+	if(typeof String.prototype.startsWith != 'function') {
+		String.prototype.startsWith = function(prefix) {
+			return this.slice(0, prefix.length) === prefix;
+		};
+	}
 	if(typeof String.prototype.endsWith != 'function') {
 		String.prototype.endsWith = function(suffix) {
 			return this.indexOf(suffix, this.length - suffix.length) !== -1;
@@ -181,6 +210,21 @@ $(function() {
 		$("#fim_creator").text(f.folderCreator);
 		$("#fim_folderCreationDate").text(f.folderCreationDate);
 		$("#fim_statistics").text("共包含 "+folderView.folderList.length+" 个文件夹， "+folderView.fileList.length+" 个文件。");
+	});
+	// 开启上传模态框自动还原上传信息
+	$('#uploadFileModal').on('show.bs.modal', function(e) {
+		isUpLoading=true;
+		$("#uploadfile").val("");
+		$("#filepath").val("");
+		$("#pros").width("0%");
+		$("#umbutton").attr('disabled', false);
+		$("#filecount").text("");
+		$("#uploadstatus").text("");
+		$("#selectcount").text("");
+	});
+	//关闭模态框自动还原状态
+	$('#uploadFileModal').on('hidden.bs.modal', function(e) {
+		isUpLoading=false;
 	});
 });
 
@@ -993,12 +1037,12 @@ function doupload(count) {
 						$("#uploadfile").val("");
 						$("#filepath").val("");
 						$("#pros").width("0%");
-						$('#uploadFileModal').modal('hide');
 						$("#umbutton").attr('disabled', false);
-						showFolderView(locationpath);
 						$("#filecount").text("");
 						$("#uploadstatus").text("");
 						$("#selectcount").text("");
+						$('#uploadFileModal').modal('hide');
+						showFolderView(locationpath);
 					}
 				} else if (result == "uploaderror") {
 					showUploadFileAlert("提示：出现意外错误，文件：[" + fname
