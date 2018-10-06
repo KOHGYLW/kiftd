@@ -53,7 +53,13 @@ $(function() {
 	$("body").keypress(function(e) {
 		var keyCode = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
 		if(keyCode == 13) {
-			$(".shown .btn-primary").click();
+			var g=$(".shown .btn-primary");
+			if(g.get(0)!=null){
+				g.click();
+			}else{
+				doSearchFile();
+			}
+			return false;
 		}
 	});
 	// 开启登陆模态框自动聚焦账户输入框
@@ -210,21 +216,6 @@ $(function() {
 		$("#fim_creator").text(f.folderCreator);
 		$("#fim_folderCreationDate").text(f.folderCreationDate);
 		$("#fim_statistics").text("共包含 "+folderView.folderList.length+" 个文件夹， "+folderView.fileList.length+" 个文件。");
-	});
-	// 开启上传模态框自动还原上传信息
-	$('#uploadFileModal').on('show.bs.modal', function(e) {
-		isUpLoading=true;
-		$("#uploadfile").val("");
-		$("#filepath").val("");
-		$("#pros").width("0%");
-		$("#umbutton").attr('disabled', false);
-		$("#filecount").text("");
-		$("#uploadstatus").text("");
-		$("#selectcount").text("");
-	});
-	//关闭模态框自动还原状态
-	$('#uploadFileModal').on('hidden.bs.modal', function(e) {
-		isUpLoading=false;
 	});
 });
 
@@ -916,7 +907,16 @@ function showUploadFileModel() {
 	$("#uploadFileAlert").removeClass("alert");
 	$("#uploadFileAlert").removeClass("alert-danger");
 	$("#uploadFileAlert").text("");
-	$('#uploadFileModal').modal('toggle');
+	if(isUpLoading==false){
+		$("#uploadfile").val("");
+		$("#filepath").val("");
+		$("#pros").width("0%");
+		$("#umbutton").attr('disabled', false);
+		$("#filecount").text("");
+		$("#uploadstatus").text("");
+		$("#selectcount").text("");
+	}
+	$('#uploadFileModal').modal('show');
 }
 
 // 点击文本框触发input:file选择文件动作
@@ -949,49 +949,53 @@ function showfilepath() {
 
 // 检查是否能够上传
 function checkUploadFile() {
-
-	$("#umbutton").attr('disabled', true);
-
-	$("#uploadFileAlert").removeClass("alert");
-	$("#uploadFileAlert").removeClass("alert-danger");
-	$("#uploadFileAlert").text("");
-
-	var filenames = new Array();
-	for (var i = 0; i < fs.length; i++) {
-		filenames[i] = fs[i].name.replace(/^.+?\\([^\\]+?)?$/gi, "$1");
-	}
-	var namelist = JSON.stringify(filenames);
-
-	$.ajax({
-		type : "POST",
-		dataType : "text",
-		data : {
-			folderId : locationpath,
-			namelist : namelist
-		},
-		url : "homeController/checkUploadFile.ajax",
-		success : function(result) {
-			if (result == "mustLogin") {
-				window.location.href = "login.html";
-			} else {
-				if (result == "errorParameter") {
-					showUploadFileAlert("提示：参数不正确，无法开始上传");
-				} else if (result == "noAuthorized") {
-					showUploadFileAlert("提示：您的操作未被授权，无法开始上传");
-				} else if (result.startsWith("duplicationFileName:")) {
-					showUploadFileAlert("提示：本路径下已存在同名的文件:["
-							+ result.substring(20) + "]，无法开始上传");
-				} else if (result == "permitUpload") {
-					doupload(1);
-				} else {
+	if(isUpLoading==false){
+		if(fs!=null&&fs.length>0){
+			isUpLoading=true;
+			$("#umbutton").attr('disabled', true);
+			$("#uploadFileAlert").removeClass("alert");
+			$("#uploadFileAlert").removeClass("alert-danger");
+			$("#uploadFileAlert").text("");
+			var filenames = new Array();
+			for (var i = 0; i < fs.length; i++) {
+				filenames[i] = fs[i].name.replace(/^.+?\\([^\\]+?)?$/gi, "$1");
+			}
+			var namelist = JSON.stringify(filenames);
+			
+			$.ajax({
+				type : "POST",
+				dataType : "text",
+				data : {
+					folderId : locationpath,
+					namelist : namelist
+				},
+				url : "homeController/checkUploadFile.ajax",
+				success : function(result) {
+					if (result == "mustLogin") {
+						window.location.href = "login.html";
+					} else {
+						if (result == "errorParameter") {
+							showUploadFileAlert("提示：参数不正确，无法开始上传");
+						} else if (result == "noAuthorized") {
+							showUploadFileAlert("提示：您的操作未被授权，无法开始上传");
+						} else if (result.startsWith("duplicationFileName:")) {
+							showUploadFileAlert("提示：本路径下已存在同名的文件:["
+									+ result.substring(20) + "]，无法开始上传");
+						} else if (result == "permitUpload") {
+							doupload(1);
+						} else {
+							showUploadFileAlert("提示：出现意外错误，无法开始上传");
+						}
+					}
+				},
+				error : function() {
 					showUploadFileAlert("提示：出现意外错误，无法开始上传");
 				}
-			}
-		},
-		error : function() {
-			showUploadFileAlert("提示：出现意外错误，无法开始上传");
+			});
+		}else{
+			showUploadFileAlert("提示：您未选择任何文件，无法开始上传");
 		}
-	});
+	}
 }
 
 var xhr;
@@ -1034,6 +1038,7 @@ function doupload(count) {
 						doupload(count + 1);
 					} else {
 						// 清空所有提示信息，还原上传窗口
+						isUpLoading=false;
 						$("#uploadfile").val("");
 						$("#filepath").val("");
 						$("#pros").width("0%");
@@ -1049,7 +1054,8 @@ function doupload(count) {
 							+ "]上传失败，上传被中断。");
 					$("#uls_" + count).text("[失败]");
 				} else {
-					$('#uploadFileModal').modal('hide');
+					showUploadFileAlert("提示：出现意外错误，文件：[" + fname
+							+ "]上传失败，上传被中断。");
 					$("#uls_" + count).text("[失败]");
 				}
 			} else {
@@ -1075,6 +1081,7 @@ function uploadProgress(evt) {
 
 // 显示上传文件状态提示
 function showUploadFileAlert(txt) {
+	isUpLoading=false;
 	$("#uploadFileAlert").addClass("alert");
 	$("#uploadFileAlert").addClass("alert-danger");
 	$("#uploadFileAlert").text(txt);
@@ -1222,6 +1229,7 @@ function showRenameFolderAlert(txt) {
 
 // 取消上传
 function abortUpload() {
+	isUpLoading=false;
 	if (xhr != null) {
 		xhr.abort();
 		$("#umbutton").attr('disabled', false);
