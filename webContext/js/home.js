@@ -53,11 +53,13 @@ $(function() {
 	$("body").keypress(function(e) {
 		var keyCode = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
 		if(keyCode == 13) {
-			var g=$(".shown .btn-primary");
-			if(g.get(0)!=null){
-				g.click();
-			}else{
+			if("sreachKeyWordIn"===document.activeElement.id){
 				doSearchFile();
+			}else{
+				var g=$(".shown .btn-primary");
+				if(g.get(0)!=null){
+					g.click();
+				}
 			}
 			return false;
 		}
@@ -165,8 +167,8 @@ $(function() {
 						}
 						if(testFile){
 							fs = e.dataTransfer.files; // 获取到拖入上传的文件对象
-							showfilepath();
 							showUploadFileModel();
+							showfilepath();
 							checkUploadFile();
 						}else{
 							alert("提示：您拖入的文件中包含了一个或多个文件夹，无法进行上传。");
@@ -908,6 +910,7 @@ function showUploadFileModel() {
 	$("#uploadFileAlert").removeClass("alert-danger");
 	$("#uploadFileAlert").text("");
 	if(isUpLoading==false){
+		$("#filepath").removeAttr("disabled");
 		$("#uploadfile").val("");
 		$("#filepath").val("");
 		$("#pros").width("0%");
@@ -951,6 +954,7 @@ function showfilepath() {
 function checkUploadFile() {
 	if(isUpLoading==false){
 		if(fs!=null&&fs.length>0){
+			$("#filepath").attr("disabled","disabled");
 			isUpLoading=true;
 			$("#umbutton").attr('disabled', true);
 			$("#uploadFileAlert").removeClass("alert");
@@ -1039,6 +1043,7 @@ function doupload(count) {
 					} else {
 						// 清空所有提示信息，还原上传窗口
 						isUpLoading=false;
+						$("#filepath").removeAttr("disabled");
 						$("#uploadfile").val("");
 						$("#filepath").val("");
 						$("#pros").width("0%");
@@ -1082,6 +1087,7 @@ function uploadProgress(evt) {
 // 显示上传文件状态提示
 function showUploadFileAlert(txt) {
 	isUpLoading=false;
+	$("#filepath").removeAttr("disabled");
 	$("#uploadFileAlert").addClass("alert");
 	$("#uploadFileAlert").addClass("alert-danger");
 	$("#uploadFileAlert").text(txt);
