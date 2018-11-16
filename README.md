@@ -1,6 +1,6 @@
 # kiftd——青阳网络文件传输系统 #
 ## 一款面向个人、团队、小型组织的网盘应用系统，免费、开源、完善。 ##
-### 欢迎访问kiftd官方资源站！Welcome to visit kiftd home page ：https://kohgylw.gitee.io/ ！###
+### 欢迎访问kiftd官方资源站！官方网站：https://kohgylw.gitee.io/ 
 
 -------
 
