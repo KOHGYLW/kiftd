@@ -2,6 +2,7 @@
  * home.js kiftd主页面操作定义 by 青阳龙野 该文件为home.html的操作定义文件，包含了kiftd页面上的主要操作实现。
  */
 
+//所用val名称列表，注意不要冲突，其中一些参数能够设定界面行为。
 var locationpath = "root";// 记录当前文件路径
 var parentpath = "null";// 记录当前文件路径的父级目录
 var ap;// 音乐播放器对象
@@ -13,7 +14,14 @@ var checkedMovefiles;// 移动文件的存储列表
 var constraintLevel;// 当前文件夹限制等级
 var account;// 用户账户
 var isUpLoading=false;// 是否正在执行其他上传操作
+var xhr;// 文件上传请求对象
+var viewerPageSize = 15; // 显示图片页的最大长度，注意最好是奇数
+var viewer; // viewer对象，用于预览图片功能
+var viewerPageIndex; // 分页预览图片——已浏览图片页号
+var viewerTotal; // 分页预览图片——总页码数
+var pvl;//预览图片列表的JSON格式对象
 
+//界面功能方法定义
 // 页面初始化
 $(function() {
 	getServerOS();// 得到服务器操作系统信息
@@ -218,6 +226,10 @@ $(function() {
 		$("#fim_creator").text(f.folderCreator);
 		$("#fim_folderCreationDate").text(f.folderCreationDate);
 		$("#fim_statistics").text("共包含 "+folderView.folderList.length+" 个文件夹， "+folderView.fileList.length+" 个文件。");
+	});
+	// 关闭下载提示模态框自动隐藏下载链接
+	$('#downloadModal').on('hidden.bs.modal', function(e) {
+		$('#downloadURLCollapse').collapse('hide');
 	});
 });
 
@@ -477,7 +489,7 @@ function showAccountView(folderView) {
 		// 说明用户未登录，显示登录按钮
 		$("#tb")
 				.append(
-						"<button class='btn btn-link rightbtn' data-toggle='modal' data-target='#loginModal'>登入<span class='glyphicon glyphicon-user' aria-hidden='true'></span></button>");
+						"<button class='btn btn-link rightbtn' data-toggle='modal' data-target='#loginModal'>登入 <span class='glyphicon glyphicon-user' aria-hidden='true'></span></button>");
 	}
 	var authList = folderView.authList;
 	// 对操作菜单进行初始化，根据权限显示可操作的按钮（并非约束）。
@@ -621,9 +633,13 @@ function showFolderTable(folderView) {
 						var fileRow = "<tr onclick='checkfile(" + '"'
 								+ fi.fileId + '"' + ")' id='" + fi.fileId
 								+ "' class='filerow'><td>" + fi.fileName
-								+ "</td><td>" + fi.fileCreationDate
-								+ "</td><td>" + fi.fileSize + "MB</td><td>"
-								+ fi.fileCreator + "</td><td>";
+								+ "</td><td>" + fi.fileCreationDate;
+						if(fi.fileSize=="0"){
+							fileRow=fileRow+"</td><td>&lt;1MB</td><td>";
+						}else{
+							fileRow=fileRow+"</td><td>" + fi.fileSize + "MB</td><td>";
+						}
+						fileRow=fileRow + fi.fileCreator + "</td><td>";
 						if (aL) {
 							fileRow = fileRow
 									+ "<button onclick='showDownloadModel("
@@ -646,7 +662,7 @@ function showFolderTable(folderView) {
 								fileRow = fileRow
 										+ "<button onclick='pdfView("
 										+ '"'
-										+ fi.fileId
+										+ fi.filePath
 										+ '"'
 										+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-eye-open'></span> 预览</button>";
 							} else if (getSuffix(fi.fileName) == "jpg"
@@ -1002,8 +1018,6 @@ function checkUploadFile() {
 	}
 }
 
-var xhr;
-
 // 执行文件上传并实现上传进度显示
 function doupload(count) {
 	var fcount = fs.length;
@@ -1098,6 +1112,7 @@ function showUploadFileAlert(txt) {
 function showDownloadModel(fileId, fileName) {
 	$("#downloadModal").modal('toggle');
 	$("#downloadFileName").text("提示：您确认要下载文件：[" + fileName + "]么？");
+	$("#downloadHrefBox").html("<a href='"+window.location.protocol+"//"+window.location.host+"/homeController/downloadFile.do?fileId="+fileId+"'>"+window.location.protocol+"//"+window.location.host+"/homeController/downloadFile.do?fileId="+fileId+"</a>");
 	$("#downloadFileBox")
 			.html(
 					"<button id='dlmbutton' type='button' class='btn btn-primary' onclick='dodownload("
@@ -1264,8 +1279,8 @@ function playVideo(fileId) {
 }
 
 // 预览PDF文档
-function pdfView(fileId) {
-	window.open("homeController/pdfView.do?fileId=" + fileId);
+function pdfView(filePath) {
+	window.open("/pdfview/web/viewer.html?file=/fileblocks/" + filePath);
 }
 
 // 查看图片
@@ -1279,29 +1294,23 @@ function showPicture(fileId) {
 		dataType : "text",
 		success : function(result) {
 			if (result != "ERROR") {
-				var pvl = eval("(" + result + ")");
+				pvl = eval("(" + result + ")");
 				// TODO 整合viewer.js插件
-				var imageslist = document.createElement("ul");
-				$.each(pvl.pictureViewList, function(n, val) {
-					var image = new Image();
-					// 判断直接显示原图还是请求压缩流
-					if(val.filePath.startsWith("homeController")){
-						image.src = val.filePath;
-					}else{
-						image.src = "fileblocks/"+val.filePath;
+				if(pvl.pictureViewList.length <= viewerPageSize) {
+					createViewList();// 以全列方式显示图片列表
+				} else {
+					// 以分页方式显示图片列表
+					viewerPageIndex = Math.ceil((pvl.index + 1) / viewerPageSize);
+					viewerTotal = Math.ceil(pvl.pictureViewList.length / viewerPageSize);
+					createViewListByPage();
+					var innerIndex = pvl.index - ((viewerPageIndex - 1) * viewerPageSize);
+					if(viewerPageIndex > 1) {
+						innerIndex++;
 					}
-					image.alt = val.fileName;
-					var imagerow = document.createElement("li");
-					imagerow.appendChild(image);
-					imageslist.appendChild(imagerow);
-				});
-				viewer = new Viewer(imageslist, {
-					hidden : function() {
-						viewer.destroy();
-					}
-				});
-				viewer.view(pvl.index);
-				viewer.show();
+					viewer.viewer('view', innerIndex);
+					viewer.viewer('show', true);
+				}
+				// end
 			} else {
 				alert("错误：无法定位要预览的文件或该操作未被授权。");
 			}
@@ -1310,6 +1319,83 @@ function showPicture(fileId) {
 			alert("错误：请求失败，请刷新重试。");
 		}
 	});
+}
+
+// 用于创建并显示小于2*limit+1长度的图片列表
+function createViewList() {
+	if(viewer == null) {
+		var images = document.createElement("ul");
+		for(var i = 0; i < pvl.pictureViewList.length; i++) {
+			if(pvl.pictureViewList[i].filePath.startsWith("homeController")){
+				$(images).append("<li><img src='" + pvl.pictureViewList[i].filePath + "' alt='" + pvl.pictureViewList[i].fileName + "' /></li>");
+			}else{
+				$(images).append("<li><img src='fileblocks/" + pvl.pictureViewList[i].filePath + "' alt='" + pvl.pictureViewList[i].fileName + "' /></li>");
+			}
+		}
+		viewer = $(images);
+		viewer.viewer({
+			loop: false,
+			hidden: function() {
+				viewer.data('viewer').destroy();
+				viewer = null;
+			}
+		});
+	}
+	viewer.viewer('view', pvl.index);
+	viewer.viewer('show', true);
+}
+
+// 用于创建长于2*limit+1长度的图片分页列表
+function createViewListByPage() {
+	// 初始化分页结构
+	if(viewer == null) {
+		var images = document.createElement("ul");
+		var startIndex = (viewerPageIndex - 1) * viewerPageSize;
+		if(viewerPageIndex > 1) {
+			$(images).append("<li><img src='css/left.png' alt='上一页' /></li>");
+		}
+		for(var i = 0; i < viewerPageSize && i < (pvl.pictureViewList.length - (viewerPageIndex - 1) * viewerPageSize); i++) {
+			if(pvl.pictureViewList[i].filePath.startsWith("homeController")){
+				$(images).append("<li><img src='" + pvl.pictureViewList[startIndex+i].filePath + "' alt='" + pvl.pictureViewList[startIndex+i].fileName + "' /></li>");
+			}else{
+				$(images).append("<li><img src='fileblocks/" + pvl.pictureViewList[startIndex+i].filePath + "' alt='" + pvl.pictureViewList[startIndex+i].fileName + "' /></li>");
+			}
+		}
+		if(viewerPageIndex < viewerTotal) {
+			$(images).append("<li><img src='css/right.png' alt='下一页' /></li>");
+		}
+		viewer = $(images);
+		viewer.viewer({
+			loop: false,
+			view: function(event) {
+				// 点击的计数为event.detail.index;
+				if(event.detail.index == 0 && viewerPageIndex != 1) {
+					viewerPageIndex--;
+					viewer.data('viewer').destroy();
+					viewer.empty();
+					viewer = null;
+					createViewListByPage();
+					if(viewerPageIndex > 1){
+						viewer.viewer('view',viewerPageSize);
+					}else{
+						viewer.viewer('view',viewerPageSize - 1);
+					}
+				} else if(event.detail.index == viewerPageSize + 1 || (event.detail.index == viewerPageSize && viewerPageIndex == 1)) {
+					viewerPageIndex++;
+					viewer.data('viewer').destroy();
+					viewer.empty();
+					viewer = null;
+					createViewListByPage();
+					viewer.viewer('view',1);
+				}
+			},
+			hidden: function() {
+				viewer.data('viewer').destroy();
+				viewer.empty();
+				viewer = null;
+			}
+		});
+	}
 }
 
 // 选中某一行文件，如果使用Shift点击则为多选

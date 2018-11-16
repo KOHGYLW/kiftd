@@ -56,16 +56,17 @@
 					<div class="panel-heading">
 						<div class="heading">
 							<div class="navbar-header">
-								<a href="javascript:void(0);" class="navbar-text" data-toggle="modal"
-									data-target="#folderInfoModal"><span id="folderIconSpan"
-									class="glyphicon glyphicon-folder-close"></span>&ensp;&ensp;<span
+								<a href="javascript:void(0);" class="navbar-text"
+									data-toggle="modal" data-target="#folderInfoModal"><span
+									id="folderIconSpan" class="glyphicon glyphicon-folder-close"></span>&ensp;&ensp;<span
 									id="currentFolderName"></span></a>
 							</div>
 							<div class="collapse navbar-collapse">
 								<ul class="nav navbar-nav">
-									<li class="dropdown"><a href="javascript:void(0);" class="dropdown-toggle"
-										data-toggle="dropdown" role="button" aria-haspopup="true"
-										aria-expanded="false">上一级 <span class="caret"></span></a>
+									<li class="dropdown"><a href="javascript:void(0);"
+										class="dropdown-toggle" data-toggle="dropdown" role="button"
+										aria-haspopup="true" aria-expanded="false">上一级 <span
+											class="caret"></span></a>
 										<ul class="dropdown-menu" id="parentFolderList"></ul></li>
 								</ul>
 								<form class="navbar-form navbar-left">
@@ -73,7 +74,8 @@
 										<input id="sreachKeyWordIn" type="text" class="form-control"
 											placeholder="请输入文件名...">
 									</div>
-									<button type="button" class="btn btn-default" onclick="doSearchFile()">搜索</button>
+									<button type="button" class="btn btn-default"
+										onclick="doSearchFile()">搜索</button>
 								</form>
 								<ul class="nav navbar-nav navbar-right">
 									<li id="packageDownloadBox"></li>
@@ -134,7 +136,7 @@
 					<form class="form-horizontal">
 						<div class="form-group" id="accountidbox">
 							<label for="accountid" id="accountidtitle"
-								class="col-sm-3 control-label">账户：</label>
+								class="col-sm-3 control-label">账户:</label>
 							<div class="col-sm-9">
 								<input type="text" class="form-control" id="accountid"
 									placeholder="请输入账户……">
@@ -142,7 +144,7 @@
 						</div>
 						<div class="form-group" id="accountpwdbox">
 							<label for="accountpwd" id="accountpwdtitle"
-								class="col-sm-3 control-label">密码：</label>
+								class="col-sm-3 control-label">密码:</label>
 							<div class="col-sm-9">
 								<input type="password" class="form-control" id="accountpwd"
 									placeholder="请输入密码……">
@@ -359,8 +361,8 @@
 	</div>
 	<!-- end 上传文件 -->
 	<!-- 下载提示框 -->
-	<div class="modal fade bs-example-modal-sm" id="downloadModal"
-		tabindex="-1" role="dialog" aria-labelledby="downloadModelTitle">
+	<div class="modal fade" id="downloadModal" tabindex="-1" role="dialog"
+		aria-labelledby="downloadModelTitle">
 		<div class="modal-dialog modal-sm" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -373,7 +375,12 @@
 					</h4>
 				</div>
 				<div class="modal-body">
-					<h5 id="downloadFileName">提示：您确认要下载文件：[]么？</h5>
+					<h5 id="downloadFileName" class="wordbreak">提示：您确认要下载文件：[]么？</h5>
+					<a href="javascript:void(0);"
+						onclick="$('#downloadURLCollapse').collapse('toggle')">下载链接+</a>
+					<div class="collapse" id="downloadURLCollapse">
+						<div id="downloadHrefBox" class="well well-sm wordbreak"></div>
+					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -581,8 +588,9 @@
 <script type="text/javascript" src="js/jsencrypt.min.js"></script>
 <!-- 图片查看器 -->
 <script type="text/javascript" src="js/viewer.min.js"></script>
+<script type="text/javascript" src="js/jquery-viewer.min.js"></script>
 <!-- 音乐播放器 -->
 <script type="text/javascript" src="js/APlayer.min.js"></script>
 <!-- 页面操作定义 -->
-<script type="text/javascript" src="js/home.min.js"></script>
+<script type="text/javascript" src="js/home.js"></script>
 </html>
