@@ -85,12 +85,21 @@
 											class="glyphicon glyphicon-cog"></span> 操作 <span
 											class="caret"></span></a>
 										<ul class="dropdown-menu" id="fileListDropDown">
-											<li id="createFolderButtonLi"><a>新建文件夹</a></li>
+											<li id="createFolderButtonLi"><a>新建文件夹 <span
+													class="pull-right"><span
+														class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>+N</span></a></li>
 											<li role="separator" class="divider"></li>
-											<li id="uploadFileButtonLi"><a>上传文件</a></li>
+											<li id="uploadFileButtonLi"><a>上传文件 <span
+													class="pull-right"><span
+														class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>+U</span></a></li>
 											<li role="separator" class="divider"></li>
-											<li id="cutFileButtonLi"><a><span id='cutSignTx'>剪切</span></a></li>
-											<li id="deleteSeelectFileButtonLi"><a>批量删除</a></li>
+											<li id="cutFileButtonLi"><a><span id='cutSignTx'>剪切
+														<span class="pull-right"><span
+															class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>+C</span>
+												</span></a></li>
+											<li id="deleteSeelectFileButtonLi"><a>批量删除 <span
+													class="pull-right"><span
+														class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>+D</span></a></li>
 										</ul></li>
 								</ul>
 							</div>
@@ -349,6 +358,17 @@
 						</div>
 					</div>
 					<div id="uploadFileAlert" role="alert"></div>
+					<div id="selectFileUpLoadModelAlert" class="alert alert-danger"
+						role="alert">
+						<h4>提示：存在同名文件！</h4>
+						<p>您要上传的文件“<span id="repeFileName"></span>”已存在于该路径下，您希望：</p>
+						<p><input id="selectFileUpLoadModelAsAll" type="checkbox"> 全部应用</p>
+						<p>
+							<button type="button" class="btn btn-danger btn-sm" onclick="selectFileUpLoadModelEnd('cover')">覆盖</button>
+							<button type="button" class="btn btn-default btn-sm" onclick="selectFileUpLoadModelEnd('skip')">跳过</button>
+							<button type="button" class="btn btn-default btn-sm" onclick="selectFileUpLoadModelEnd('both')">保留两者</button>
+						</p>
+					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default"
@@ -592,5 +612,5 @@
 <!-- 音乐播放器 -->
 <script type="text/javascript" src="js/APlayer.min.js"></script>
 <!-- 页面操作定义 -->
-<script type="text/javascript" src="js/home.js"></script>
+<script type="text/javascript" src="js/home.min.js"></script>
 </html>

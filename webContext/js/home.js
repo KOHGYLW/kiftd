@@ -2,7 +2,7 @@
  * home.js kiftd主页面操作定义 by 青阳龙野 该文件为home.html的操作定义文件，包含了kiftd页面上的主要操作实现。
  */
 
-//所用val名称列表，注意不要冲突，其中一些参数能够设定界面行为。
+// 所用val名称列表，注意不要冲突，其中一些参数能够设定界面行为。
 var locationpath = "root";// 记录当前文件路径
 var parentpath = "null";// 记录当前文件路径的父级目录
 var ap;// 音乐播放器对象
@@ -19,14 +19,15 @@ var viewerPageSize = 15; // 显示图片页的最大长度，注意最好是奇�
 var viewer; // viewer对象，用于预览图片功能
 var viewerPageIndex; // 分页预览图片——已浏览图片页号
 var viewerTotal; // 分页预览图片——总页码数
-var pvl;//预览图片列表的JSON格式对象
+var pvl;// 预览图片列表的JSON格式对象
+var checkFilesTip="提示：您还未选择任何文件，请先选中一些文件后再执行本操作：<br /><br /><kbd>单击</kbd>：选中某一文件<br /><br /><kbd><kbd>Shift</kbd>+<kbd>单击</kbd></kbd>：选中多个文件<br /><br /><kbd><kbd>Shift</kbd>+<kbd>双击</kbd></kbd>：选中连续的文件<br /><br /><kbd><kbd>Shitf</kbd>+<kbd>A</kbd></kbd>：选中/取消选中所有文件";// 选取文件提示
 
-//界面功能方法定义
+// 界面功能方法定义
 // 页面初始化
 $(function() {
 	getServerOS();// 得到服务器操作系统信息
 	showFolderView("root");// 显示根节点页面视图
-	// 点击空白处取消选中文件并重新加载文件视图（不支持火狐）
+	// 点击空白处取消选中文件（不支持火狐）
 	$(document).click(function(e) {
 		var filetable = $("#filetable")[0];
 		if (e.target !== filetable && !$.contains(filetable, e.target)) {
@@ -51,7 +52,7 @@ $(function() {
 		$("#accountid").val('');
 		$("#accountpwd").val('');
 	});
-	// 各个模态框的回车响应功能。该功能仅对“首选”的按钮有效，对其他按钮无效，以避免用户误操作。
+	// 各个模态框的打开判定及回车响应功能。该功能仅对“首选”的按钮有效，对其他按钮无效，以避免用户误操作。
 	$('.modal').on('shown.bs.modal', function(e) {
 		$(this).addClass("shown");
 	});
@@ -192,19 +193,44 @@ $(function() {
 			alert("提示：您不具备上传权限，无法上传文件。");
 		}
 	}
-	// Shift+A全选文件/反选文件
+	// Shift+A全选文件/反选文件，Shift+N新建文件夹，Shift+U上传文件，Shift+C&V剪切粘贴，Shift+D批量删除
 	$(document).keypress(function (e) {
-		var keyCode = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
-		if (keyCode == 65){
+		if($('.modal.shown').length == 0 || ($('.modal.shown').length == 1 && $('.modal.shown').attr('id') == 'loadingModal')){
+			var keyCode = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
 			if (window.event.shiftKey) {
-				checkallfile();
+				switch (keyCode) {
+				case 65:
+					checkallfile();
+					break;
+				case 78:
+					$('#createFolderButtonLi a').click();
+					break;
+				case 85:
+					$('#uploadFileButtonLi a').click();
+					break;
+				case 68:
+					$('#deleteSeelectFileButtonLi a').click();
+					break;
+				case 67:
+					$('#cutFileButtonLi a').click();
+					break;
+				case 86:
+					if($("#cutSignTx").hasClass("cuted")&&checkedMovefiles!==undefined){
+						$('#cutFileButtonLi a').click();
+					}
+					break;
+	
+				default:
+					break;
+				}
+				return false;
 			}
 		}
 	});
 	// 关闭移动提示框自动取消移动
 	$('#moveFilesModal').on('hidden.bs.modal', function(e) {
 		checkedMovefiles=undefined;
-		$("#cutSignTx").text("剪切");
+		$("#cutSignTx").html("剪切 <span class='pull-right'><span class='glyphicon glyphicon-arrow-up' aria-hidden='true'></span>+C</span>");
 		$("#cutSignTx").removeClass("cuted");
 		$('#moveFilesBox').html("");
 	});
@@ -308,11 +334,13 @@ function showFolderView(fid) {
 function startLoading(){
 	$('#loadingModal').modal({backdrop:'static', keyboard: false}); 
 	$('#loadingModal').modal('show');
+	$('#loadingModal').addClass("shown");
 }
 
 // 结束文件视图加载动画
 function endLoading(){
 	$('#loadingModal').modal('hide');
+	$('#loadingModal').removeClass("shown");
 }
 
 // 开始登陆加载动画
@@ -631,7 +659,7 @@ function showFolderTable(folderView) {
 					folderView.fileList,
 					function(n, fi) {
 						var fileRow = "<tr onclick='checkfile(" + '"'
-								+ fi.fileId + '"' + ")' id='" + fi.fileId
+								+ fi.fileId + '"' + ")' ondblclick='checkConsFile("+'"'+fi.fileId+'"'+")' id='" + fi.fileId
 								+ "' class='filerow'><td>" + fi.fileName
 								+ "</td><td>" + fi.fileCreationDate;
 						if(fi.fileSize=="0"){
@@ -930,10 +958,12 @@ function showUploadFileModel() {
 		$("#uploadfile").val("");
 		$("#filepath").val("");
 		$("#pros").width("0%");
+		$("#pros").attr('aria-valuenow','0');
 		$("#umbutton").attr('disabled', false);
 		$("#filecount").text("");
 		$("#uploadstatus").text("");
 		$("#selectcount").text("");
+		$("#selectFileUpLoadModelAlert").hide();
 	}
 	$('#uploadFileModal').modal('show');
 }
@@ -971,8 +1001,9 @@ function checkUploadFile() {
 	if(isUpLoading==false){
 		if(fs!=null&&fs.length>0){
 			$("#filepath").attr("disabled","disabled");
-			isUpLoading=true;
 			$("#umbutton").attr('disabled', true);
+			isUpLoading=true;
+			repeModelList=null;
 			$("#uploadFileAlert").removeClass("alert");
 			$("#uploadFileAlert").removeClass("alert-danger");
 			$("#uploadFileAlert").text("");
@@ -999,8 +1030,9 @@ function checkUploadFile() {
 						} else if (result == "noAuthorized") {
 							showUploadFileAlert("提示：您的操作未被授权，无法开始上传");
 						} else if (result.startsWith("duplicationFileName:")) {
-							showUploadFileAlert("提示：本路径下已存在同名的文件:["
-									+ result.substring(20) + "]，无法开始上传");
+							repeList=eval("("+result.substring(20)+")");
+							repeIndex=0;
+							selectFileUpLoadModelStart();
 						} else if (result == "permitUpload") {
 							doupload(1);
 						} else {
@@ -1018,10 +1050,42 @@ function checkUploadFile() {
 	}
 }
 
+var repeList;//这个是重复文件名的列表，型如['xxx','ooo',...]
+var repeIndex;//当前设定上传模式的文件序号
+var repeModelList;//这个是对每一个重复文件选取的上传模式，型如{'xxx':'skip','ooo':'both',...}
+
+// 针对同名文件，选择上传的模式：跳过（skip）、覆盖（cover）和保留两者（both）
+function selectFileUpLoadModelStart(){
+	$("#selectFileUpLoadModelAlert").show();
+	$("#repeFileName").text(repeList[repeIndex]);
+}
+
+function selectFileUpLoadModelEnd(t){
+	if(repeModelList == null){
+		repeModelList={};
+	}
+	repeModelList[$("#repeFileName").text()]=t;
+	$("#selectFileUpLoadModelAlert").hide();
+	if($('#selectFileUpLoadModelAsAll').prop('checked')){
+		for(var i=repeIndex;i<repeList.length;i++){
+			repeModelList[repeList[i]]=t;
+		}
+		doupload(1);
+	}else{
+		repeIndex++;
+		if(repeIndex<repeList.length){
+			selectFileUpLoadModelStart();
+		}else{
+			doupload(1);
+		}
+	}
+}
+
 // 执行文件上传并实现上传进度显示
 function doupload(count) {
 	var fcount = fs.length;
 	$("#pros").width("0%");// 先将进度条置0
+	$("#pros").attr('aria-valuenow',"0");
 	var uploadfile = fs[count - 1];// 获取要上传的文件
 	if (uploadfile != null) {
 		var fname = uploadfile.name;
@@ -1037,7 +1101,31 @@ function doupload(count) {
 
 		fd.append("file", uploadfile);// 将文件对象添加到FormData对象中，字段名为uploadfile
 		fd.append("folderId", locationpath);
-
+		if(repeModelList != null && repeModelList[fname] != null){
+			if(repeModelList[fname] == 'skip'){
+				$("#uls_" + count).text("[已完成]");
+				if (count < fcount) {
+					doupload(count + 1);
+					return ;
+				} else {
+					// 清空所有提示信息，还原上传窗口
+					isUpLoading=false;
+					$("#filepath").removeAttr("disabled");
+					$("#uploadfile").val("");
+					$("#filepath").val("");
+					$("#pros").width("0%");
+					$("#pros").attr('aria-valuenow',"0");
+					$("#umbutton").attr('disabled', false);
+					$("#filecount").text("");
+					$("#uploadstatus").text("");
+					$("#selectcount").text("");
+					$('#uploadFileModal').modal('hide');
+					showFolderView(locationpath);
+					return ;
+				}
+			}
+			fd.append("repeType", repeModelList[fname]);
+		}
 		xhr.open("POST", "homeController/douploadFile.ajax", true);// 上传目标
 
 		xhr.upload.addEventListener("progress", uploadProgress, false);// 这个是对上传进度的监听
@@ -1061,6 +1149,7 @@ function doupload(count) {
 						$("#uploadfile").val("");
 						$("#filepath").val("");
 						$("#pros").width("0%");
+						$("#pros").attr('aria-valuenow',"0");
 						$("#umbutton").attr('disabled', false);
 						$("#filecount").text("");
 						$("#uploadstatus").text("");
@@ -1095,10 +1184,11 @@ function uploadProgress(evt) {
 		var percentComplete = Math.round((evt.loaded) * 100 / evt.total);
 		// 加载进度条，同时显示信息
 		$("#pros").width(percentComplete + "%");
+		$("#pros").attr('aria-valuenow',""+percentComplete);
 	}
 }
 
-// 显示上传文件状态提示
+// 显示上传文件错误提示
 function showUploadFileAlert(txt) {
 	isUpLoading=false;
 	$("#filepath").removeAttr("disabled");
@@ -1255,6 +1345,7 @@ function abortUpload() {
 		xhr.abort();
 		$("#umbutton").attr('disabled', false);
 		$("#pros").width("0%");
+		$("#pros").attr('aria-valuenow',"0");
 		$("#filecount").text("");
 	}
 	$("#uploadfile").val("");
@@ -1400,14 +1491,36 @@ function createViewListByPage() {
 
 // 选中某一行文件，如果使用Shift点击则为多选
 function checkfile(fileId) {
-	if (!window.event.shiftKey) {
+	if(!window.event.shiftKey){
 		$(".filerow").removeClass("info");
 		$("#" + fileId).addClass("info");
-	} else {
+	}else{
 		if ($("#" + fileId).hasClass("info")) {
 			$("#" + fileId).removeClass("info");
 		} else {
 			$("#" + fileId).addClass("info");
+		}
+	}
+}
+
+// 连续选中若干行文件：Shift+双击，选中规则为：前有选前，后有选后，全有也选后。
+function checkConsFile(fileId){
+	if(window.event.shiftKey){
+		var endRow=$("#" + fileId);
+		var endRowIndex=endRow.index();
+		var startRowIndex=$('.filerow.info:last').index();
+		if(startRowIndex != -1){
+			if(startRowIndex < endRowIndex){
+				while(endRow[0] && !endRow.hasClass("info")){
+					endRow.addClass("info");
+					endRow=endRow.prev();
+				}
+			}else{
+				while(endRow[0] && !endRow.hasClass("info")){
+					endRow.addClass("info");
+					endRow=endRow.next();
+				}
+			}
 		}
 	}
 }
@@ -1431,9 +1544,7 @@ function showDownloadAllCheckedModel() {
 	$("#downloadAllCheckedLoad").text("");
 	var checkedfiles = $(".info").get();
 	if (checkedfiles.length == 0) {
-		$("#downloadAllCheckedName")
-				.text(
-						"提示：您还未选择任何文件，请先选中一些文件后再执行本操作（点击某一文件行来选中单一文件；按住Shift并点击文件行选中多个文件；使用Shitf+A选中/取消选中所有文件）。");
+		$("#downloadAllCheckedName").html(checkFilesTip);
 	} else {
 		$("#downloadAllCheckedName").text(
 				"提示：您确认要打包并下载这" + checkedfiles.length + "项么？");
@@ -1531,9 +1642,7 @@ function showDeleteAllCheckedModel() {
 	var checkedfiles = $(".info").get();
 	$("#dfmbutton").attr('disabled', false);
 	if (checkedfiles.length == 0) {
-		$('#deleteFileMessage')
-				.text(
-						"提示：您还未选择任何文件，请先选中一些文件后再执行本操作（点击某一文件行来选中单一文件；按住Shift并点击文件行选中多个文件；使用Shift+A选中/取消选中所有文件）。");
+		$('#deleteFileMessage').html(checkFilesTip);
 	} else {
 		$('#deleteFileBox')
 				.html(
@@ -1764,10 +1873,10 @@ function startMoveFile(){
 	}else{
 		checkedMovefiles = $("#foldertable .info").get();
 		if (checkedMovefiles==undefined||checkedMovefiles.length == 0) {
-			$('#moveFilesMessage').text("提示：您还未选择任何文件，请先选中一些文件后再执行本操作（点击某一文件行来选中单一文件；按住Shift并点击文件行选中多个文件；使用Shift+A选中/取消选中所有文件）。");
+			$('#moveFilesMessage').html(checkFilesTip);
 			$('#moveFilesModal').modal('show');
 		} else {
-			$("#cutSignTx").text("粘贴（"+checkedMovefiles.length+"）");
+			$("#cutSignTx").html("粘贴（"+checkedMovefiles.length+"）<span class='pull-right'><span class='glyphicon glyphicon-arrow-up' aria-hidden='true'></span>+V</span>");
 			$("#cutSignTx").addClass("cuted");
 		}
 	}

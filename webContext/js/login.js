@@ -2,6 +2,19 @@
  * login.html
  */
 
+$(function() {
+	// 回车键快捷操作
+	$("body").keypress(function(e) {
+		var keyCode = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
+		if (keyCode == 13) {
+			var g = $("#loginBtn").click();
+			return false;
+		}
+	});
+	// 打开页面自动聚焦账户输入框
+	$("#accountid").focus();
+})
+
 function dologin() {
 	var accountId = $("#accountid").val();
 	var accountPwd = $("#accountpwd").val();
@@ -25,7 +38,7 @@ function dologin() {
 			url : "homeController/getPublicKey.ajax",
 			data : {},
 			success : function(result) {
-				var publicKeyInfo=eval("("+result+")");
+				var publicKeyInfo = eval("(" + result + ")");
 				var loginInfo = '{accountId:"' + accountId + '",accountPwd:"'
 						+ accountPwd + '",time:"' + publicKeyInfo.time + '"}';
 				var encrypt = new JSEncrypt();// 加密插件对象

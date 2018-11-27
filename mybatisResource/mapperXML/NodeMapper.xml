@@ -15,7 +15,8 @@
 
 	<select id="queryByParentFolderId" parameterType="java.lang.String"
 		resultMap="BaseResultMap">
-		SELECT * FROM FILE WHERE file_parent_folder = #{pfid,jdbcType=VARCHAR}
+		SELECT * FROM FILE WHERE file_parent_folder =
+		#{pfid,jdbcType=VARCHAR}
 	</select>
 
 	<insert id="insert" parameterType="kohgylw.kiftd.server.model.Node">
@@ -23,21 +24,36 @@
 		VALUES(#{fileId,jdbcType=VARCHAR},#{fileName,jdbcType=VARCHAR},#{fileSize,jdbcType=VARCHAR},#{fileParentFolder,jdbcType=VARCHAR},#{fileCreationDate,jdbcType=VARCHAR},#{fileCreator,jdbcType=VARCHAR},#{filePath,jdbcType=VARCHAR})
 	</insert>
 
+	<update id="update" parameterType="kohgylw.kiftd.server.model.Node">
+		UPDATE FILE SET file_name =
+		#{fileName,jdbcType=VARCHAR},file_size =
+		#{fileSize,jdbcType=VARCHAR},file_parent_folder =
+		#{fileParentFolder,jdbcType=VARCHAR},file_creation_date =
+		#{fileCreationDate,jdbcType=VARCHAR},file_creator =
+		#{fileCreator,jdbcType=VARCHAR},file_path =
+		#{filePath,jdbcType=VARCHAR} WHERE file_id =
+		#{fileId,jdbcType=VARCHAR}
+	</update>
+
 	<delete id="deleteByParentFolderId" parameterType="java.lang.String">
-		DELETE FROM FILE WHERE file_parent_folder = #{pfid,jdbcType=VARCHAR}
+		DELETE FROM
+		FILE WHERE file_parent_folder = #{pfid,jdbcType=VARCHAR}
 	</delete>
 
 	<delete id="deleteById" parameterType="java.lang.String">
-		DELETE FROM FILE WHERE file_id = #{fileId,jdbcType=VARCHAR}
+		DELETE FROM FILE WHERE
+		file_id = #{fileId,jdbcType=VARCHAR}
 	</delete>
 
 	<select id="queryById" parameterType="java.lang.String"
 		resultMap="BaseResultMap">
-		SELECT * FROM FILE WHERE file_id = #{fileId,jdbcType=VARCHAR}
+		SELECT * FROM FILE WHERE file_id =
+		#{fileId,jdbcType=VARCHAR}
 	</select>
 
 	<update id="updateFileNameById" parameterType="java.util.Map">
-		UPDATE FILE SET file_name = #{newFileName,jdbcType=VARCHAR} WHERE file_id =
+		UPDATE FILE SET
+		file_name = #{newFileName,jdbcType=VARCHAR} WHERE file_id =
 		#{fileId,jdbcType=VARCHAR}
 	</update>
 
@@ -47,17 +63,21 @@
 
 	<select id="queryByPath" parameterType="java.lang.String"
 		resultMap="BaseResultMap">
-		SELECT * FROM FILE WHERE file_path = #{path,jdbcType=VARCHAR}
+		SELECT * FROM FILE WHERE file_path =
+		#{path,jdbcType=VARCHAR}
 	</select>
 
 	<select id="queryBySomeFolder" parameterType="java.lang.String"
 		resultMap="BaseResultMap">
-		SELECT * FROM FILE WHERE file_parent_folder in (SELECT file_parent_folder
-		FROM FILE WHERE file_id = #{fileId,jdbcType=VARCHAR})
+		SELECT * FROM FILE WHERE file_parent_folder in (SELECT
+		file_parent_folder
+		FROM FILE WHERE file_id =
+		#{fileId,jdbcType=VARCHAR})
 	</select>
 
 	<update id="moveById" parameterType="java.util.Map">
-		UPDATE FILE SET file_parent_folder = #{locationpath,jdbcType=VARCHAR} WHERE file_id =
+		UPDATE FILE SET
+		file_parent_folder = #{locationpath,jdbcType=VARCHAR} WHERE file_id =
 		#{fileId,jdbcType=VARCHAR}
 	</update>
 
