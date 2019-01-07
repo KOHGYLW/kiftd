@@ -34,11 +34,11 @@ _注：kift为该功能的开发名称，其实际成果命名为kiftd。_
 ## kiftd有哪些优势？
  ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 无上传限制——1MB的文档和超过4GB的高清电影资源？均能够随意上传和下载。
 
- ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 支持移动端操作，即使没有数据线，手机、平板、电脑之间也能文件互传。
-
  ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 主流商业网盘特有的高级功能甚至需要收费的功能——文件夹访问权限控制、MP4视频在线影院、MP3音乐在线欣赏、图片文件在线预览、PDF文档在线阅读...kiftd均一一具备，每一份kiftd均是“完全版”。
 
  ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 操作系统全兼容——无论是Windows、Linux还是Unix(包括Mac OS X)，均可运行使用。
+
+ ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 支持移动端操作，即使没有数据线，手机、平板、电脑之间也能文件互传。
 
  ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 同时满足日常需求or专业需求——kiftd同时具备了图形界面模式和纯命令模式的双操作模式，无论您是喜欢点击鼠标的电脑小白还是需要使用命令在远程Linux上部署的运维人员，均能完美操作。
 
