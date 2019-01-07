@@ -101,8 +101,8 @@
 		$("#playerbox")
 				.html(
 						"<video id='kiftplayer' class='video-js col-md-12' controls preload='auto' height='500'>"
-								+ "<source src='fileblocks/"+f.filePath+"' type='video/mp4'>"
-								+ "<source src='fileblocks/"+f.filePath+"' type='video/webm'>"
+								+ "<source src='resourceController/getResource.do?fid="+f.fileId+"' type='video/mp4'>"
+								+ "<source src='resourceController/getResource.do?fid="+f.fileId+"' type='video/webm'>"
 								+ "</video>");
 		var player = videojs('kiftplayer');
 		player.ready(function() {

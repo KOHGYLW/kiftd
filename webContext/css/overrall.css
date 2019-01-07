@@ -32,8 +32,8 @@
 }
 
 .heading {
-	margin-top:-10px;
-	margin-bottom:-10px;
+	margin-top: -10px;
+	margin-bottom: -10px;
 }
 
 .centerText {
@@ -67,6 +67,14 @@ body {
 	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=70);
 }
 
-.wordbreak{
-	word-break:break-all
+.wordbreak {
+	word-break: break-all
+}
+
+.filetableheaderstyle {
+	height: 40px;
+	float: left;
+	height: 100%;
+	margin-top: 15px;
+	overflow: hidden;
 }

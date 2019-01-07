@@ -45,5 +45,11 @@
 		UPDATE FOLDER SET folder_constraint = #{newConstraint,jdbcType=INTEGER} WHERE folder_id
 		= #{folderId,jdbcType=VARCHAR}
 	</update>
+	
+	<update id="moveById" parameterType="java.util.Map">
+		UPDATE FOLDER SET
+		folder_parent = #{locationpath,jdbcType=VARCHAR} WHERE folder_id =
+		#{folderId,jdbcType=VARCHAR}
+	</update>
 
 </mapper>

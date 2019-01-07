@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="renderer" content="webkit">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
 <title>KIFT</title>
 <!-- Bootstrap基本框架 -->
 <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="css/APlayer.min.css">
 <!-- 页面图标 -->
 <link rel="icon" type="image/x-icon" href="css/icon.png" />
-<!-- 尴尬的支持老古董浏览器专用设置（我最终还是决定加上了，因为确实不能保证每个人都有一个chrome） -->
+<!-- 对旧浏览器的支持部分... -->
 <!--[if lt IE 9]>
       <script src="js/html5shiv.min.js"></script>
       <script src="js/respond.min.js"></script>
@@ -28,12 +28,16 @@
 <body>
 	<!-- 显示主体 -->
 	<div class="container">
-		<!-- 页面标题 -->
+		<!-- 页面标题栏 -->
 		<div class="row">
 			<div class="col-md-12">
 				<div class="titlebox">
-					<span class="titletext"><em> 青阳网络文件传输系统 <small><span
-								class="graytext">KIFT</span></small></em></span> <span id="tb" class="rightbtn"></span>
+					<span class="titletext"> <!-- 主标题，如需修改请替换后方标签内的文字 --> <em>
+							青阳网络文件传输系统 <small> <!-- 副标题，如需修改请替换后方标签内的文字 --> <span
+								class="graytext">KIFT</span>
+						</small>
+					</em>
+					</span> <span id="tb" class="rightbtn"></span>
 					<button class="btn btn-link rightbtn" onclick="refreshFolderView()">
 						刷新 <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
 					</button>
@@ -44,6 +48,12 @@
 		<!-- 信息栏、操作栏与文件列表 -->
 		<div class="row">
 			<div class="col-md-12">
+				<p id="vicetbbox" class="subtitle" style="display: none;">
+					<span id="tb2"></span>
+					<button class="btn btn-link" onclick="refreshFolderView()">
+						刷新 <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+					</button>
+				</p>
 				<p class="subtitle">
 					文件同步时间：<span id="publishTime"></span>
 				</p>
@@ -56,12 +66,13 @@
 					<div class="panel-heading">
 						<div class="heading">
 							<div class="navbar-header">
-								<a href="javascript:void(0);" class="navbar-text"
-									data-toggle="modal" data-target="#folderInfoModal"><span
-									id="folderIconSpan" class="glyphicon glyphicon-folder-close"></span>&ensp;&ensp;<span
-									id="currentFolderName"></span></a>
+								<a id="filetableheadera" href="javascript:void(0);"
+									class="navbar-text" data-toggle="modal"
+									data-target="#folderInfoModal"><span id="folderIconSpan"
+									class="glyphicon glyphicon-folder-close"></span>&ensp;&ensp;<span
+									id="currentFolderName"></span> <span id="mdropdownicon"></span></a>
 							</div>
-							<div class="collapse navbar-collapse">
+							<div class="collapse navbar-collapse" id="filetableoptmenu">
 								<ul class="nav navbar-nav">
 									<li class="dropdown"><a href="javascript:void(0);"
 										class="dropdown-toggle" data-toggle="dropdown" role="button"
@@ -69,7 +80,8 @@
 											class="caret"></span></a>
 										<ul class="dropdown-menu" id="parentFolderList"></ul></li>
 								</ul>
-								<form class="navbar-form navbar-left">
+								<form id="filetableoptmenusreach"
+									class="navbar-form navbar-left">
 									<div class="form-group">
 										<input id="sreachKeyWordIn" type="text" class="form-control"
 											placeholder="请输入文件名...">
@@ -79,7 +91,8 @@
 								</form>
 								<ul class="nav navbar-nav navbar-right">
 									<li id="packageDownloadBox"></li>
-									<li class="dropdown"><a class="dropdown-toggle"
+									<li class="dropdown" id="operationMenuBox"
+										data-toggle="popover"><a class="dropdown-toggle"
 										data-toggle="dropdown" role="button" aria-haspopup="true"
 										aria-expanded="false"><span
 											class="glyphicon glyphicon-cog"></span> 操作 <span
@@ -97,7 +110,7 @@
 														<span class="pull-right"><span
 															class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>+C</span>
 												</span></a></li>
-											<li id="deleteSeelectFileButtonLi"><a>批量删除 <span
+											<li id="deleteSeelectFileButtonLi"><a>删除 <span
 													class="pull-right"><span
 														class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>+D</span></a></li>
 										</ul></li>
@@ -110,12 +123,12 @@
 							<tr>
 								<th onclick="sortbyfn()">文件名<span id="sortByFN"
 									aria-hidden="true" style="float: right"></span></th>
-								<th onclick="sortbycd()">创建日期<span id="sortByCD"
-									aria-hidden="true" style="float: right"></span></th>
+								<th class="hiddenColumn" onclick="sortbycd()">创建日期<span
+									id="sortByCD" aria-hidden="true" style="float: right"></span></th>
 								<th onclick="sortbyfs()">大小<span id="sortByFS"
 									aria-hidden="true" style="float: right"></span></th>
-								<th onclick="sortbycn()">创建者<span id="sortByCN"
-									aria-hidden="true" style="float: right"></span></th>
+								<th class="hiddenColumn" onclick="sortbycn()">创建者<span
+									id="sortByCN" aria-hidden="true" style="float: right"></span></th>
 								<th onclick="showOriginFolderView()">操作</th>
 							</tr>
 						</thead>
@@ -361,12 +374,20 @@
 					<div id="selectFileUpLoadModelAlert" class="alert alert-danger"
 						role="alert">
 						<h4>提示：存在同名文件！</h4>
-						<p>您要上传的文件“<span id="repeFileName"></span>”已存在于该路径下，您希望：</p>
-						<p><input id="selectFileUpLoadModelAsAll" type="checkbox"> 全部应用</p>
 						<p>
-							<button type="button" class="btn btn-danger btn-sm" onclick="selectFileUpLoadModelEnd('cover')">覆盖</button>
-							<button type="button" class="btn btn-default btn-sm" onclick="selectFileUpLoadModelEnd('skip')">跳过</button>
-							<button type="button" class="btn btn-default btn-sm" onclick="selectFileUpLoadModelEnd('both')">保留两者</button>
+							您要上传的文件“<span id="repeFileName"></span>”已存在于该路径下，您希望：
+						</p>
+						<p>
+							<input id="selectFileUpLoadModelAsAll" type="checkbox">
+							全部应用
+						</p>
+						<p>
+							<button type="button" class="btn btn-danger btn-sm"
+								onclick="selectFileUpLoadModelEnd('cover')">覆盖</button>
+							<button type="button" class="btn btn-default btn-sm"
+								onclick="selectFileUpLoadModelEnd('skip')">跳过</button>
+							<button type="button" class="btn btn-default btn-sm"
+								onclick="selectFileUpLoadModelEnd('both')">保留两者</button>
 						</p>
 					</div>
 				</div>
@@ -521,7 +542,7 @@
 					</button>
 					<button type="button" class="btn btn-primary" id="playOrPause"
 						onclick="audio_playOrPause()">
-						<span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
+						<span class='glyphicon glyphicon-play' aria-hidden='true'></span>
 					</button>
 					<button type="button" class="btn btn-default" onclick="audio_fw()">
 						<span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
@@ -559,6 +580,25 @@
 				</div>
 				<div class="modal-body">
 					<h5 id="moveFilesMessage"></h5>
+					<div id="selectFileMoveModelAlert" class="alert alert-danger"
+						role="alert">
+						<h4>提示：存在同名文件！</h4>
+						<p>
+							您要移动的文件“<span id="mrepeFileName"></span>”已存在于该路径下，您希望：
+						</p>
+						<p>
+							<input id="selectFileMoveModelAsAll" type="checkbox">
+							全部应用
+						</p>
+						<p>
+							<button type="button" class="btn btn-danger btn-sm"
+								onclick="selectFileMoveModel('cover')">覆盖</button>
+							<button type="button" class="btn btn-default btn-sm"
+								onclick="selectFileMoveModel('skip')">跳过</button>
+							<button type="button" class="btn btn-default btn-sm"
+								onclick="selectFileMoveModel('both')">保留两者</button>
+						</p>
+					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
