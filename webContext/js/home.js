@@ -89,6 +89,7 @@ $(function() {
 		$("#folderalert").removeClass("alert");
 		$("#folderalert").removeClass("alert-danger");
 		$("#foldernamebox").removeClass("has-error");
+		$("#folderalert").text("");
 		$("#foldername").val("");
 		$("#foldertypelist").html("");
 		if(account!=null){
@@ -850,13 +851,13 @@ function createfolder() {
 					window.location.href = "login.html";
 				} else {
 					if (result == "noAuthorized") {
-						showFolderAlert("提示：您的操作未被授权，创建文件夹失败");
+						showFolderAlert("提示：您的操作未被授权，创建文件夹失败。");
 					} else if (result == "errorParameter") {
-						showFolderAlert("提示：参数不正确，创建文件夹失败");
+						showFolderAlert("提示：参数不正确，创建文件夹失败。");
 					} else if (result == "cannotCreateFolder") {
-						showFolderAlert("提示：出现意外错误，可能未能创建文件夹");
-					} else if (result == "folderAlreadyExist") {
-						showFolderAlert("提示：该文件夹已经存在，请更换文件夹名称");
+						showFolderAlert("提示：出现意外错误，可能未能创建文件夹。");
+					} else if (result == "nameOccupied") {
+						showFolderAlert("提示：该名称已被占用，请选取其他名称。");
 					} else if (result == "createFolderSuccess") {
 						$('#newFolderModal').modal('hide');
 						showFolderView(locationpath);
@@ -962,9 +963,9 @@ function renameFolder(folderId) {
 	var fc=$("#newfoldername").attr("folderConstraintLevel");
 	var reg = new RegExp("^[0-9a-zA-Z_\\u4E00-\\u9FFF]+$", "g");
 	if (newName.length == 0) {
-		showRenameFolderAlert("提示：文件夹名称不能为空。");
+		showRFolderAlert("提示：文件夹名称不能为空。");
 	} else if (newName.length > 20) {
-		showRenameFolderAlert("提示：文件夹名称太长。");
+		showRFolderAlert("提示：文件夹名称太长。");
 	} else if (reg.test(newName)) {
 		$("#newfolderalert").removeClass("alert");
 		$("#newfolderalert").removeClass("alert-danger");
@@ -984,28 +985,30 @@ function renameFolder(folderId) {
 					window.location.href = "login.html";
 				} else {
 					if (result == "noAuthorized") {
-						showRenameFolderAlert("提示：您的操作未被授权，编辑失败");
+						showRFolderAlert("提示：您的操作未被授权，编辑失败。");
 					} else if (result == "errorParameter") {
-						showRenameFolderAlert("提示：参数不正确，编辑失败，请刷新后重试");
+						showRFolderAlert("提示：参数不正确，编辑失败，请刷新后重试。");
+					} else if (result == "nameOccupied") {
+						showRFolderAlert("提示：该名称已被占用，请选取其他名称。");
 					} else if (result == "renameFolderSuccess") {
 						$('#renameFolderModal').modal('hide');
 						showFolderView(locationpath);
 					} else {
-						showRenameFolderAlert("提示：出现意外错误，可能未能编辑文件夹，请刷新后重试");
+						showRFolderAlert("提示：出现意外错误，可能未能编辑文件夹，请刷新后重试。");
 					}
 				}
 			},
 			error : function() {
-				showRenameFolderAlert("提示：出现意外错误，可能未能编辑文件夹，请刷新后重试");
+				showRFolderAlert("提示：出现意外错误，可能未能编辑文件夹，请刷新后重试。");
 			}
 		});
 	} else {
-		showRenameFolderAlert("提示：文件夹名只能包含英文字母、数组、汉字和下划线");
+		showRFolderAlert("提示：文件夹名只能包含英文字母、数组、汉字和下划线。");
 	}
 }
 
 // 显示重命名文件夹状态提示
-function showRenameFolderAlert(txt) {
+function showRFolderAlert(txt) {
 	$("#newfolderalert").addClass("alert");
 	$("#newfolderalert").addClass("alert-danger");
 	$("#folderrenamebox").addClass("has-error");
@@ -1353,7 +1356,7 @@ function renameFile(fileId) {
 	var newFileName = $("#newfilename").val();
 	if (newFileName.length > 0) {
 		if (newFileName.length < 128) {
-			if (!reg.test(newFileName)) {
+			if (!reg.test(newFileName) && newFileName.indexOf(".")!=0) {
 				$.ajax({
 					type : "POST",
 					dataType : "text",
@@ -1367,36 +1370,38 @@ function renameFile(fileId) {
 							window.location.href = "login.html";
 						} else {
 							if (result == "cannotRenameFile") {
-								showRenameFolderAlert("提示：出现意外错误，可能未能重命名文件，请刷新后重试");
+								showRFileAlert("提示：出现意外错误，可能未能重命名文件，请刷新后重试。");
 							} else if (result == "renameFileSuccess") {
 								$('#renameFileModal').modal('hide');
 								showFolderView(locationpath);
 							} else if (result == "errorParameter") {
-								showRenameFolderAlert("提示：参数错误，重命名失败，请刷新后重试");
+								showRFileAlert("提示：参数错误，重命名失败，请刷新后重试。");
+							} else if (result == "nameOccupied") {
+								showRFileAlert("提示：该名称已被占用，请选取其他名称。");
 							} else if (result == "noAuthorized") {
-								showRenameFolderAlert("提示：您的操作未被授权，重命名失败，请刷新后重试");
+								showRFileAlert("提示：您的操作未被授权，重命名失败，请刷新后重试。");
 							} else {
-								showRenameFolderAlert("提示：出现意外错误，可能未能重命名文件，请刷新后重试");
+								showRFileAlert("提示：出现意外错误，可能未能重命名文件，请刷新后重试。");
 							}
 						}
 					},
 					error : function() {
-						showRenameFolderAlert("提示：出现意外错误，可能未能重命名文件");
+						showRFileAlert("提示：出现意外错误，可能未能重命名文件。");
 					}
 				});
 			} else {
-				showRenameFolderAlert("提示：文件名中不应含有：空格 引号 / \ * | < > ");
+				showRFileAlert("提示：文件名中不应含有：空格 引号 / \ * | < > 且不能以“.”开头。");
 			}
 		} else {
-			showRenameFolderAlert("提示：文件名称太长");
+			showRFileAlert("提示：文件名称太长。");
 		}
 	} else {
-		showRenameFolderAlert("提示：文件名不能为空");
+		showRFileAlert("提示：文件名不能为空。");
 	}
 }
 
 // 显示重命名文件状态提示
-function showRenameFolderAlert(txt) {
+function showRFileAlert(txt) {
 	$("#newFileNamealert").addClass("alert");
 	$("#newFileNamealert").addClass("alert-danger");
 	$("#filerenamebox").addClass("has-error");
@@ -2027,7 +2032,7 @@ function doMoveFiles(){
 	});
 }
 
-//对冲突的移动进行依次询问
+// 对冲突的移动进行依次询问
 function selectFileMoveModel(t){
 	if($("#selectFileMoveModelAsAll").prop("checked")){
 		while(repeIndex<mRepeSize){
