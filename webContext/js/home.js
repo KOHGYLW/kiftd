@@ -1516,7 +1516,7 @@ function createViewListByPage() {
 			$(images).append("<li><img src='css/left.png' alt='上一页' /></li>");
 		}
 		for(var i = 0; i < viewerPageSize && i < (pvl.pictureViewList.length - (viewerPageIndex - 1) * viewerPageSize); i++) {
-			if(pvl.pictureViewList[i].filePath.startsWith("homeController")){
+			if(pvl.pictureViewList[startIndex+i].filePath.startsWith("homeController")){
 				$(images).append("<li><img src='" + pvl.pictureViewList[startIndex+i].filePath + "' alt='" + pvl.pictureViewList[startIndex+i].fileName + "' /></li>");
 			}else{
 				$(images).append("<li><img src='fileblocks/" + pvl.pictureViewList[startIndex+i].filePath + "' alt='" + pvl.pictureViewList[startIndex+i].fileName + "' /></li>");
