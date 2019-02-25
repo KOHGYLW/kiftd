@@ -777,6 +777,13 @@ function showFolderTable(folderView) {
 										+ fi.fileId
 										+ '"'
 										+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-play'></span> 播放</button>";
+							} else if(getSuffix(fi.fileName) == "docx"){
+								fileRow = fileRow
+										+ "<button onclick='docxView("
+										+ '"'
+										+ fi.fileId
+										+ '"'
+										+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-eye-open'></span> 预览</button>";
 							}
 						}
 						if (aD) {
@@ -1124,6 +1131,12 @@ var repeModelList;// 这个是对每一个重复文件选取的上传模式，�
 
 // 针对同名文件，选择上传的模式：跳过（skip）、覆盖（cover）和保留两者（both）
 function selectFileUpLoadModelStart(){
+	var authList = originFolderView.authList;
+	if(checkAuth(authList, "D")){
+		$("#uploadcoverbtn").show();
+	}else{
+		$("#uploadcoverbtn").hide();
+	}
 	$("#selectFileUpLoadModelAlert").show();
 	$("#repeFileName").text(repeList[repeIndex]);
 }
@@ -1442,6 +1455,10 @@ function playVideo(fileId) {
 // 预览PDF文档
 function pdfView(filePath) {
 	window.open("/pdfview/web/viewer.html?file=/fileblocks/" + filePath);
+}
+
+function docxView(fileId){
+	window.open("/pdfview/web/viewer.html?file=/resourceController/getWordView/" + fileId);
 }
 
 // 查看图片
@@ -2064,7 +2081,7 @@ function selectFileMoveModel(t){
 	}
 }
 
-
+// 发送移动文件请求
 function sendMoveFilesReq(){
 	// 执行移动行为
 	var strOptMap = JSON.stringify(strMoveOptMap);

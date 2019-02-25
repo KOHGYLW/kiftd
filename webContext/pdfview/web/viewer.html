@@ -33,6 +33,73 @@ See https://github.com/adobe-type-tools/cmap-resources
 <link rel="resource" type="application/l10n"
 	href="locale/locale.properties">
 <link rel="icon" type="image/x-icon" href="images/pdf-icon.png" />
+<!-- 自定义的提示样式（类似于主页的加载提示） -->
+<style type="text/css">
+.pdf-modal {
+	display: none;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: 1000;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+		
+.pdf-modal-content {
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: space-between;
+	width: 25%;
+	min-width: 350px;
+	height: 10%;
+	max-height: 100px;
+	margin: 100px auto;
+	border-radius: 10px;
+	-webkit-animation: zoom 0.1s;
+	animation: zoom 0.1s;
+	resize: both;
+	
+	color: #545454;
+	background: #FFFFFF url(loading.gif) no-repeat 10px 50%;
+	opacity: 0.7;
+	-moz-border-radius: 20px;
+	-webkit-border-radius: 20px;
+	border-radius: 20px;
+	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=70);
+}
+
+@-webkit-keyframes zoom {
+	from {
+		-webkit-transform: scale(0)
+	}
+	to {
+		-webkit-transform: scale(1)
+	}
+}
+
+@keyframes zoom {
+	from {
+		transform: scale(0)
+	}
+	to {
+		transform: scale(1)
+	}
+}
+
+.pdf-modal-body {
+	font-size: 18px;
+	box-sizing: border-box;
+	text-align: center;
+	padding: 22px;
+}
+
+@media only screen and (max-width: 800px) {
+	.modal-content {
+		width: 80%;
+	}
+}
+</style>
 <script src="../build/pdf.js"></script>
 <script src="viewer.js"></script>
 </head>
@@ -458,5 +525,30 @@ See https://github.com/adobe-type-tools/cmap-resources
 	</div>
 	<!-- outerContainer -->
 	<div id="printContainer"></div>
+
+	<!-- 用于文档转换时的提示框 -->
+	<div id="pdf-modal" class="pdf-modal">
+		<div class="pdf-modal-content">
+			<div class="pdf-modal-body">
+				<p>正在打开Word文档，请稍候...</p>
+			</div>
+		</div>
+	</div>
 </body>
+<script type="text/javascript">
+	//增加了加载需要耗时转换的文档时的加载提示
+	window.onload = function() {
+		var url = location.search;
+		if (url.indexOf(".block") < 0) {
+			var modal = document.getElementById('pdf-modal');
+			modal.style.display = "block";
+			var interval = setInterval(function() {
+				if (PDFViewerApplication.pdfDocument != null) {
+					clearInterval(interval);
+					modal.style.display = "none";
+				}
+			}, 1);
+		}
+	}
+</script>
 </html>
