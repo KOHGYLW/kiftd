@@ -45,7 +45,7 @@ See https://github.com/adobe-type-tools/cmap-resources
 	z-index: 1000;
 	background-color: rgba(0, 0, 0, 0.5);
 }
-		
+
 .pdf-modal-content {
 	display: flex;
 	flex-flow: column nowrap;
@@ -59,7 +59,6 @@ See https://github.com/adobe-type-tools/cmap-resources
 	-webkit-animation: zoom 0.1s;
 	animation: zoom 0.1s;
 	resize: both;
-	
 	color: #545454;
 	background: #FFFFFF url(loading.gif) no-repeat 10px 50%;
 	opacity: 0.7;
@@ -71,7 +70,7 @@ See https://github.com/adobe-type-tools/cmap-resources
 
 @-webkit-keyframes zoom {
 	from {
-		-webkit-transform: scale(0)
+		-webkit-transform:scale(0)
 	}
 	to {
 		-webkit-transform: scale(1)
@@ -79,8 +78,8 @@ See https://github.com/adobe-type-tools/cmap-resources
 }
 
 @keyframes zoom {
-	from {
-		transform: scale(0)
+	from { 
+		transform:scale(0)
 	}
 	to {
 		transform: scale(1)
@@ -91,7 +90,7 @@ See https://github.com/adobe-type-tools/cmap-resources
 	font-size: 18px;
 	box-sizing: border-box;
 	text-align: center;
-	padding: 22px;
+	padding: 23px;
 }
 
 @media only screen and (max-width: 800px) {
@@ -530,7 +529,9 @@ See https://github.com/adobe-type-tools/cmap-resources
 	<div id="pdf-modal" class="pdf-modal">
 		<div class="pdf-modal-content">
 			<div class="pdf-modal-body">
-				<p>正在打开Word文档，请稍候...</p>
+				<p>
+					正在打开 <span id="doc-type-box"></span> 文档，请稍候...
+				</p>
 			</div>
 		</div>
 	</div>
@@ -541,6 +542,11 @@ See https://github.com/adobe-type-tools/cmap-resources
 		var url = location.search;
 		if (url.indexOf(".block") < 0) {
 			var modal = document.getElementById('pdf-modal');
+			if (url.indexOf("getWordView") >= 0) {
+				document.getElementById('doc-type-box').innerHTML="Word";
+			}else{
+				document.getElementById('doc-type-box').innerHTML="TXT";
+			}
 			modal.style.display = "block";
 			var interval = setInterval(function() {
 				if (PDFViewerApplication.pdfDocument != null) {

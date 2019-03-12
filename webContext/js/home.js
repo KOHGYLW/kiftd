@@ -784,6 +784,13 @@ function showFolderTable(folderView) {
 										+ fi.fileId
 										+ '"'
 										+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-eye-open'></span> 预览</button>";
+							} else if(getSuffix(fi.fileName) == "txt"){
+								fileRow = fileRow
+								+ "<button onclick='txtView("
+								+ '"'
+								+ fi.fileId
+								+ '"'
+								+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-eye-open'></span> 预览</button>";
 							}
 						}
 						if (aD) {
@@ -1457,8 +1464,13 @@ function pdfView(filePath) {
 	window.open("/pdfview/web/viewer.html?file=/fileblocks/" + filePath);
 }
 
+// 预览Docx文档
 function docxView(fileId){
 	window.open("/pdfview/web/viewer.html?file=/resourceController/getWordView/" + fileId);
+}
+
+function txtView(fileId){
+	window.open("/pdfview/web/viewer.html?file=/resourceController/getTxtView/" + fileId);
 }
 
 // 查看图片
@@ -2032,6 +2044,12 @@ function doMoveFiles(){
 						$("#mrepeFileName").text(repeMap.repeFolders[repeIndex].folderName);
 					}else{
 						$("#mrepeFileName").text(repeMap.repeNodes[repeIndex].fileName);
+					}
+					var authList = originFolderView.authList;
+					if(checkAuth(authList, "D")){
+						$("#movecoverbtn").show();
+					}else{
+						$("#movecoverbtn").hide();
 					}
 					$("#selectFileMoveModelAlert").show();
 				} else if(result.startsWith("CANT_MOVE_TO_INSIDE:")){
