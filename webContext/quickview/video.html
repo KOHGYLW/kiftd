@@ -16,6 +16,26 @@
       <script src="js/html5shiv.min.js"></script>
       <script src="js/respond.min.js"></script>
 <![endif]-->
+<style type="text/css">
+@media only screen and (max-width: 992px) {
+	#kiftplayer {
+		width: 100%;
+		height: 400px;
+	}
+}
+
+@media only screen and (max-width: 768px) {
+	#kiftplayer {
+		height: 300px;
+	}
+}
+
+@media only screen and (max-width: 488px) {
+	#kiftplayer {
+		height: 230px;
+	}
+}
+</style>
 </head>
 
 <body>
@@ -26,7 +46,8 @@
 				<div class="titlebox">
 					<span class="titletext"><em> 青阳网络视频播放器 <small><span
 								class="graytext">KIFT-Player</span></small></em></span>
-					<button class="btn btn-link rightbtn" onclick="reMainPage()">
+					<button id="closeBtn" class="btn btn-link rightbtn"
+						onclick="reMainPage()">
 						关闭 <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
 					</button>
 				</div>
@@ -46,7 +67,12 @@
 				<br />
 				<!-- 播放窗口组件位置 -->
 				<div id="playerbox" class="col-md-12">
-					<p>加载中...</p>
+					<div class="text-center">
+						<img alt="loading..." src="css/loading.gif">
+					</div>
+					<div class="text-center" id="playerMassage">
+						<h2>加载中...</h2>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -57,62 +83,5 @@
 <script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/video.min.js"></script>
-<script type="text/javascript">
-	$(function() {
-		var fileId = getFileId();
-		$.ajax({
-			url : 'homeController/playVideo.ajax',
-			type : 'POST',
-			dataType : 'text',
-			data : {
-				fileId : fileId
-			},
-			success : function(result) {
-				if (result != "ERROR") {
-					var f = eval("(" + result + ")");
-					playVideo(f);
-				} else {
-					alert("错误：无法定位要预览的文件或该操作未被授权。");
-					reMainPage();
-				}
-			},
-			error : function() {
-				alert("错误：请求失败，请刷新重试。");
-				reMainPage();
-			}
-		});
-	});
-	//获取URL上的图片id参数，它必须是第一个参数。
-	function getFileId() {
-		var url = location.search;
-		if (url.indexOf("?") != -1) {
-			var str = url.substr(1);
-			strs = str.split("=");
-			return strs[1];
-		}
-		return "";
-	}
-	//显示视屏信息并播放视频
-	function playVideo(f) {
-		$("#vname").text(f.fileName);
-		$("#vcreator").text(f.fileCreator);
-		$("#vcdate").text(f.fileCreationDate);
-		$("#vsize").text(f.fileSize);
-		$("#playerbox")
-				.html(
-						"<video id='kiftplayer' class='video-js col-md-12' controls preload='auto' height='500'>"
-								+ "<source src='resourceController/getResource.do?fid="+f.fileId+"' type='video/mp4'>"
-								+ "<source src='resourceController/getResource.do?fid="+f.fileId+"' type='video/webm'>"
-								+ "</video>");
-		var player = videojs('kiftplayer');
-		player.ready(function() {
-			this.play();
-		});
-	}
-	function reMainPage() {
-		window.opener = null;
-		window.open('', '_self');
-		window.close();
-	}
-</script>
+<script type="text/javascript" src="quickview/kplayer.min.js"></script>
 </html>
