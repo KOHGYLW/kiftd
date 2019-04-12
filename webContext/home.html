@@ -6,7 +6,8 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="renderer" content="webkit">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>KIFT</title>
 <!-- Bootstrap基本框架 -->
 <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -382,7 +383,8 @@
 							全部应用
 						</p>
 						<p>
-							<button id="uploadcoverbtn" type="button" class="btn btn-danger btn-sm"
+							<button id="uploadcoverbtn" type="button"
+								class="btn btn-danger btn-sm"
 								onclick="selectFileUpLoadModelEnd('cover')">覆盖</button>
 							<button type="button" class="btn btn-default btn-sm"
 								onclick="selectFileUpLoadModelEnd('skip')">跳过</button>
@@ -446,7 +448,7 @@
 					</h4>
 				</div>
 				<div class="modal-body">
-					<h5 id="deleteFileMessage"></h5>
+					<h5 id="deleteFileMessage" class="wordbreak"></h5>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -591,7 +593,8 @@
 							全部应用
 						</p>
 						<p>
-							<button id="movecoverbtn" type="button" class="btn btn-danger btn-sm"
+							<button id="movecoverbtn" type="button"
+								class="btn btn-danger btn-sm"
 								onclick="selectFileMoveModel('cover')">覆盖</button>
 							<button type="button" class="btn btn-default btn-sm"
 								onclick="selectFileMoveModel('skip')">跳过</button>
@@ -639,6 +642,13 @@
 		</div>
 	</div>
 	<!-- end 文件夹详情模态框 -->
+	<!-- 返回顶部按钮（隐藏式） -->
+	<div id="gobacktotopbox" class="gobacktopbox text-center hidden">
+		<button type="button" onclick="goBackToTop()" class="gobacktopbutton">
+			返回顶部 <span class="glyphicon glyphicon-eject" aria-hidden="true"></span> 
+		</button>
+	</div>
+	<!-- end 返回顶部按钮 -->
 </body>
 <!-- jquery基本框架 -->
 <script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
