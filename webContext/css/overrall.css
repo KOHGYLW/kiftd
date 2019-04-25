@@ -100,3 +100,9 @@ td {
 	word-break: break-all;
 	word-wrap: break-all;
 }
+
+.vercodeimg {
+	width: 100%;
+	max-height: 35px;
+	cursor: pointer
+}

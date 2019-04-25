@@ -60,6 +60,14 @@ $(function() {
 	$('#loginModal').on('hidden.bs.modal', function(e) {
 		$("#accountid").val('');
 		$("#accountpwd").val('');
+		$("#accountidbox").removeClass("has-error");
+		$("#accountpwdbox").removeClass("has-error");
+		$("#alertbox").removeClass("alert");
+		$("#alertbox").removeClass("alert-danger");
+		$("#alertbox").text("");
+		$("#vercodebox").html("");
+		$("#vercodebox").removeClass("show");
+		$("#vercodebox").addClass("hidden");
 	});
 	// 各个模态框的打开判定及回车响应功能。该功能仅对“首选”的按钮有效，对其他按钮无效，以避免用户误操作。
 	$('.modal').on('shown.bs.modal', function(e) {
@@ -490,18 +498,23 @@ function dologin() {
 
 // 发送加密文本
 function sendLoginInfo(encrypted) {
+	
 	$.ajax({
 		type : "POST",
 		dataType : "text",
 		url : "homeController/doLogin.ajax",
 		data : {
-			encrypted : encrypted
+			encrypted : encrypted,
+			vercode : $("#vercode").val()
 		},
 		success : function(result) {
 			finishLogin();
 			$("#alertbox").removeClass("alert");
 			$("#alertbox").removeClass("alert-danger");
 			$("#alertbox").text("");
+			$("#vercodebox").html("");
+			$("#vercodebox").removeClass("show");
+			$("#vercodebox").addClass("hidden");
 			switch (result) {
 			case "permitlogin":
 				$("#accountidbox").removeClass("has-error");
@@ -523,6 +536,11 @@ function sendLoginInfo(encrypted) {
 				$("#alertbox").addClass("alert-danger");
 				$("#alertbox").text("提示：登录失败，密码错误或未设置");
 				break;
+			case "needsubmitvercode":
+				$("#vercodebox").html("<label id='vercodetitle' class='col-sm-7'><img id='showvercode' class='vercodeimg' alt='点击获取验证码' src='homeController/getNewVerCode.do?s="+(new Date()).getTime()+"' onclick='getNewVerCode()'></label><div class='col-sm-5'><input type='text' class='form-control' id='vercode' placeholder='验证码……'></div>");
+				$("#vercodebox").removeClass("hidden");
+				$("#vercodebox").addClass("show");
+				break;
 			case "error":
 				$("#alertbox").addClass("alert");
 				$("#alertbox").addClass("alert-danger");
@@ -542,6 +560,11 @@ function sendLoginInfo(encrypted) {
 			$("#alertbox").text("提示：登录请求失败，请检查网络或服务器运行状态");
 		}
 	});
+}
+
+// 获取一个新的验证码
+function getNewVerCode(){
+	$("#showvercode").attr("src","homeController/getNewVerCode.do?s="+(new Date()).getTime());
 }
 
 // 注销操作
