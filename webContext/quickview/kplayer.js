@@ -3,10 +3,12 @@
  */
 var tReq;
 var tTimer;
+var pingInt;
 $(function() {
 	window.onresize = function(){
 		showCloseBtn();
     }
+	pingInt = setInterval("ping()",60000);
 	var fileId = getFileId();
 	$
 			.ajax({
@@ -19,7 +21,7 @@ $(function() {
 				success : function(result) {
 					if (result != "ERROR") {
 						f = eval("(" + result + ")");
-						$("#vname").text(f.fileName);
+						$("#vname").text(f.fileName.replace('\'','&#39;').replace('<','&lt;').replace('>','&gt;'));
 						$("#vcreator").text(f.fileCreator);
 						$("#vcdate").text(f.fileCreationDate);
 						$("#vsize").text(f.fileSize);
@@ -52,7 +54,7 @@ function getFileId() {
 	}
 	return "";
 }
-// 显示视屏信息并播放视频
+// 显示视频信息并播放视频
 function playVideo() {
 	$("#playerbox")
 			.html(
@@ -112,4 +114,22 @@ function showCloseBtn(){
     }else{
     		$("#closeBtn").removeClass("hidden");
     }
+}
+
+//防止播放视频时会话超时的应答器，每分钟应答一次
+function ping(){
+	$.ajax({
+		url:"homeController/ping.ajax",
+		type:"POST",
+		dataType:"text",
+		data:{},
+		success:function(result){
+			if(result != 'pong'){
+				window.clearInterval(pingInt);
+			}
+		},
+		error:function(){
+			window.clearInterval(pingInt);
+		}
+	});
 }

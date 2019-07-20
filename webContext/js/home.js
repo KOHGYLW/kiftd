@@ -23,6 +23,7 @@ var pvl;// 预览图片列表的JSON格式对象
 var checkFilesTip="提示：您还未选择任何文件，请先选中一些文件后再执行本操作：<br /><br /><kbd>单击</kbd>：选中某一文件<br /><br /><kbd><kbd>Shift</kbd>+<kbd>单击</kbd></kbd>：选中多个文件<br /><br /><kbd><kbd>Shift</kbd>+<kbd>双击</kbd></kbd>：选中连续的文件<br /><br /><kbd><kbd>Shitf</kbd>+<kbd>A</kbd></kbd>：选中/取消选中所有文件";// 选取文件提示
 var winHeight;// 窗口高度
 var uploadKey;// 上传所用的一次性密钥
+var pingInt;// 定时应答器的定时装置
 
 // 界面功能方法定义
 // 页面初始化
@@ -31,7 +32,13 @@ $(function() {
 		changeFilesTableStyle();
     }
 	getServerOS();// 得到服务器操作系统信息
-	showFolderView("root");// 显示根节点页面视图
+	// 查询是否存在记忆路径，若有，则直接显示记忆路径的内容，否则显示ROOT根路径
+	var arr = document.cookie.match(new RegExp("(^| )folder_id=([^;]*)(;|$)"));
+    if (arr != null){
+    		showFolderView(unescape(arr[2]));// 显示记忆路径页面视图
+    }else{
+    		showFolderView("root");// 显示根节点页面视图
+    }
 	// 点击空白处取消选中文件（已尝试兼容火狐，请期待用户反馈，如不好使再改）
 	$(document).click(function(e) {
 		var filetable = $("#filetable")[0];
@@ -48,6 +55,10 @@ $(function() {
 		if (ap != null) {
 			ap.seek(0);
 			ap.pause();
+		}
+		if(pingInt != null){
+			window.clearInterval(pingInt);
+			pingInt = null;
 		}
 	});
 	// 关闭打包下载模态框自动停止计时
@@ -389,11 +400,17 @@ function showFolderView(fid,targetId) {
 				$("#parentlistbox").html("<span class='graytext'>获取失败，请尝试刷新</span>");
 			} else if (result == "mustLogin") {
 				window.location.href = "login.html";
+			} else if(result == "NOT_FOUND") {
+				document.cookie = "folder_id=" + escape("root");// 归位记忆路径
+				window.location.href="/";
 			} else if(result == "notAccess"){
+				document.cookie = "folder_id=" + escape("root");// 归位记忆路径
 				window.location.href="/";
 			} else {
 				folderView = eval("(" + result + ")");
 				locationpath = folderView.folder.folderId;
+				// 存储打开的文件夹路径至Cookie中，以便下次打开时直接显示
+				document.cookie = "folder_id=" + escape(locationpath);
 				parentpath = folderView.folder.folderParent;
 				constraintLevel=folderView.folder.folderConstraint;
 				screenedFoldrView=null;
@@ -748,7 +765,7 @@ function showFolderTable(folderView) {
 			.each(
 					folderView.folderList,
 					function(n, f) {
-						f.folderName = f.folderName.replace('\'','&#39;');
+						f.folderName = f.folderName.replace('\'','&#39;').replace('<','&lt;').replace('>','&gt;');
 						var folderRow = "<tr id='"+f.folderId+"' onclick='checkfile(event,"+'"'+f.folderId+'"'+")' ondblclick='checkConsFile(event,"+'"'+f.folderId+'"'+")' class='filerow' iskfolder='true' ><td><button onclick='entryFolder("
 								+ '"' + f.folderId + '"'
 								+ ")' class='btn btn-link btn-xs'>/"
@@ -796,7 +813,7 @@ function showFolderTable(folderView) {
 			.each(
 					folderView.fileList,
 					function(n, fi) {
-						fi.fileName = fi.fileName.replace('\'','&#39;');
+						fi.fileName = fi.fileName.replace('\'','&#39;').replace('<','&lt;').replace('>','&gt;');
 						var fileRow = "<tr id=" + fi.fileId + " onclick='checkfile(event," + '"'
 								+ fi.fileId + '"' + ")' ondblclick='checkConsFile(event,"+'"'+fi.fileId+'"'+")' id='" + fi.fileId
 								+ "' class='filerow'><td>" + fi.fileName
@@ -944,7 +961,7 @@ function createfolder() {
 	var reg = new RegExp("[\/\|\\s\\\\\*\\<\\>\\?\\:\\&\\$" + '"' + "]+", "g");
 	if (fn.length == 0) {
 		showFolderAlert("提示：文件夹名称不能为空。");
-	} else if (fn.length > 20) {
+	} else if (fn.length > 128) {
 		showFolderAlert("提示：文件夹名称太长。");
 	} else if (!reg.test(fn) && fn.indexOf(".") != 0) {
 		$("#folderalert").removeClass("alert");
@@ -1078,7 +1095,7 @@ function renameFolder(folderId) {
 	var reg = new RegExp("[\/\|\\s\\\\\*\\<\\>\\?\\:\\&\\$" + '"' + "]+", "g");
 	if (newName.length == 0) {
 		showRFolderAlert("提示：文件夹名称不能为空。");
-	} else if (newName.length > 20) {
+	} else if (newName.length > 128) {
 		showRFolderAlert("提示：文件夹名称太长。");
 	} else if (!reg.test(newName) && newName.indexOf(".") != 0) {
 		$("#newfolderalert").removeClass("alert");
@@ -1190,8 +1207,14 @@ function checkUploadFile() {
 			$("#uploadFileAlert").removeClass("alert-danger");
 			$("#uploadFileAlert").text("");
 			var filenames = new Array();
+			var maxSize = 0;
+			var maxFileIndex = 0;
 			for (var i = 0; i < fs.length; i++) {
 				filenames[i] = fs[i].name.replace(/^.+?\\([^\\]+?)?$/gi, "$1");
+				if(fs[i].size > maxSize){
+					maxSize = fs[i].size;
+					maxFileIndex = i;
+				}
 			}
 			var namelist = JSON.stringify(filenames);
 			
@@ -1200,7 +1223,9 @@ function checkUploadFile() {
 				dataType : "text",
 				data : {
 					folderId : locationpath,
-					namelist : namelist
+					namelist : namelist,
+					maxSize : maxSize,
+					maxFileIndex : maxFileIndex
 				},
 				url : "homeController/checkUploadFile.ajax",
 				success : function(result) {
@@ -1214,7 +1239,9 @@ function checkUploadFile() {
 						} else {
 							var resp=eval("("+result+")");
 							uploadKey=resp.uploadKey;
-							if(resp.checkResult == "hasExistsNames"){
+							if(resp.checkResult == "fileTooLarge"){
+								showUploadFileAlert("提示：文件["+resp.overSizeFile+"]的体积超过最大限制（"+resp.maxUploadFileSize+"），无法开始上传");
+							}else if(resp.checkResult == "hasExistsNames"){
 								repeList=resp.pereFileNameList;
 								repeIndex=0;
 								selectFileUpLoadModelStart();
@@ -1325,9 +1352,18 @@ function doupload(count) {
 		// 上面的三个参数分别是：事件名（指定名称）、回调函数、是否冒泡（一般是false即可）
 
 		xhr.send(fd);// 上传FormData对象
+		
+		if(pingInt == null){
+			pingInt = setInterval("ping()",60000);// 上传中开始计时应答
+		}
 
 		// 上传结束后执行的回调函数
 		xhr.onloadend = function() {
+			// 停止应答计时
+			if(pingInt != null){
+				window.clearInterval(pingInt);
+				pingInt = null;
+			}
 			if (xhr.status === 200) {
 				// TODO 上传成功
 				var result = xhr.responseText;
@@ -1396,7 +1432,7 @@ function showDownloadModel(fileId, fileName) {
 	$("#downloadFileName").text("提示：您确认要下载文件：[" + fileName + "]么？");
 	$("#downloadHrefBox").html("<span class='text-muted'>正在生成...</span>");
 	getDownloadFileId=fileId;
-	getDownloadFileName=fileName;
+	getDownloadFileName=fileName.replace("#","%23").replace("%","%25").replace("?","%3F");
 	$("#downloadFileBox")
 			.html(
 					"<button id='dlmbutton' type='button' class='btn btn-primary' onclick='dodownload("
@@ -1931,6 +1967,9 @@ function deleteAllChecked() {
 // 播放音乐
 function playAudio(fileId) {
 	$('#audioPlayerModal').modal('show');
+	if(pingInt == null){
+		pingInt = setInterval("ping()",60000);// 播放中开始计时应答
+	}
 	if (ap == null) {
 		ap = new APlayer({
 			container : document.getElementById('aplayer'),
@@ -1957,6 +1996,10 @@ function playAudio(fileId) {
 		dataType:'text',
 		success:function(result){
 			var ail=eval("("+result+")");
+			// 避免存在恶意标签注入在文件名中
+			for(var i=0;i<ail.as.length;i++){
+				ail.as[i].name=ail.as[i].name.replace('\'','&#39;').replace('<','&lt;').replace('>','&gt;');
+			}
 			ap.list.add(ail.as);
 			ap.list.switch(ail.index);
 			audio_play();
@@ -1971,8 +2014,6 @@ function playAudio(fileId) {
 // 关闭音乐播放器
 function closeAudioPlayer() {
 	$('#audioPlayerModal').modal('hide');
-	ap.seek(0);
-	ap.pause();
 }
 
 // 切换按钮状态与
@@ -2327,6 +2368,7 @@ function selectInCompletePath(keyworld){
 			} else if (result == "mustLogin") {
 				window.location.href = "login.html";
 			} else if(result == "notAccess"){
+				document.cookie = "folder_id=" + escape("root");
 				window.location.href="/";
 			} else {
 				folderView = eval("(" + result + ")");
@@ -2379,6 +2421,30 @@ function getDownloadURL(){
 		},
 		error:function(){
 			$("#downloadHrefBox").html("<span class='text-muted'>获取失败，请检查网络状态或<a href='javascript:void(0);' onclick='getDownloadURL()'>点此</a>重新获取。</span>");
+		}
+	});
+}
+
+// 防止长耗时待机时会话超时的应答器，每分钟应答一次
+function ping(){
+	$.ajax({
+		url:"homeController/ping.ajax",
+		type:"POST",
+		dataType:"text",
+		data:{},
+		success:function(result){
+			if(result != 'pong'){
+				if(pingInt != null){
+					window.clearInterval(pingInt);
+					pingInt = null;
+				}
+			}
+		},
+		error:function(){
+			if(pingInt != null){
+				window.clearInterval(pingInt);
+				pingInt = null;
+			}
 		}
 	});
 }
