@@ -4,7 +4,7 @@
 
 -------
 
-![主界面展示](https://gitee.com/kohgylw/kiftd-showPicture/raw/master/kiftd-mainpage.png)
+![主界面展示](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/kiftd-mainpage.png?raw=true)
 
 -------
 
@@ -33,19 +33,19 @@ _注：kift为该功能的开发名称，其实际成果命名为kiftd。_
 -------
 
 ## kiftd有哪些优势？
- ![mark](https://gitee.com/kohgylw/kiftd-showPicture/raw/master/mark_icon.png) 无上传限制——1MB的文档和超过4GB的高清电影资源？均能够随意上传和下载。
+ ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 无上传限制——1MB的文档和超过4GB的高清电影资源？均能够随意上传和下载。
 
- ![mark](https://gitee.com/kohgylw/kiftd-showPicture/raw/master/mark_icon.png) 主流商业网盘特有的高级功能甚至需要收费的功能——文件夹访问权限控制、多格式视频在线影院、音乐在线欣赏、图片文件在线预览、Word & PDF & TXT文档在线阅读...kiftd均一一具备，每一份kiftd均是“完全版”。
+ ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 主流商业网盘特有的高级功能甚至需要收费的功能——文件夹访问权限控制、多格式视频在线影院、音乐在线欣赏、图片文件在线预览、Word & PDF & TXT文档在线阅读...kiftd均一一具备，每一份kiftd均是“完全版”。
 
- ![mark](https://gitee.com/kohgylw/kiftd-showPicture/raw/master/mark_icon.png) 操作系统全兼容——无论是Windows、Linux还是Unix(包括Mac OS X)，均可运行使用。
+ ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 操作系统全兼容——无论是Windows、Linux还是Unix(包括Mac OS X)，均可运行使用。
 
- ![mark](https://gitee.com/kohgylw/kiftd-showPicture/raw/master/mark_icon.png) 支持移动端操作，即使没有数据线，手机、平板、电脑之间也能文件互传。
+ ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 支持移动端操作，即使没有数据线，手机、平板、电脑之间也能文件互传。
 
- ![mark](https://gitee.com/kohgylw/kiftd-showPicture/raw/master/mark_icon.png) 同时满足日常需求or专业需求——kiftd同时具备了图形界面模式和纯命令模式的双操作模式，无论您是喜欢点击鼠标的电脑小白还是需要使用命令在远程Linux上部署的运维人员，均能完美操作。
+ ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 同时满足日常需求or专业需求——kiftd同时具备了图形界面模式和纯命令模式的双操作模式，无论您是喜欢点击鼠标的电脑小白还是需要使用命令在远程Linux上部署的运维人员，均能完美操作。
 
- ![mark](https://gitee.com/kohgylw/kiftd-showPicture/raw/master/mark_icon.png) 无任何使用成本——kiftd完全开源免费，因此唯一的使用成本就是需要安装它。至于之后您想将其用于什么领域，哪怕是商业领域——均无任何限制。
+ ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 无任何使用成本——kiftd完全开源免费，因此唯一的使用成本就是需要安装它。至于之后您想将其用于什么领域，哪怕是商业领域——均无任何限制。
 
- ![mark](https://gitee.com/kohgylw/kiftd-showPicture/raw/master/mark_icon.png) 无内置代码的隐患——kiftd完全开源，您可以随意下载其源代码，并用它自己编译一份kiftd；同时，它删除即走，绝不和你撒娇卖萌。保护用户硬件环境，从开源做起。
+ ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 无内置代码的隐患——kiftd完全开源，您可以随意下载其源代码，并用它自己编译一份kiftd；同时，它删除即走，绝不和你撒娇卖萌。保护用户硬件环境，从开源做起。
 
 ## 总之，无论您是想：
 + 安装在自己的笔记本电脑上，用于替代老旧的U盘……
@@ -102,25 +102,25 @@ _本次更新增加了一些用户期待的新功能，并对已知的问题进�
 
 + 主页与基本功能展示……
 
-![MainPage](https://gitee.com/kohgylw/kiftd-showPicture/raw/master/kiftd-mainpage.png)
+![MainPage](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/kiftd-mainpage.png?raw=true)
 
-![UploadFile](https://gitee.com/kohgylw/kiftd-showPicture/raw/master/kiftd-upload2.png)
+![UploadFile](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/kiftd-upload2.png?raw=true)
 
-![CreateFolder](https://gitee.com/kohgylw/kiftd-showPicture/raw/master/kiftd-newfolder.png)
+![CreateFolder](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/kiftd-newfolder.png?raw=true)
 
 + 各种高级功能展示……
 
-![Vadio](https://gitee.com/kohgylw/kiftd-showPicture/raw/master/vadio.png?raw=true)
+![Vadio](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/vadio.png?raw=true)
 
-![Audio](https://gitee.com/kohgylw/kiftd-showPicture/raw/master/audio.png?raw=true)
+![Audio](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/audio.png?raw=true)
 
-![Picture](https://gitee.com/kohgylw/kiftd-showPicture/raw/master/kiftd-picture.png?raw=true)
+![Picture](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/kiftd-picture.png?raw=true)
 
-![PDF](https://gitee.com/kohgylw/kiftd-showPicture/raw/master/pdf.png?raw=true)
+![PDF](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/pdf.png?raw=true)
 
 + 人性化的服务器控制面板
 
-![UI](https://gitee.com/kohgylw/kiftd-showPicture/raw/master/kiftd-ui2.png?raw=true)
+![UI](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/kiftd-ui2.png?raw=true)
 
 ### 想要了解更多功能？详见随程序附带的《kiftd说明文档》... 
 
