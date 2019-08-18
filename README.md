@@ -10,7 +10,7 @@
 
 ## 快速导航
 * 访问kiftd官方主页来快速了解kiftd？ -- [kiftd官方主页](https://kohgylw.gitee.io/)
-* 国内托管地址——腾讯开发者平台上的项目主页：https://dev.tencent.com/u/kohgylw/p/kiftd/git -- [点击下载](https://dev.tencent.com/u/kohgylw/p/kiftd/git/archive/master)
+* 国内托管地址——腾讯开发者平台上的项目主页：https://dev.tencent.com/u/kohgylw/p/kiftd/git -- [点击下载](https://dev.tencent.com/u/kohgylw/p/kiftd/git/releases)
 * 国内托管地址——码云上的项目主页： https://gitee.com/kohgylw/kiftd -- [点击下载](https://gitee.com/kohgylw/kiftd/repository/archive/master.zip)
 * 国际托管地址——github上的项目主页： https://github.com/KOHGYLW/kiftd -- [点击下载](https://github.com/KOHGYLW/kiftd/archive/master.zip)
 
