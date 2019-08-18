@@ -99,13 +99,16 @@
 											class="glyphicon glyphicon-cog"></span> 操作 <span
 											class="caret"></span></a>
 										<ul class="dropdown-menu" id="fileListDropDown">
-											<li id="createFolderButtonLi"><a>新建文件夹 <span
-													class="pull-right"><span
-														class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>+N</span></a></li>
-											<li role="separator" class="divider"></li>
 											<li id="uploadFileButtonLi"><a>上传文件 <span
 													class="pull-right"><span
 														class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>+U</span></a></li>
+											<li id="uploadFolderButtonLi"><a>上传文件夹 <span
+													class="pull-right"><span
+														class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>+F</span></a></li>
+											<li role="separator" class="divider"></li>
+											<li id="createFolderButtonLi"><a>新建文件夹 <span
+													class="pull-right"><span
+														class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>+N</span></a></li>
 											<li role="separator" class="divider"></li>
 											<li id="cutFileButtonLi"><a><span id='cutSignTx'>剪切
 														<span class="pull-right"><span
@@ -322,7 +325,7 @@
 								</div>
 							</div>
 						</div>
-						<div id="newfolderalert" role="alert"></div>
+						<div id="editfolderalert" role="alert"></div>
 					</form>
 				</div>
 				<div class="modal-footer">
@@ -372,7 +375,7 @@
 							<div id="uploadstatus" class="uploadstatusbox"></div>
 						</div>
 					</div>
-					<div id="uploadFileAlert" role="alert"></div>
+					<div id="uploadFileAlert" role="alert" class="alert alert-danger"></div>
 					<div id="selectFileUpLoadModelAlert" class="alert alert-danger"
 						role="alert">
 						<h4>提示：存在同名文件！</h4>
@@ -404,6 +407,83 @@
 		</div>
 	</div>
 	<!-- end 上传文件 -->
+	<!-- 上传文件夹框 -->
+	<div class="modal fade" id="importFolderModal" tabindex="-1"
+		role="dialog" aria-labelledby="importFolderMolderTitle">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="importFolderMolderTitle">
+						<span class="glyphicon glyphicon-cloud-upload"></span> 上传文件夹
+					</h4>
+				</div>
+				<div class="modal-body">
+					<h5>选择文件夹：</h5>
+					<div class="input-group">
+						<input type="text" id="folderpath" class="form-control"
+							onclick="checkimportpath()" onfocus="this.blur()"
+							placeholder="请点击选择要上传的文件夹……" folderConstraintLevel="0">
+						<div class="input-group-btn">
+							<button id="importFolderLevelBtn" type="button" class="btn btn-default dropdown-toggle"
+								data-toggle="dropdown" aria-haspopup="true"
+								aria-expanded="false">
+								&nbsp;<span id="importfoldertype">公开的</span>&nbsp;<span
+									class="caret"></span>
+							</button>
+							<ul id="importfoldertypelist"
+								class="dropdown-menu dropdown-menu-right">
+							</ul>
+						</div>
+					</div>
+					<input type="file" id="importfolder" style="display: none;"
+						onchange="getInputImport()" multiple="multiple" webkitdirectory>
+					<h5>
+						上传进度：<span id="importcount"></span>
+					</h5>
+					<div class="progress">
+						<div id="importpros" class="progress-bar" role="progressbar"
+							aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+							style="width: 0%;">
+							<span class="sr-only"></span>
+						</div>
+					</div>
+					<h5>上传状态：</h5>
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div id="importstatus" class="uploadstatusbox"></div>
+						</div>
+					</div>
+					<div id="importFolderAlert" class="alert alert-danger" role="alert"></div>
+					<div id="selectFolderImportModelAlert" class="alert alert-danger"
+						role="alert">
+						<h4>提示：存在同名文件夹！</h4>
+						<p>
+							您要上传的文件夹“<span id="repeFolderName"></span>”已存在于该路径下，您希望：
+						</p>
+						<p>
+							<button id="importcoverbtn" type="button"
+								class="btn btn-danger btn-sm"
+								onclick="importAndCover()">覆盖</button>
+							<button type="button" class="btn btn-default btn-sm"
+								onclick="abortImport()">取消上传</button>
+							<button type="button" class="btn btn-default btn-sm"
+								onclick="importAndBoth()">保留两者</button>
+						</p>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" onclick='abortImport()'>取消</button>
+					<button id="importbutton" type='button' class='btn btn-primary'
+						onclick='checkImportFolder()'>开始上传</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end 上传文件夹 -->
 	<!-- 下载提示框 -->
 	<div class="modal fade" id="downloadModal" tabindex="-1" role="dialog"
 		aria-labelledby="downloadModelTitle">

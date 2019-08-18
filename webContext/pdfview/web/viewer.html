@@ -544,8 +544,12 @@ See https://github.com/adobe-type-tools/cmap-resources
 			var modal = document.getElementById('pdf-modal');
 			if (url.indexOf("getWordView") >= 0) {
 				document.getElementById('doc-type-box').innerHTML="Word";
-			}else{
+			}else if(url.indexOf("getTxtView") >= 0){
 				document.getElementById('doc-type-box').innerHTML="TXT";
+			}else if(url.indexOf("getPPTView") >= 0){
+				document.getElementById('doc-type-box').innerHTML="PPT";
+			}else{
+				document.getElementById('doc-type-box').innerHTML="未知类型";
 			}
 			modal.style.display = "block";
 			var interval = setInterval(function() {
