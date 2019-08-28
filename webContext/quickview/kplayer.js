@@ -61,7 +61,9 @@ function playVideo() {
 					"<video id='kiftplayer' class='video-js col-md-12' controls preload='auto' height='500'>"
 							+ "<source src='resourceController/getResource.do?fid="
 							+ f.fileId + "' type='video/mp4'></video>");
-	var player = videojs('kiftplayer');
+	var player = videojs('kiftplayer',{
+		preload : 'auto'
+	});
 	player.ready(function() {
 		this.play();
 	});
