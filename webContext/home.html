@@ -1,5 +1,7 @@
 <!doctype html>
-<!-- kiftd 主页面 by 青阳龙野 -->
+<!-- 青阳网络文件传输系统 kiftd v1.0.23-RELEASE -->
+<!-- 欢迎访问主界面 -->
+<!-- by 青阳龙野（kohgylw@163.com） -->
 <html>
 <head>
 <base href="/">
@@ -428,9 +430,9 @@
 							onclick="checkimportpath()" onfocus="this.blur()"
 							placeholder="请点击选择要上传的文件夹……" folderConstraintLevel="0">
 						<div class="input-group-btn">
-							<button id="importFolderLevelBtn" type="button" class="btn btn-default dropdown-toggle"
-								data-toggle="dropdown" aria-haspopup="true"
-								aria-expanded="false">
+							<button id="importFolderLevelBtn" type="button"
+								class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+								aria-haspopup="true" aria-expanded="false">
 								&nbsp;<span id="importfoldertype">公开的</span>&nbsp;<span
 									class="caret"></span>
 							</button>
@@ -466,8 +468,7 @@
 						</p>
 						<p>
 							<button id="importcoverbtn" type="button"
-								class="btn btn-danger btn-sm"
-								onclick="importAndCover()">覆盖</button>
+								class="btn btn-danger btn-sm" onclick="importAndCover()">覆盖</button>
 							<button type="button" class="btn btn-default btn-sm"
 								onclick="abortImport()">取消上传</button>
 							<button type="button" class="btn btn-default btn-sm"
@@ -476,7 +477,8 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" onclick='abortImport()'>取消</button>
+					<button type="button" class="btn btn-default"
+						onclick='abortImport()'>取消</button>
 					<button id="importbutton" type='button' class='btn btn-primary'
 						onclick='checkImportFolder()'>开始上传</button>
 				</div>
@@ -725,6 +727,86 @@
 		</div>
 	</div>
 	<!-- end 文件夹详情模态框 -->
+	<!-- 修改密码模态框 -->
+	<div class="modal fade bs-example-modal-sm" id="changePasswordModal"
+		tabindex="-1" role="dialog" aria-labelledby="changePasswordModelTitle">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="changePasswordModelTitle">
+						<span class="glyphicon glyphicon-edit"></span> 修改密码
+					</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal">
+						<div class="form-group" id="changepassword_oldepwdbox">
+							<label for="changepassword_oldpwd"
+								id="changepassword_oldpwdtitle" class="col-sm-3 control-label">旧密码:</label>
+							<div class="col-sm-9">
+								<input type="password" class="form-control"
+									id="changepassword_oldpwd" placeholder="请输入旧密码确认身份……">
+							</div>
+						</div>
+						<div class="form-group" id="changepassword_newpwdbox">
+							<label for="changepassword_newpwd"
+								id="changepassword_newpwdtitle" class="col-sm-3 control-label">新密码:</label>
+							<div class="col-sm-9">
+								<input type="password" class="form-control"
+									id="changepassword_newpwd" placeholder="请输入新密码……">
+							</div>
+						</div>
+						<div class="form-group" id="changepassword_reqnewpwdbox">
+							<label for="changepassword_reqnewpwd"
+								id="changepassword_reqnewpwdtitle"
+								class="col-sm-3 control-label">确认新密码:</label>
+							<div class="col-sm-9">
+								<input type="password" class="form-control"
+									id="changepassword_reqnewpwd" placeholder="请再次输入新密码……">
+							</div>
+						</div>
+						<div id="changepassword_vccodebox" class="form-group"></div>
+						<div id="changepasswordalertbox" class="alert alert-danger"
+							role="alert"></div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<button type="button" id="changePasswordButton"
+						class="btn btn-danger" onclick="doChangePassword()">立即修改</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end 改密 -->
+	<!-- 永久资源链接显示模态框 -->
+	<div class="modal fade" id="fileChainModal" tabindex="-1" role="dialog"
+		aria-labelledby="chainModalLabel">
+		<div class="modal-dialog modal-sm" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="chainModalLabel">
+						<span class="glyphicon glyphicon-link"></span> 资源链接
+					</h4>
+				</div>
+				<div class="modal-body">
+					<textarea id="fileChainTextarea" class="form-control" rows="3" readonly></textarea>
+				</div>
+				<div class="modal-footer">
+					<button id="copyChainBtn" type="button" class="btn btn-info" onclick="copyFileChain()">复制链接</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end 永久资源链接 -->
 	<!-- 返回顶部按钮（隐藏式） -->
 	<div id="gobacktotopbox" class="gobacktopbox text-center hidden">
 		<button type="button" onclick="goBackToTop()" class="gobacktopbutton">

@@ -16,6 +16,23 @@ $(function() {
 	$("#vercodebox").addClass("hidden");
 	// 打开页面自动聚焦账户输入框
 	$("#accountid").focus();
+	// 询问是否可以显示注册按钮
+	$.ajax({
+		type : "POST",
+		dataType : "text",
+		data : {},
+		url : "homeController/askForAllowSignUpOrNot.ajax",
+		success : function(result) {
+			if (result == "true") {
+				$("#signupBox").removeClass("hidden");
+				$("#signupBox").addClass("show");
+				return;
+			}
+		},
+		error : function() {
+			alert("错误：无法连接到kiftd服务器，请检查您的网络连接或查看服务器运行状态。");
+		}
+	});
 })
 
 function dologin() {
@@ -78,7 +95,7 @@ function sendLoginInfo(encrypted) {
 			case "permitlogin":
 				$("#accountidbox").removeClass("has-error");
 				$("#accountpwdbox").removeClass("has-error");
-				window.location.href = "home.html";
+				window.location.href = "/home.html";
 				break;
 			case "accountnotfound":
 				$("#accountidbox").addClass("has-error");

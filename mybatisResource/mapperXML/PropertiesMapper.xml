@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kohgylw.kiftd.server.mapper.PropertiesMapper">
+	<resultMap id="BaseResultMap" type="kohgylw.kiftd.server.model.Propertie">
+		<id column="propertie_key" jdbcType="VARCHAR" property="propertieKey" />
+		<result column="propertie_value" jdbcType="VARCHAR" property="propertieValue" />
+	</resultMap>
+
+	<insert id="insert" parameterType="kohgylw.kiftd.server.model.Propertie">
+		INSERT INTO PROPERTIES
+		VALUES(#{propertieKey,jdbcType=VARCHAR},#{propertieValue,jdbcType=VARCHAR})
+	</insert>
+
+	<update id="update" parameterType="kohgylw.kiftd.server.model.Propertie">
+		UPDATE PROPERTIES SET propertie_value =
+		#{propertieValue,jdbcType=VARCHAR} WHERE propertie_key =
+		#{propertieKey,jdbcType=VARCHAR}
+	</update>
+
+	<delete id="deleteByKey" parameterType="java.lang.String">
+		DELETE FROM PROPERTIES WHERE
+		propertie_key = #{propertieKey,jdbcType=VARCHAR}
+	</delete>
+
+	<select id="selectByKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		SELECT * FROM PROPERTIES WHERE propertie_key =
+		#{propertieKey,jdbcType=VARCHAR}
+	</select>
+</mapper>
