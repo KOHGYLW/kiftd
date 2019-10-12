@@ -107,6 +107,10 @@ function sendSignUpInfo(encrypted){
 				showAlert("提示：注册失败，账户名不合法。账户名的长度需为3-32个字符，且仅支持ISO-8859-1中的字符（推荐使用英文字母、英文符号及阿拉伯数字）。");
 				$("#accountidbox").addClass("has-error");
 				break;
+			case "illegalaccount":
+				showAlert("提示：注册失败，账户名中不得包含“=”或“:”。");
+				$("#accountidbox").addClass("has-error");
+				break;
 			case "mustlogout":
 				showAlert("提示：您已经登入了一个账户，请先注销后再执行本操作");
 				break;
