@@ -27,14 +27,23 @@ var pvl;// 预览图片列表的JSON格式对象
 var checkFilesTip="提示：您还未选择任何文件，请先选中一些文件后再执行本操作：<br /><br /><kbd>单击</kbd>：选中某一文件<br /><br /><kbd><kbd>Shift</kbd>+<kbd>单击</kbd></kbd>：选中多个文件<br /><br /><kbd><kbd>Shift</kbd>+<kbd>双击</kbd></kbd>：选中连续的文件<br /><br /><kbd><kbd>Shitf</kbd>+<kbd>A</kbd></kbd>：选中/取消选中所有文件";// 选取文件提示
 var winHeight;// 窗口高度
 var pingInt;// 定时应答器的定时装置
+var noticeInited=false;// 公告信息的md5标识
+var loadingComplete;// 判断文件夹视图是否加载完成
+var totalFoldersOffset;// 记录文件夹原始的查询偏移量，便于计算加载进度
+var totalFilesOffset;// 记录文件原始的查询偏移量，便于计算加载进度
+var remainingLoadingRequest;// 后续数据加载请求的索引，便于中途取消
+var loadingFolderView;// 是否正在加载文件夹视图的判断，避免重复操作
 
 // 界面功能方法定义
 // 页面初始化
 $(function() {
 	window.onresize = function(){
 		changeFilesTableStyle();
+		updateWinHeight();
     }
+	changeFilesTableStyle();
 	getServerOS();// 得到服务器操作系统信息
+	subscribeNotice();// 加载公告MD5，以判断是否需要显示最新公告
 	// 查询是否存在记忆路径，若有，则直接显示记忆路径的内容，否则显示ROOT根路径
 	var arr = document.cookie.match(new RegExp("(^| )folder_id=([^;]*)(;|$)"));
     if (arr != null){
@@ -301,25 +310,12 @@ $(function() {
 			return this.indexOf(suffix, this.length - suffix.length) !== -1;
 		};
 	}
-	// 开启详细信息模态框自动显示信息内容
-	$('#folderInfoModal').on('show.bs.modal', function(e) {
-		var f=folderView.folder;
-		$("#fim_name").text(f.folderName);
-		$("#fim_creator").text(f.folderCreator);
-		$("#fim_folderCreationDate").text(f.folderCreationDate);
-		$("#fim_statistics").text("共包含 "+folderView.folderList.length+" 个文件夹， "+folderView.fileList.length+" 个文件。");
-		$("#fim_folderId").text(f.folderId);
-	});
 	// 关闭下载提示模态框自动隐藏下载链接
 	$('#downloadModal').on('hidden.bs.modal', function(e) {
 		$('#downloadURLCollapse').collapse('hide');
 	});
 	// 获取窗口高度
-	if (window.innerHeight){
-		winHeight = window.innerHeight;
-	}else if ((document.body) && (document.body.clientHeight)){
-		winHeight = document.body.clientHeight;
-	}
+	updateWinHeight();
 	// 根据屏幕下拉程度自动显示、隐藏“返回顶部”按钮
 	$(window).scroll(function(){
 		if($(this).scrollTop() > 2*winHeight){
@@ -349,29 +345,58 @@ $(function() {
 			$("#changepassword_oldpwd").focus();
 		}
 	});
+	// 开启公告信息模态框前自动判断是否已经勾选“30天不再显示”
+	$('#noticeModal').on('show.bs.modal', function(e) {
+		var cookieMd530 = document.cookie.match(new RegExp("(^| )notice_md5_30=([^;]*)(;|$)"));
+		if(cookieMd530){
+			$("#dontShowSomeNoticeAt30Day").attr("checked","checked");
+		}else{
+			$("#dontShowSomeNoticeAt30Day").attr("checked",false);
+		}
+	});
+	// 关闭公告信息模态框后根据是否已经勾选“30天不再显示”设置cookie
+	$('#noticeModal').on('hidden.bs.modal', function(e) {
+		var noticed = new Date();
+		if($("#dontShowSomeNoticeAt30Day").prop("checked")){
+			noticed.setTime(noticed.getTime() + (30*24*60*60*1000));
+			var cookieMd5 = document.cookie.match(new RegExp("(^| )notice_md5=([^;]*)(;|$)"));
+			if(cookieMd5){
+				document.cookie = "notice_md5_30=" + escape(unescape(cookieMd5[2])) + ";expires=" + noticed.toUTCString();
+			}else{
+				cookieMd5 = document.cookie.match(new RegExp("(^| )notice_md5_30=([^;]*)(;|$)"));
+				if(cookieMd5){
+					document.cookie = "notice_md5_30=" + escape(unescape(cookieMd5[2])) + ";expires=" + noticed.toUTCString();
+				}
+			}
+		}else{
+			noticed.setTime(0);
+			var cookieMd530 = document.cookie.match(new RegExp("(^| )notice_md5_30=([^;]*)(;|$)"));
+			if(cookieMd530){
+				document.cookie = "notice_md5_30=0;expires=" + noticed.toUTCString();
+			}
+		}
+	});
 });
+
+// 更新页面高度
+function updateWinHeight(){
+	if (window.innerHeight){
+		winHeight = window.innerHeight;
+	}else if ((document.body) && (document.body.clientHeight)){
+		winHeight = document.body.clientHeight;
+	}
+}
 
 // 根据屏幕大小增删表格显示内容
 function changeFilesTableStyle(){
 	var win = $(window).width();
-    if(win < 800){
-    		$('#filetableheadera').addClass('filetableheaderstyle');
-        $('.hiddenColumn').hide();
-        	$('.rightbtn').hide();
-        	$('#vicetbbox').show();
-        	$('#filetableoptmenusreach').hide();
-    }else{
-    		$('#filetableheadera').removeClass('filetableheaderstyle');
-		$('.hiddenColumn').show();
-		$('.rightbtn').show();
-		$('#vicetbbox').hide();
-		$('#filetableoptmenusreach').show();
-    }
     	if(win < 768){
+    		$('#filetableheadera').addClass('filetableheaderstyle');
     		$('#filetableheadera').attr('data-toggle','collapse');
     		$('#filetableheadera').attr('data-target','#filetableoptmenu');
     		$('#mdropdownicon').html('（点击展开/折叠菜单）');
     	}else{
+    		$('#filetableheadera').removeClass('filetableheaderstyle');
 		$('#filetableheadera').attr('data-toggle','modal');
 	    $('#filetableheadera').attr('data-target','#folderInfoModal');
 	    $('#mdropdownicon').html('');
@@ -405,7 +430,14 @@ function getServerOS() {
 
 // 获取实时文件夹视图
 function showFolderView(fid,targetId) {
+	// 判断是否正在进行另一个相同的请求，如果是则取消本次操作
+	if(loadingFolderView){
+		return;
+	}
 	startLoading();
+	if(remainingLoadingRequest){
+		remainingLoadingRequest.abort();
+	}
 	$.ajax({
 		type : 'POST',
 		dataType : 'text',
@@ -415,56 +447,82 @@ function showFolderView(fid,targetId) {
 		url : 'homeController/getFolderView.ajax',
 		success : function(result) {
 			endLoading();
-			if(result == "ERROR"){
+			switch (result) {
+			case "ERROR":
+				// 获取错误直接弹出提示框并将相关内容填为提示信息
 				doAlert();
 				$("#tb").html("<span class='graytext'>获取失败，请尝试刷新</span>");
 				$("#publishTime").html("<span class='graytext'>获取失败，请尝试刷新</span>");
 				$("#parentlistbox").html("<span class='graytext'>获取失败，请尝试刷新</span>");
-			} else if (result == "mustLogin") {
-				window.location.href = "prv/login.html";
-			} else if(result == "NOT_FOUND") {
-				document.cookie = "folder_id=" + escape("root");// 归位记忆路径
+				break;
+			case "NOT_FOUND":
+			case "notAccess":
+				// 对于各种不能访问的情况，要先将记忆路径重置再跳转至根路径下
+				document.cookie = "folder_id=" + escape("root");
+			case "mustLogin":
+				// 如果服务器说必须登录，那么也跳转至根路径下（从而进入登录页面）
 				window.location.href="/";
-			} else if(result == "notAccess"){
-				document.cookie = "folder_id=" + escape("root");// 归位记忆路径
-				window.location.href="/";
-			} else {
+				break;
+			default:
+				// 上述情况都不是，则返回的应该是文件夹视图数据，接下来对其进行解析
 				folderView = eval("(" + result + ")");
+				// 记录当前获取的文件夹视图的ID号，便于其他操作使用
 				locationpath = folderView.folder.folderId;
 				// 存储打开的文件夹路径至Cookie中，以便下次打开时直接显示
 				document.cookie = "folder_id=" + escape(locationpath);
+				// 记录上级目录ID，方便返回上一级
 				parentpath = folderView.folder.folderParent;
+				// 记录本文件夹的访问级别，便于在新建文件夹时判断应该从哪一个级别开始供用户选择
 				constraintLevel=folderView.folder.folderConstraint;
 				screenedFoldrView=null;
+				// 备份一份原始的文件夹视图数据，同时也记录下原始的查询偏移量
+				originFolderView=$.extend(true, {}, folderView);
+				totalFoldersOffset = folderView.foldersOffset;
+				totalFilesOffset = folderView.filesOffset;
+				// 搜索输入框重置
 				$("#sreachKeyWordIn").val("");
+				// 各项基于文件夹视图返回数据的解析操作……
 				showParentList(folderView);
 				showAccountView(folderView);
 				showPublishTime(folderView);
-				originFolderView=$.extend(true, {}, folderView);
 				$("#sortByFN").removeClass();
 				$("#sortByCD").removeClass();
 				$("#sortByFS").removeClass();
 				$("#sortByCN").removeClass();
+				$("#sortByOR").removeClass();
 				showFolderTable(folderView);
-				if(targetId != null && targetId.length > 0){
-					$("#"+targetId).addClass("info");
-					$("html,body").animate({scrollTop:$("#"+targetId).offset().top - $(window).height()/2},'slow');
+				// 更新文件夹信息至信息模态框
+				$("#fim_name").text(folderView.folder.folderName);
+				$("#fim_creator").text(folderView.folder.folderCreator);
+				$("#fim_folderCreationDate").text(folderView.folder.folderCreationDate);
+				$("#fim_folderId").text(folderView.folder.folderId);
+				updateTheFolderInfo();
+				// 判断是否还需要加载后续数据
+				if(folderView.foldersOffset > folderView.selectStep || folderView.filesOffset > folderView.selectStep){
+					// 如果文件夹偏移量或文件偏移量大于查询步进长度，则说明一定还有后续数据需要加载，那么继续加载后续数据
+					showLoadingRemaininngBox();
+					loadingRemainingFolderView(targetId);
+				}else{
+					// 否则，说明文件夹视图加载完成，进行定位工作即可
+					hiddenLoadingRemaininngBox();
+					doFixedRow(targetId);
 				}
+				break;
 			}
 		},
-		error : function() {
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
 			endLoading();
 			doAlert();
 			$("#tb").html("<span class='graytext'>获取失败，请尝试刷新</span>");
 			$("#publishTime").html("<span class='graytext'>获取失败，请尝试刷新</span>");
-			$("#parentlistbox")
-					.html("<span class='graytext'>获取失败，请尝试刷新</span>");
+			$("#parentlistbox").html("<span class='graytext'>获取失败，请尝试刷新</span>");
 		}
 	});
 }
 
 // 开始文件视图加载动画
 function startLoading(){
+	loadingFolderView = true;
 	$('#loadingModal').modal({backdrop:'static', keyboard: false}); 
 	$('#loadingModal').modal('show');
 	$('#loadingModal').addClass("shown");
@@ -472,6 +530,7 @@ function startLoading(){
 
 // 结束文件视图加载动画
 function endLoading(){
+	loadingFolderView = false;
 	$('#loadingModal').modal('hide');
 	$('#loadingModal').removeClass("shown");
 }
@@ -664,7 +723,7 @@ function showAccountView(folderView) {
 		// 说明已经登录，显示注销按钮
 		$("#tb")
 				.append(
-						"<button class='btn btn-link rightbtn' data-toggle='modal' data-target='#logoutModal'>注销 ["
+						"<button class='btn btn-link rightbtn hidden-xs' data-toggle='modal' data-target='#logoutModal'>注销 ["
 								+ folderView.account
 								+ "] <span class='glyphicon glyphicon-off' aria-hidden='true'></span></button>");
 		$("#tb2")
@@ -675,7 +734,7 @@ function showAccountView(folderView) {
 		if(folderView.allowChangePassword == 'true'){
 			$("#tb")
 			.append(
-					" <button class='btn btn-link rightbtn' data-toggle='modal' data-target='#changePasswordModal'>修改密码 <span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button>");
+					" <button class='btn btn-link rightbtn hidden-xs' data-toggle='modal' data-target='#changePasswordModal'>修改密码 <span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button>");
 			$("#tb2")
 			.append(
 					" <button class='btn btn-link' data-toggle='modal' data-target='#changePasswordModal'>修改密码 <span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button>");
@@ -684,14 +743,14 @@ function showAccountView(folderView) {
 		// 说明用户未登录，显示登录按钮
 		$("#tb")
 				.append(
-						"<button class='btn btn-link rightbtn' data-toggle='modal' data-target='#loginModal'>登入 <span class='glyphicon glyphicon-user' aria-hidden='true'></span></button>");
+						"<button class='btn btn-link rightbtn hidden-xs' data-toggle='modal' data-target='#loginModal'>登入 <span class='glyphicon glyphicon-user' aria-hidden='true'></span></button>");
 		$("#tb2")
 				.append(
 						"<button class='btn btn-link' data-toggle='modal' data-target='#loginModal'>登入 <span class='glyphicon glyphicon-user' aria-hidden='true'></span></button>");
 		if(folderView.allowSignUp == 'true'){
 			$("#tb")
 			.append(
-					" <button class='btn btn-link rightbtn' onclick='window.location.href = \"/prv/signup.html\"'>立即注册 <span class='glyphicon glyphicon-log-in' aria-hidden='true'></span></button>");
+					" <button class='btn btn-link rightbtn hidden-xs' onclick='window.location.href = \"/prv/signup.html\"'>立即注册 <span class='glyphicon glyphicon-log-in' aria-hidden='true'></span></button>");
 			$("#tb2")
 			.append(
 					" <button class='btn btn-link' onclick='window.location.href = \"prv/signup.html\"'>立即注册 <span class='glyphicon glyphicon-log-in' aria-hidden='true'></span></button>");
@@ -715,7 +774,7 @@ function showAccountView(folderView) {
 				$("#uploadFolderButtonLi a").attr("onclick","showUploadFolderModel()");
 			}
 		}
-		if (checkAuth(authList, "L")) {
+		if (folderView.enableDownloadZip && checkAuth(authList, "L")) {
 			$("#packageDownloadBox")
 					.html(
 							"<button class='btn btn-link navbar-btn' onclick='showDownloadAllCheckedModel()'><span class='glyphicon glyphicon-briefcase'></span> 打包下载</button>");
@@ -767,6 +826,7 @@ function refreshFolderView() {
 	} else {
 		showFolderView('root');
 	}
+	subscribeNotice();// 刷新时也判断是否有新公告需要显示
 }
 
 // 返回上一级文件夹
@@ -784,7 +844,7 @@ function showFolderTable(folderView) {
 	if (parentpath != null && parentpath != "null") {
 		$("#foldertable")
 				.append(
-						"<tr onclick='returnPF()'><td><button onclick='returnPF()' class='btn btn-link btn-xs'>../</button></td><td class='hiddenColumn'>--</td><td>--</td><td class='hiddenColumn'>--</td><td>--</td></tr>");
+						"<tr onclick='returnPF()'><td><button onclick='' class='btn btn-link btn-xs'>../</button></td><td class='hidden-xs'>--</td><td>--</td><td class='hidden-xs'>--</td><td>--</td></tr>");
 	}
 	var authList = folderView.authList;
 	var aD = false;
@@ -806,198 +866,216 @@ function showFolderTable(folderView) {
 	// 遍历并倒序显示文件夹列表
 	for(var i1=folderView.folderList.length;i1>0;i1--){
 		var f=folderView.folderList[i1-1];
-		f.folderName = f.folderName.replace('\'','&#39;').replace('<','&lt;').replace('>','&gt;');
-		var folderRow = "<tr id='"+f.folderId+"' onclick='checkfile(event,"+'"'+f.folderId+'"'+")' ondblclick='checkConsFile(event,"+'"'+f.folderId+'"'+")' class='filerow' iskfolder='true' ><td><button onclick='entryFolder("
-				+ '"' + f.folderId + '"'
-				+ ")' class='btn btn-link btn-xs'>/"
-				+ f.folderName + "</button></td><td class='hiddenColumn'>"
-				+ f.folderCreationDate + "</td><td>--</td><td class='hiddenColumn'>"
-				+ f.folderCreator + "</td><td>";
-		if (aD) {
-			folderRow = folderRow
-					+ "<button onclick='showDeleteFolderModel("
-					+ '"'
-					+ f.folderId
-					+ '","'
-					+ f.folderName
-					+ '"'
-					+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-remove'></span> 删除</button>";
-		}
-		if (aR) {
-			folderRow = folderRow
-					+ "<button onclick='showRenameFolderModel("
-					+ '"'
-					+ f.folderId
-					+ '","'
-					+ f.folderName
-					+ '",'
-					+ f.folderConstraint
-					+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-wrench'></span> 编辑</button>";
-		}
-		if (aO) {
-			folderRow = folderRow
-					+ "<button onclick='showFolderView("
-					+ '"'
-					+ f.folderParent
-					+ '","'
-					+ f.folderId
-					+ '"'
-					+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-sunglasses'></span> 定位</button>";
-		}
-		if (!aR && !aD && !aO) {
-			folderRow = folderRow + "--";
-		}
-		folderRow = folderRow + "</td></tr>";
-		$("#foldertable").append(folderRow);
+		$("#foldertable").append(createNewFolderRow(f,aD,aR,aO));
 	}
 	// 遍历并倒序显示文件列表
 	for(var i2=folderView.fileList.length;i2>0;i2--){
 		var fi = folderView.fileList[i2-1];
-		fi.fileName = fi.fileName.replace('\'','&#39;').replace('<','&lt;').replace('>','&gt;');
-		var fileRow = "<tr id=" + fi.fileId + " onclick='checkfile(event," + '"'
-				+ fi.fileId + '"' + ")' ondblclick='checkConsFile(event,"+'"'+fi.fileId+'"'+")' id='" + fi.fileId
-				+ "' class='filerow'><td>" + fi.fileName
-				+ "</td><td class='hiddenColumn'>" + fi.fileCreationDate + "</td>";
-		if(fi.fileSize=="0"){
-			fileRow=fileRow+"<td>&lt;1MB</td>";
-		}else{
-			fileRow=fileRow+"<td>" + fi.fileSize + "MB</td>";
-		}
-		fileRow=fileRow +"<td class='hiddenColumn'>" + fi.fileCreator + "</td><td>";
-		if (aL) {
+		$("#foldertable").append(createFileRow(fi,aL,aD,aR,aO));
+	}
+}
+
+// 根据一个文件对象生成对应的文件行的HTML内容
+function createFileRow(fi,aL,aD,aR,aO){
+	fi.fileName = fi.fileName.replace(/\'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+	var fileRow = "<tr id=" + fi.fileId + " onclick='checkfile(event," + '"'
+			+ fi.fileId + '"' + ")' ondblclick='checkConsFile(event,"+'"'+fi.fileId+'"'+")' id='" + fi.fileId
+			+ "' class='filerow'><td>" + fi.fileName
+			+ "</td><td class='hidden-xs'>" + fi.fileCreationDate + "</td>";
+	if(fi.fileSize=="0"){
+		fileRow=fileRow+"<td>&lt;1MB</td>";
+	}else{
+		fileRow=fileRow+"<td>" + fi.fileSize + "MB</td>";
+	}
+	fileRow=fileRow +"<td class='hidden-xs'>" + fi.fileCreator + "</td><td>";
+	if (aL) {
+		fileRow = fileRow
+				+ "<button onclick='showDownloadModel("
+				+ '"'
+				+ fi.fileId
+				+ '","'
+				+ fi.fileName
+				+ '"'
+				+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-cloud-download'></span> 下载</button>";
+		// 对于各种特殊格式文件提供的预览和播放功能
+		var suffix=getSuffix(fi.fileName);
+		switch (suffix) {
+		case "mp4":
 			fileRow = fileRow
-					+ "<button onclick='showDownloadModel("
-					+ '"'
-					+ fi.fileId
-					+ '","'
-					+ fi.fileName
-					+ '"'
-					+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-cloud-download'></span> 下载</button>";
-			// 对于各种特殊格式文件提供的预览和播放功能
-			var suffix=getSuffix(fi.fileName);
-			switch (suffix) {
-			case "mp4":
-			case "webm":
-			case "mov":
-			case "avi":
-			case "wmv":
-			case "mkv":
-			case "flv":
+			+ "<button onclick='playVideo("
+			+ '"'
+			+ fi.fileId
+			+ '"'
+			+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-play'></span> 播放</button>";
+			break;
+		case "webm":
+		case "mov":
+		case "avi":
+		case "wmv":
+		case "mkv":
+		case "flv":
+			if(folderView.enableFFMPEG){
 				fileRow = fileRow
 				+ "<button onclick='playVideo("
 				+ '"'
 				+ fi.fileId
 				+ '"'
 				+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-play'></span> 播放</button>";
-				break;
-			case "pdf":
-				fileRow = fileRow
-				+ "<button onclick='pdfView("
-				+ '"'
-				+ fi.filePath
-				+ '"'
-				+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-eye-open'></span> 预览</button>";
-				break;
-			case "jpg":
-			case "jpeg":
-			case "gif":
-			case "png":
-			case "bmp":
-				fileRow = fileRow
-				+ "<button onclick='showPicture("
-				+ '"'
-				+ fi.fileId
-				+ '"'
-				+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-picture'></span> 查看</button>";
-				break;
-			case "mp3":
-			case "wav":
-			case "ogg":
-				fileRow = fileRow
-				+ "<button onclick='playAudio("
-				+ '"'
-				+ fi.fileId
-				+ '"'
-				+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-play'></span> 播放</button>";
-				break;
-			case "docx":
-				fileRow = fileRow
-				+ "<button onclick='docxView("
-				+ '"'
-				+ fi.fileId
-				+ '"'
-				+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-eye-open'></span> 预览</button>";
-				break;
-			case "txt":
-				fileRow = fileRow
-				+ "<button onclick='txtView("
-				+ '"'
-				+ fi.fileId
-				+ '"'
-				+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-eye-open'></span> 预览</button>";
-				break;
-			case "ppt":
-			case "pptx":
-				fileRow = fileRow
-				+ "<button onclick='pptView("
-				+ '"'
-				+ fi.fileId
-				+ '"'
-				+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-eye-open'></span> 预览</button>";
-				break;
-			default:
-				break;
 			}
-		}
-		if (aD) {
+			break;
+		case "pdf":
 			fileRow = fileRow
-					+ "<button onclick='showDeleteFileModel("
-					+ '"'
-					+ fi.fileId
-					+ '","'
-					+ fi.fileName
-					+ '"'
-					+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-remove'></span> 删除</button>";
-		}
-		if (aR) {
+			+ "<button onclick='pdfView("
+			+ '"'
+			+ fi.filePath
+			+ '"'
+			+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-eye-open'></span> 预览</button>";
+			break;
+		case "jpg":
+		case "jpeg":
+		case "gif":
+		case "png":
+		case "bmp":
 			fileRow = fileRow
-					+ "<button onclick='showRenameFileModel("
-					+ '"'
-					+ fi.fileId
-					+ '"'
-					+ ","
-					+ '"'
-					+ fi.fileName
-					+ '"'
-					+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-wrench'></span> 重命名</button>";
-		}
-		if (aO) {
-			fileRow = fileRow
-					+ "<button onclick='showFolderView("
-					+ '"'
-					+ fi.fileParentFolder
-					+ '","'
-					+ fi.fileId
-					+ '"'
-					+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-sunglasses'></span> 定位</button>";
-		}
-		if (aL && folderView.showFileChain == 'true') {
-			fileRow = fileRow
-			+ "<button onclick='getFileChain("
+			+ "<button onclick='showPicture("
 			+ '"'
 			+ fi.fileId
-			+ '","'
-			+ fi.fileName
 			+ '"'
-			+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-link'></span> 链接</button>";
+			+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-picture'></span> 查看</button>";
+			break;
+		case "mp3":
+		case "wav":
+		case "ogg":
+			fileRow = fileRow
+			+ "<button onclick='playAudio("
+			+ '"'
+			+ fi.fileId
+			+ '"'
+			+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-play'></span> 播放</button>";
+			break;
+		case "docx":
+			fileRow = fileRow
+			+ "<button onclick='docxView("
+			+ '"'
+			+ fi.fileId
+			+ '"'
+			+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-eye-open'></span> 预览</button>";
+			break;
+		case "txt":
+			fileRow = fileRow
+			+ "<button onclick='txtView("
+			+ '"'
+			+ fi.fileId
+			+ '"'
+			+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-eye-open'></span> 预览</button>";
+			break;
+		case "ppt":
+		case "pptx":
+			fileRow = fileRow
+			+ "<button onclick='pptView("
+			+ '"'
+			+ fi.fileId
+			+ '"'
+			+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-eye-open'></span> 预览</button>";
+			break;
+		default:
+			break;
 		}
-		if (!aR && !aD && !aL && !aO) {
-			fileRow = fileRow + "--";
-		}
-		fileRow = fileRow + "</td></tr>";
-		$("#foldertable").append(fileRow);
 	}
-	changeFilesTableStyle();
+	if (aD) {
+		fileRow = fileRow
+				+ "<button onclick='showDeleteFileModel("
+				+ '"'
+				+ fi.fileId
+				+ '","'
+				+ fi.fileName
+				+ '"'
+				+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-remove'></span> 删除</button>";
+	}
+	if (aR) {
+		fileRow = fileRow
+				+ "<button onclick='showRenameFileModel("
+				+ '"'
+				+ fi.fileId
+				+ '"'
+				+ ","
+				+ '"'
+				+ fi.fileName
+				+ '"'
+				+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-wrench'></span> 重命名</button>";
+	}
+	if (aO) {
+		fileRow = fileRow
+				+ "<button onclick='showFolderView("
+				+ '"'
+				+ fi.fileParentFolder
+				+ '","'
+				+ fi.fileId
+				+ '"'
+				+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-sunglasses'></span> 定位</button>";
+	}
+	if (aL && folderView.showFileChain == 'true') {
+		fileRow = fileRow
+		+ "<button onclick='getFileChain("
+		+ '"'
+		+ fi.fileId
+		+ '","'
+		+ fi.fileName
+		+ '"'
+		+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-link'></span> 链接</button>";
+	}
+	if (!aR && !aD && !aL && !aO) {
+		fileRow = fileRow + "--";
+	}
+	fileRow = fileRow + "</td></tr>";
+	return fileRow;
+}
+
+// 根据一个文件夹对象生成对应的文件行的HTML内容
+function createNewFolderRow(f,aD,aR,aO){
+	f.folderName = f.folderName.replace(/\'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+	var folderRow = "<tr id='"+f.folderId+"' onclick='checkfile(event,"+'"'+f.folderId+'"'+")' ondblclick='checkConsFile(event,"+'"'+f.folderId+'"'+")' class='filerow' iskfolder='true' ><td><button onclick='entryFolder("
+			+ '"' + f.folderId + '"'
+			+ ")' class='btn btn-link btn-xs'>/"
+			+ f.folderName + "</button></td><td class='hidden-xs'>"
+			+ f.folderCreationDate + "</td><td>--</td><td class='hidden-xs'>"
+			+ f.folderCreator + "</td><td>";
+	if (aD) {
+		folderRow = folderRow
+				+ "<button onclick='showDeleteFolderModel("
+				+ '"'
+				+ f.folderId
+				+ '","'
+				+ f.folderName
+				+ '"'
+				+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-remove'></span> 删除</button>";
+	}
+	if (aR) {
+		folderRow = folderRow
+				+ "<button onclick='showRenameFolderModel("
+				+ '"'
+				+ f.folderId
+				+ '","'
+				+ f.folderName
+				+ '",'
+				+ f.folderConstraint
+				+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-wrench'></span> 编辑</button>";
+	}
+	if (aO) {
+		folderRow = folderRow
+				+ "<button onclick='showFolderView("
+				+ '"'
+				+ f.folderParent
+				+ '","'
+				+ f.folderId
+				+ '"'
+				+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-sunglasses'></span> 定位</button>";
+	}
+	if (!aR && !aD && !aO) {
+		folderRow = folderRow + "--";
+	}
+	folderRow = folderRow + "</td></tr>";
+	return folderRow;
 }
 
 var folderTypes=['公开的','仅小组','仅创建者'];// 文件夹约束条件（由小至大）
@@ -1040,20 +1118,30 @@ function createfolder() {
 				if (result == "mustLogin") {
 					window.location.href = "prv/login.html";
 				} else {
-					if (result == "noAuthorized") {
+					switch (result) {
+					case "noAuthorized":
 						showFolderAlert("提示：您的操作未被授权，创建文件夹失败。");
-					} else if (result == "errorParameter") {
+						break;
+					case "errorParameter":
 						showFolderAlert("提示：参数不正确，创建文件夹失败。");
-					} else if (result == "cannotCreateFolder") {
+						break;
+					case "cannotCreateFolder":
 						showFolderAlert("提示：出现意外错误，可能未能创建文件夹。");
-					} else if (result == "nameOccupied") {
+						break;
+					case "nameOccupied":
 						showFolderAlert("提示：该名称已被占用，请选取其他名称。");
-					} else if (result == "createFolderSuccess") {
+						break;
+					case "foldersTotalOutOfLimit":
+						showFolderAlert("提示：该文件夹内存储的文件夹数量已达上限，无法在其中创建更多文件夹。");
+						break;
+					case "createFolderSuccess":
 						$('#newFolderModal').modal('hide');
 						showFolderView(locationpath);
-					} else {
+						break;
+					default:
 						$('#newFolderModal').modal('hide');
 						showFolderView(locationpath);
+						break;
 					}
 				}
 			},
@@ -1062,7 +1150,7 @@ function createfolder() {
 			}
 		});
 	} else {
-		showFolderAlert("提示：文件夹名中不应含有：引号 / \ * | < > & $ : ? 且不能以“.”开头。");
+		showFolderAlert("提示：文件夹名中不应含有：引号 / \\ * | < > & $ : ? 且不能以“.”开头。");
 	}
 }
 
@@ -1193,7 +1281,7 @@ function renameFolder(folderId) {
 			}
 		});
 	} else {
-		showRFolderAlert("提示：文件夹名中不应含有：引号 / \ * | < > & $ : ? 且不能以“.”开头。");
+		showRFolderAlert("提示：文件夹名中不应含有：引号 / \\ * | < > & $ : ? 且不能以“.”开头。");
 	}
 }
 
@@ -1289,11 +1377,17 @@ function checkUploadFile() {
 					if (result == "mustLogin") {
 						window.location.href = "prv/login.html";
 					} else {
-						if (result == "errorParameter") {
+						switch (result) {
+						case "errorParameter":
 							showUploadFileAlert("提示：参数不正确，无法开始上传");
-						} else if (result == "noAuthorized") {
+							break;
+						case "noAuthorized":
 							showUploadFileAlert("提示：您的操作未被授权，无法开始上传");
-						} else {
+							break;
+						case "filesTotalOutOfLimit":
+							showUploadFileAlert("提示：该文件夹内存储的文件数量已达上限，无法在其中上传更多文件。您可以尝试将其上传至其他文件夹内。");
+							break;
+						default:
 							var resp=eval("("+result+")");
 							if(resp.checkResult == "fileTooLarge"){
 								showUploadFileAlert("提示：文件["+resp.overSizeFile+"]的体积超过最大限制（"+resp.maxUploadFileSize+"），无法开始上传");
@@ -1306,6 +1400,7 @@ function checkUploadFile() {
 							}else {
 								showUploadFileAlert("提示：出现意外错误，无法开始上传");
 							}
+							break;
 						}
 					}
 				},
@@ -1448,6 +1543,10 @@ function doupload(count) {
 					showUploadFileAlert("提示：出现意外错误，文件：[" + fname
 							+ "]上传失败，上传被中断。");
 					$("#uls_" + count).text("[失败]");
+				} else if(result == 'filesTotalOutOfLimit'){
+					showUploadFileAlert("提示：该文件夹内存储的文件数量已达上限，文件：[" + fname
+							+ "]上传失败。您可以尝试将其上传至其他文件夹内。");
+					$("#uls_" + count).text("[失败]");
 				} else {
 					showUploadFileAlert("提示：出现意外错误，文件：[" + fname
 							+ "]上传失败，上传被中断。");
@@ -1500,7 +1599,7 @@ function showDownloadModel(fileId, fileName) {
 	$("#downloadFileName").text("提示：您确认要下载文件：[" + fileName + "]么？");
 	$("#downloadHrefBox").html("<span class='text-muted'>正在生成...</span>");
 	getDownloadFileId=fileId;
-	getDownloadFileName=fileName.replace("#","%23").replace("%","%25").replace("?","%3F");
+	getDownloadFileName=fileName;
 	$("#downloadFileBox")
 			.html(
 					"<button id='dlmbutton' type='button' class='btn btn-primary' onclick='dodownload("
@@ -1621,7 +1720,7 @@ function renameFile(fileId) {
 					}
 				});
 			} else {
-				showRFileAlert("提示：文件名中不应含有：引号 / \ * | < > & $ : ? 且不能以“.”开头。");
+				showRFileAlert("提示：文件名中不应含有：引号 / \\ * | < > & $ : ? 且不能以“.”开头。");
 			}
 		} else {
 			showRFileAlert("提示：文件名称太长。");
@@ -1866,6 +1965,9 @@ function checkallfile() {
 
 // 显示打包下载模态框
 function showDownloadAllCheckedModel() {
+	if(!folderView.enableDownloadZip){
+		return;
+	}
 	$("#downloadAllCheckedBox").html("");
 	$("#downloadAllCheckedLoad").text("");
 	var faf=getCheckedFilesAndFolders();
@@ -2108,113 +2210,170 @@ function audio_vulome_down(){
 
 // 按文件名排序
 function sortbyfn(){
+	if(!loadingComplete){
+		return;
+	}
+	if($("#sortByCD,#sortByFS,#sortByCN,#sortByOR").hasClass("glyphicon glyphicon-hourglass")){
+		return;
+	}
 	$("#sortByCD").removeClass();
 	$("#sortByFS").removeClass();
 	$("#sortByCN").removeClass();
+	$("#sortByOR").removeClass();
 	var order=1;
 	if($("#sortByFN").hasClass('glyphicon-triangle-bottom')){
-		$("#sortByFN").removeClass();
-		$("#sortByFN").addClass("glyphicon glyphicon-triangle-top");
 		order=-1;
-	}else{
-		$("#sortByFN").removeClass();
-		$("#sortByFN").addClass("glyphicon glyphicon-triangle-bottom");
 	}
-	folderView.fileList.sort(function(v1,v2){
-		return order * v2.fileName.localeCompare(v1.fileName,"zh");
-	});
-	folderView.folderList.sort(function(v1,v2){
-		return order * v2.folderName.localeCompare(v1.folderName,"zh");
-	});
-	showFolderTable(folderView);
+	$("#sortByFN").removeClass();
+	$("#sortByFN").addClass("glyphicon glyphicon-hourglass");
+	// 另开一个计时器进行排序操作，避免因卡死导致加载动画无法显示
+	setTimeout(function(){
+		folderView.fileList.sort(function(v1,v2){
+			return order * v2.fileName.localeCompare(v1.fileName,"zh");
+		});
+		folderView.folderList.sort(function(v1,v2){
+			return order * v2.folderName.localeCompare(v1.folderName,"zh");
+		});
+		showFolderTable(folderView);
+		$("#sortByFN").removeClass();
+		if(order == -1){
+			$("#sortByFN").addClass("glyphicon glyphicon-triangle-top");
+		}else{
+			$("#sortByFN").addClass("glyphicon glyphicon-triangle-bottom");
+		}
+	}, 0);
 }
 
 // 按创建日期排序
 function sortbycd(){
+	if(!loadingComplete){
+		return;
+	}
+	if($("#sortByFN,#sortByFS,#sortByCN,#sortByOR").hasClass("glyphicon glyphicon-hourglass")){
+		return;
+	}
 	$("#sortByFN").removeClass();
 	$("#sortByFS").removeClass();
 	$("#sortByCN").removeClass();
+	$("#sortByOR").removeClass();
 	var order=1;
 	if($("#sortByCD").hasClass('glyphicon-triangle-bottom')){
-		$("#sortByCD").removeClass();
-		$("#sortByCD").addClass("glyphicon glyphicon-triangle-top");
 		order=-1;
-	}else{
-		$("#sortByCD").removeClass();
-		$("#sortByCD").addClass("glyphicon glyphicon-triangle-bottom");
 	}
-	folderView.fileList.sort(function(v1,v2){
-		var v1DateStr=v1.fileCreationDate.replace("年","-").replace("月","-").replace("日","");
-		var v2DateStr=v2.fileCreationDate.replace("年","-").replace("月","-").replace("日","");
-		var res=((new Date(Date.parse(v1DateStr)).getTime())-(new Date(Date.parse(v2DateStr)).getTime()));
-		return order * res;
-	});
-	folderView.folderList.sort(function(v1,v2){
-		var v1DateStr=v1.folderCreationDate.replace("年","-").replace("月","-").replace("日","");
-		var v2DateStr=v2.folderCreationDate.replace("年","-").replace("月","-").replace("日","");
-		var res=((new Date(Date.parse(v1DateStr)).getTime())-(new Date(Date.parse(v2DateStr)).getTime()));
-		return order * res;
-	});
-	showFolderTable(folderView);
+	$("#sortByCD").removeClass();
+	$("#sortByCD").addClass("glyphicon glyphicon-hourglass");
+	setTimeout(function(){
+		folderView.fileList.sort(function(v1,v2){
+			var v1DateStr=v1.fileCreationDate.replace("年","-").replace("月","-").replace("日","");
+			var v2DateStr=v2.fileCreationDate.replace("年","-").replace("月","-").replace("日","");
+			var res=((new Date(Date.parse(v1DateStr)).getTime())-(new Date(Date.parse(v2DateStr)).getTime()));
+			return order * res;
+		});
+		folderView.folderList.sort(function(v1,v2){
+			var v1DateStr=v1.folderCreationDate.replace("年","-").replace("月","-").replace("日","");
+			var v2DateStr=v2.folderCreationDate.replace("年","-").replace("月","-").replace("日","");
+			var res=((new Date(Date.parse(v1DateStr)).getTime())-(new Date(Date.parse(v2DateStr)).getTime()));
+			return order * res;
+		});
+		showFolderTable(folderView);
+		$("#sortByCD").removeClass();
+		if(order == -1){
+			$("#sortByCD").addClass("glyphicon glyphicon-triangle-top");
+		}else{
+			$("#sortByCD").addClass("glyphicon glyphicon-triangle-bottom");
+		}
+	}, 0);
 }
 
 // 按文件大小排序
 function sortbyfs(){
+	if(!loadingComplete){
+		return;
+	}
+	if($("#sortByFN,#sortByCD,#sortByCN,#sortByOR").hasClass("glyphicon glyphicon-hourglass")){
+		return;
+	}
 	$("#sortByFN").removeClass();
 	$("#sortByCD").removeClass();
 	$("#sortByCN").removeClass();
-	// 正倒序判断
+	$("#sortByOR").removeClass();
+	var order=1;
 	if($("#sortByFS").hasClass("glyphicon-triangle-bottom")){
-		$("#sortByFS").removeClass();
-		$("#sortByFS").addClass("glyphicon glyphicon-triangle-top");
-		folderView.fileList.sort(function(v1,v2){
-			return v2.fileSize - v1.fileSize;
-		});
-	}else{
-		$("#sortByFS").removeClass();
-		$("#sortByFS").addClass("glyphicon glyphicon-triangle-bottom");
-		folderView.fileList.sort(function(v1,v2){
-			return v1.fileSize - v2.fileSize;
-		});
+		order=-1;
 	}
-	showFolderTable(folderView);
+	$("#sortByFS").removeClass();
+	$("#sortByFS").addClass("glyphicon glyphicon-hourglass");
+	setTimeout(function(){
+		folderView.fileList.sort(function(v1,v2){
+			return order * (v1.fileSize - v2.fileSize);
+		});
+		showFolderTable(folderView);
+		$("#sortByFS").removeClass();
+		if(order == -1){
+			$("#sortByFS").addClass("glyphicon glyphicon-triangle-top");
+		}else{
+			$("#sortByFS").addClass("glyphicon glyphicon-triangle-bottom");
+		}
+	}, 0);
 }
 
 // 按创建者排序
 function sortbycn(){
+	if(!loadingComplete){
+		return;
+	}
+	if($("#sortByFN,#sortByCD,#sortByFS,#sortByOR").hasClass("glyphicon glyphicon-hourglass")){
+		return;
+	}
 	$("#sortByFN").removeClass();
 	$("#sortByCD").removeClass();
 	$("#sortByFS").removeClass();
+	$("#sortByOR").removeClass();
 	var order=1;
 	if($("#sortByCN").hasClass('glyphicon-triangle-bottom')){
-		$("#sortByCN").removeClass();
-		$("#sortByCN").addClass("glyphicon glyphicon-triangle-top");
 		order=-1;
-	}else{
-		$("#sortByCN").removeClass();
-		$("#sortByCN").addClass("glyphicon glyphicon-triangle-bottom");
 	}
-	folderView.fileList.sort(function(v1,v2){
-		return order * v2.fileCreator.localeCompare(v1.fileCreator,"zh");
-	});
-	folderView.folderList.sort(function(v1,v2){
-		return order * v2.folderCreator.localeCompare(v1.folderCreator,"zh");
-	});
-	showFolderTable(folderView);
+	$("#sortByCN").removeClass();
+	$("#sortByCN").addClass("glyphicon glyphicon-hourglass");
+	setTimeout(function(){
+		folderView.fileList.sort(function(v1,v2){
+			return order * v2.fileCreator.localeCompare(v1.fileCreator,"zh");
+		});
+		folderView.folderList.sort(function(v1,v2){
+			return order * v2.folderCreator.localeCompare(v1.folderCreator,"zh");
+		});
+		showFolderTable(folderView);
+		$("#sortByCN").removeClass();
+		if(order == -1){
+			$("#sortByCN").addClass("glyphicon glyphicon-triangle-top");
+		}else{
+			$("#sortByCN").addClass("glyphicon glyphicon-triangle-bottom");
+		}
+	}, 0);
 }
 
 // 显示原始的顺序
 function showOriginFolderView(){
+	if(!loadingComplete){
+		return;
+	}
+	if($("#sortByFN,#sortByCD,#sortByFS,#sortByCN").hasClass("glyphicon glyphicon-hourglass")){
+		return;
+	}
 	$("#sortByFN").removeClass();
 	$("#sortByCD").removeClass();
 	$("#sortByFS").removeClass();
 	$("#sortByCN").removeClass();
-	if(screenedFoldrView!=null){
-		folderView=$.extend(true, {}, screenedFoldrView);
-	}else{
-		folderView=$.extend(true, {}, originFolderView);
-	}
-	showFolderTable(folderView);
+	$("#sortByOR").addClass("glyphicon glyphicon-hourglass");
+	setTimeout(function(){
+		if(screenedFoldrView!=null){
+			folderView=$.extend(true, {}, screenedFoldrView);
+		}else{
+			folderView=$.extend(true, {}, originFolderView);
+		}
+		showFolderTable(folderView);
+		$("#sortByOR").removeClass();
+	}, 0);
 }
 
 // 确认文件移动（剪切-粘贴）操作
@@ -2261,40 +2420,56 @@ function doMoveFiles(){
 			if (result == "mustLogin") {
 				window.location.href = "prv/login.html";
 			} else {
-				if (result == "noAuthorized") {
+				switch (result) {
+				case "noAuthorized":
 					$('#moveFilesMessage').text("提示：您的操作未被授权，移动失败");
 					$("#dmvfbutton").attr('disabled', false);
-				} else if (result == "errorParameter") {
+					break;
+				case "errorParameter":
 					$('#moveFilesMessage').text("提示：参数不正确，未能全部移动文件，请刷新后重试");
 					$("#dmvfbutton").attr('disabled', false);
-				} else if (result == "cannotMoveFiles") {
+					break;
+				case "cannotMoveFiles":
 					$('#moveFilesMessage').text("提示：出现意外错误，可能未能移动全部文件，请刷新后重试");
 					$("#dmvfbutton").attr('disabled', false);
-				} else if (result == "confirmMoveFiles") {
+					break;
+				case "filesTotalOutOfLimit":
+					$('#moveFilesMessage').text("提示：该文件夹内存储的文件数量已达上限，无法移入更多文件");
+					$("#dmvfbutton").attr('disabled', false);
+					break;
+				case "foldersTotalOutOfLimit":
+					$('#moveFilesMessage').text("提示：该文件夹内存储的文件夹数量已达上限，无法移入更多文件夹");
+					$("#dmvfbutton").attr('disabled', false);
+					break;
+				case "confirmMoveFiles":
 					strMoveOptMap={};
 					sendMoveFilesReq();
-				} else if(result.startsWith("duplicationFileName:")){
-					repeMap=eval("("+result.substring(20)+")");
-					repeIndex=0;
-					strMoveOptMap={};
-					mRepeSize=repeMap.repeFolders.length+repeMap.repeNodes.length;
-					if(repeMap.repeFolders.length>0){
-						$("#mrepeFileName").text(repeMap.repeFolders[repeIndex].folderName);
-					}else{
-						$("#mrepeFileName").text(repeMap.repeNodes[repeIndex].fileName);
+					break;
+				default:
+					if(result.startsWith("duplicationFileName:")){
+						repeMap=eval("("+result.substring(20)+")");
+						repeIndex=0;
+						strMoveOptMap={};
+						mRepeSize=repeMap.repeFolders.length+repeMap.repeNodes.length;
+						if(repeMap.repeFolders.length>0){
+							$("#mrepeFileName").text(repeMap.repeFolders[repeIndex].folderName);
+						}else{
+							$("#mrepeFileName").text(repeMap.repeNodes[repeIndex].fileName);
+						}
+						var authList = originFolderView.authList;
+						if(checkAuth(authList, "D")){
+							$("#movecoverbtn").show();
+						}else{
+							$("#movecoverbtn").hide();
+						}
+						$("#selectFileMoveModelAlert").show();
+					} else if(result.startsWith("CANT_MOVE_TO_INSIDE:")){
+						$('#moveFilesMessage').text("错误：不能将一个文件夹移动到其自身内部："+result.substring(20));
+					} else {
+						$('#moveFilesMessage').text("提示：出现意外错误，可能未能移动全部文件，请刷新后重试");
+						$("#dmvfbutton").attr('disabled', false);
 					}
-					var authList = originFolderView.authList;
-					if(checkAuth(authList, "D")){
-						$("#movecoverbtn").show();
-					}else{
-						$("#movecoverbtn").hide();
-					}
-					$("#selectFileMoveModelAlert").show();
-				} else if(result.startsWith("CANT_MOVE_TO_INSIDE:")){
-					$('#moveFilesMessage').text("错误：不能将一个文件夹移动到其自身内部："+result.substring(20));
-				} else {
-					$('#moveFilesMessage').text("提示：出现意外错误，可能未能移动全部文件，请刷新后重试");
-					$("#dmvfbutton").attr('disabled', false);
+					break;
 				}
 			}
 		},
@@ -2355,21 +2530,35 @@ function sendMoveFilesReq(){
 			if (result == "mustLogin") {
 				window.location.href = "prv/login.html";
 			} else {
-				if (result == "noAuthorized") {
+				switch (result) {
+				case "noAuthorized":
 					$('#moveFilesMessage').text("提示：您的操作未被授权，移动失败");
 					$("#dmvfbutton").attr('disabled', false);
-				} else if (result == "errorParameter") {
+					break;
+				case "errorParameter":
 					$('#moveFilesMessage').text("提示：参数不正确，未能全部移动文件，请刷新后重试");
 					$("#dmvfbutton").attr('disabled', false);
-				} else if (result == "cannotMoveFiles") {
+					break;
+				case "filesTotalOutOfLimit":
+					$('#moveFilesMessage').text("提示：该文件夹内存储的文件数量已达上限，无法移入更多文件。");
+					$("#dmvfbutton").attr('disabled', false);
+					break;
+				case "foldersTotalOutOfLimit":
+					$('#moveFilesMessage').text("提示：该文件夹内存储的文件夹数量已达上限，无法移入更多文件夹。");
+					$("#dmvfbutton").attr('disabled', false);
+					break;
+				case "cannotMoveFiles":
 					$('#moveFilesMessage').text("提示：出现意外错误，可能未能移动全部文件，请刷新后重试");
 					$("#dmvfbutton").attr('disabled', false);
-				} else if (result == "moveFilesSuccess") {
+					break;
+				case "moveFilesSuccess":
 					$('#moveFilesModal').modal('hide');
 					showFolderView(locationpath);
-				} else {
+					break;
+				default:
 					$('#moveFilesMessage').text("提示：出现意外错误，可能未能移动全部文件，请刷新后重试");
 					$("#dmvfbutton").attr('disabled', false);
+					break;
 				}
 			}
 		},
@@ -2425,6 +2614,7 @@ function selectInThisPath(keyworld){
 		$("#sortByCD").removeClass();
 		$("#sortByFS").removeClass();
 		$("#sortByCN").removeClass();
+		$("#sortByOR").removeClass();
 		folderView=$.extend(true, {}, screenedFoldrView);
 		showFolderTable(folderView);
 	}catch(e){
@@ -2474,6 +2664,7 @@ function selectInCompletePath(keyworld){
 				$("#sortByCD").removeClass();
 				$("#sortByFS").removeClass();
 				$("#sortByCN").removeClass();
+				$("#sortByOR").removeClass();
 				showFolderTable(folderView);
 			}
 		},
@@ -2506,7 +2697,10 @@ function getDownloadURL(){
 			fId:getDownloadFileId
 		},
 		success:function(result){
-			$("#downloadHrefBox").html("<a href='"+window.location.protocol+"//"+window.location.host+"/externalLinksController/downloadFileByKey/"+getDownloadFileName+"?dkey="+result+"'>"+window.location.protocol+"//"+window.location.host+"/externalLinksController/downloadFileByKey/"+getDownloadFileName+"?dkey="+result+"</a>");
+			// 获取链接
+			var dlurl=window.location.protocol+"//"+window.location.host+"/externalLinksController/downloadFileByKey/"+encodeURIComponent(getDownloadFileName.replace(/\'/g,''))+"?dkey="+result;
+			// 显示链接内容
+			$("#downloadHrefBox").html("<a href='"+dlurl+"'>"+dlurl+"</a>");
 		},
 		error:function(){
 			$("#downloadHrefBox").html("<span class='text-muted'>获取失败，请检查网络状态或<a href='javascript:void(0);' onclick='getDownloadURL()'>点此</a>重新获取。</span>");
@@ -2603,7 +2797,7 @@ function checkImportFolder(){
 			isImporting = true;
 			var maxSize = 0;
 			var maxFileIndex = 0;
-			// 找出最大体积的文件避免服务器进行效验
+			// 找出最大体积的文件以便服务器进行效验
 			for (var i = 0; i < ifs.length; i++) {
 				if(ifs[i].size > maxSize){
 					maxSize = ifs[i].size;
@@ -2634,6 +2828,9 @@ function checkImportFolder(){
 						break;
 					case 'fileOverSize':
 						showImportFolderAlert("提示：文件["+ifs[maxFileIndex].webkitRelativePath+"]的体积超过最大限制（"+resJson.maxSize+"），无法开始上传");
+						break;
+					case 'foldersTotalOutOfLimit':
+						showImportFolderAlert("提示：该文件夹内存储的文件夹数量已达上限，无法在其中上传更多文件夹。您可以尝试将其上传至其他文件夹内。");
 						break;
 					case 'repeatFolder_Both':
 						$("#repeFolderName").text(importFolderName);
@@ -2727,7 +2924,9 @@ function importAndBoth() {
 			var resJson = eval("(" + result + ")");
 			if(resJson.result == 'success'){
 				iteratorImport(0,resJson.newName);// 若新建成功，则使用新文件夹名称开始上传
-			}else{
+			} else if(resJson.result == 'foldersTotalOutOfLimit') {
+				showImportFolderAlert("提示：该文件夹内存储的文件夹数量已达上限，无法上传同名文件夹并保留两者。您可以尝试将其上传至其他文件夹内。");
+			} else {
 				showImportFolderAlert("提示：生成新文件夹名称失败，无法开始上传");
 			}
 		},
@@ -2805,6 +3004,14 @@ function iteratorImport(i,newFolderName){
 					}
 				} else if (result == "uploaderror") {
 					showImportFolderAlert("提示：出现意外错误，文件：[" + fname
+							+ "]上传失败，上传被中断。");
+					$("#ils_" + i).text("[失败]");
+				} else if (result == "foldersTotalOutOfLimit"){
+					showImportFolderAlert("提示：该文件夹内存储的文件夹数量已达上限，文件：[" + fname
+							+ "]上传失败，上传被中断。");
+					$("#ils_" + i).text("[失败]");
+				} else if (result == "filesTotalOutOfLimit"){
+					showImportFolderAlert("提示：该文件夹内存储的文件数量已达上限，文件：[" + fname
 							+ "]上传失败，上传被中断。");
 					$("#ils_" + i).text("[失败]");
 				} else {
@@ -3009,4 +3216,245 @@ function copyFileChain(){
 		selection.addRange(range);
 	}
 	document.execCommand('copy');
+}
+
+// 显示公告模态框
+function showNoticeModal(){
+	$('#noticeModal').modal('show');
+}
+
+// 加载公告内容并初始化公告模态框
+function initNoticeModal(){
+	$("#noticeModalBody").load("resourceController/getNoticeContext.do",function(){
+		$('#noticeModalBody img').css("max-width","100%");
+		if(winHeight >= 300){
+			$('#noticeModalBody').css("max-height",(winHeight - 180)+"px");
+		}else{
+			$('#noticeModalBody').css("max-height","300px");
+		}
+		noticeInited = true;
+		showNoticeModal();
+		showNoticeBtn();
+	});
+}
+
+// 打开主页时自动订阅未阅读过的公告信息并显示，如果该公告已经阅读过则不会显示。
+function subscribeNotice(){
+	$.ajax({
+		url:'resourceController/getNoticeMD5.ajax',
+		data:{},
+		type:'POST',
+		dataType:'text',
+		success:function(result){
+			if(result != ""){
+				var cookieMd5 = document.cookie.match(new RegExp("(^| )notice_md5=([^;]*)(;|$)"));
+				if(cookieMd5){
+					if(result == unescape(cookieMd5[2])){
+						showNoticeBtn();
+						return;
+					}
+				}else{
+					cookieMd5 = document.cookie.match(new RegExp("(^| )notice_md5_30=([^;]*)(;|$)"));
+					if(cookieMd5){
+						if(result == unescape(cookieMd5[2])){
+							showNoticeBtn();
+							return;
+						}
+					}
+				}
+				initNoticeModal();
+				document.cookie = "notice_md5=" + escape(result);
+			}
+		},
+		error:function(){
+			alert("错误：无法从服务器获取公告信息，请尝试刷新页面。");
+		}
+	});
+}
+
+// 显示“公告”浮动按钮，方便用户手动打开公告
+function showNoticeBtn() {
+	$("#shownoticebox").removeClass("hidden");
+	$("#shownoticebox").addClass("show");
+}
+
+// 手动显示公告
+function showNotice() {
+	if(noticeInited) {
+		showNoticeModal();
+	}else{
+		initNoticeModal();
+	}
+}
+
+// 该方法用于请求并继续加载文件夹视图的后续数据（可能会被迭代调用）
+function loadingRemainingFolderView(targetId){
+	// 判断是否正在执行另一个相同的请求，避免重复操作
+	if(remainingLoadingRequest){
+		return;
+	}
+	// 计算新的查询偏移量
+	var newfoldersOffset=0;
+	var newfilesOffset=0;
+	if((folderView.foldersOffset - folderView.selectStep) > 0){
+		newfoldersOffset = folderView.foldersOffset - folderView.selectStep;
+	}
+	if((folderView.filesOffset - folderView.selectStep) > 0){
+		newfilesOffset = folderView.filesOffset - folderView.selectStep;
+	}
+	if(newfoldersOffset <= 0 && newfilesOffset <= 0){
+		originFolderView=$.extend(true, {}, folderView);
+		hiddenLoadingRemaininngBox();
+		doFixedRow(targetId);
+		return;
+	}
+	var loadingRemainingRate_folders = 1;
+	var loadingRemainingRate_files = 1;
+	if(totalFoldersOffset > 0){
+		loadingRemainingRate_folders = (totalFoldersOffset - newfoldersOffset) / totalFoldersOffset;
+	}
+	if(totalFilesOffset > 0){
+		loadingRemainingRate_files = (totalFilesOffset - newfilesOffset) / totalFilesOffset;
+	}
+	var loadingRemainingRate = (loadingRemainingRate_folders + loadingRemainingRate_files)/2;
+	$("#loadingrate").text(parseInt(loadingRemainingRate * 100) + "%");
+	remainingLoadingRequest = $.ajax({
+		url:'homeController/getRemainingFolderView.ajax',
+		data:{
+			fid:locationpath,
+			foldersOffset:newfoldersOffset,
+			filesOffset:newfilesOffset
+		},
+		type:'POST',
+		dataType:'text',
+		success:function(result){
+			remainingLoadingRequest = null;
+			switch (result) {
+			case "ERROR":
+				alert("错误：无法加载剩余文件列表，文件数据可能未显示完全，请刷新重试！");
+				hiddenLoadingRemaininngBox();
+				doFixedRow();
+				break;
+			case "NOT_FOUND":
+			case "notAccess":
+				document.cookie = "folder_id=" + escape("root");// 归位记忆路径
+			case "mustLogin":
+				window.location.href="/";
+				break;
+			default:
+				folderView.foldersOffset = newfoldersOffset;
+				folderView.filesOffset = newfilesOffset;
+				var remainingFV = eval("("+result+")");
+				updateFolderTable(remainingFV);
+				updateTheFolderInfo();
+				if(folderView.foldersOffset > 0 || folderView.filesOffset > 0){
+					loadingRemainingFolderView(targetId);
+				}else{
+					originFolderView=$.extend(true, {}, folderView);
+					hiddenLoadingRemaininngBox();
+					doFixedRow(targetId);
+				}
+				break;
+			}
+		},
+		error:function(jqXHR, textStatus, errorThrown){
+			remainingLoadingRequest = null;
+			hiddenLoadingRemaininngBox();
+			if('abort' != textStatus){
+				alert("错误：无法连接服务器，文件列表加载被中断。请刷新重试！");
+			}
+		}
+	});
+}
+
+// 定位指定文件所在行
+function doFixedRow(targetId){
+	if(targetId && targetId.length > 0){
+		$("#"+targetId).addClass("info");
+		$("html,body").animate({scrollTop:$("#"+targetId).offset().top - $(window).height()/2},'slow');
+	}
+}
+
+// 显示“正在加载文件列表”提示栏
+function showLoadingRemaininngBox(){
+	loadingComplete = false;
+	$("#loadingremaininngbox").addClass("show");
+	$("#loadingremaininngbox").removeClass("hidden");
+	$("#searchbtn").attr('disabled','disabled');
+}
+
+// 隐藏“正在加载文件列表”提示栏
+function hiddenLoadingRemaininngBox(){
+	loadingComplete = true;
+	$("#loadingremaininngbox").removeClass("show");
+	$("#loadingremaininngbox").addClass("hidden");
+	$("#searchbtn").removeAttr('disabled');
+}
+
+// 将加载的后续文件夹视图数据更新至页面上显示
+function updateFolderTable(remainingFV){
+	var authList = folderView.authList;
+	var aD = false;
+	var aR = false;
+	var aL = false;
+	var aO = false;
+	if (checkAuth(authList, "D")) {
+		aD = true;
+	}
+	if (checkAuth(authList, "R")) {
+		aR = true;
+	}
+	if (checkAuth(authList, "L")) {
+		aL = true;
+	}
+	if (checkAuth(authList, "O")){
+		aO = true;
+	}
+	if(remainingFV.folderList){
+		if(remainingFV.folderList.length > 0){
+			for(var i1=remainingFV.folderList.length;i1>0;i1--){
+				var f=remainingFV.folderList[i1-1];
+				if(!folderContains(folderView.folderList,f.folderId)){
+					folderView.folderList.unshift(f);
+					$("[iskfolder=true]:last").after(createNewFolderRow(f,aD,aR,aO));
+				}
+			}
+		}
+	}
+	if(remainingFV.fileList){
+		if(remainingFV.fileList.length > 0){
+			for(var i2=remainingFV.fileList.length;i2>0;i2--){
+				var fi = remainingFV.fileList[i2-1];
+				if(!fileContains(folderView.fileList,fi.fileId)){
+					folderView.fileList.unshift(fi);
+					$("#foldertable").append(createFileRow(fi,aL,aD,aR,aO));
+				}
+			}
+		}
+	}
+}
+
+// 判断文件夹数组中是否存已在ID相同的某个文件夹
+function folderContains(folderList,targetFolderId){
+	for(var i=folderList.length;i>0;i--){
+		if(folderList[i-1].folderId == targetFolderId){
+			return true;
+		}
+	}
+	return false; 
+}
+
+// 判断文件数组中是否存已在ID相同的某个文件
+function fileContains(fileList,targetFileId){
+	for(var i=fileList.length;i>0;i--){
+		if(fileList[i-1].fileId == targetFileId){
+			return true;
+		}
+	}
+	return false;
+}
+
+// 更新文件夹视图信息
+function updateTheFolderInfo(){
+	$("#fim_statistics").text("共包含 "+folderView.folderList.length+" 个文件夹， "+folderView.fileList.length+" 个文件。");
 }

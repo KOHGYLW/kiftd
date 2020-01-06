@@ -13,18 +13,35 @@
 
 	<select id="queryById" parameterType="java.lang.String"
 		resultMap="BaseResultMap">
-		SELECT * FROM FOLDER WHERE folder_id = #{fid,jdbcType=VARCHAR}
+		SELECT * FROM FOLDER WHERE folder_id =
+		#{fid,jdbcType=VARCHAR}
 	</select>
 
 	<select id="queryByParentId" parameterType="java.lang.String"
 		resultMap="BaseResultMap">
-		SELECT * FROM FOLDER WHERE folder_parent = #{pid,jdbcType=VARCHAR}
+		SELECT * FROM FOLDER WHERE folder_parent =
+		#{pid,jdbcType=VARCHAR} LIMIT 0,2147483647
+	</select>
+
+	<select id="countByParentId" parameterType="java.lang.String"
+		resultType="java.lang.Long">
+		SELECT COUNT(folder_id) FROM FOLDER WHERE folder_parent =
+		#{pid,jdbcType=VARCHAR}
+	</select>
+
+	<select id="queryByParentIdSection" parameterType="java.util.Map"
+		resultMap="BaseResultMap">
+		SELECT * FROM FOLDER WHERE folder_parent =
+		#{pid,jdbcType=VARCHAR} LIMIT
+		#{offset,jdbcType=INTEGER},#{rows,jdbcType=INTEGER}
 	</select>
 
 	<select id="queryByParentIdAndFolderName" parameterType="java.util.Map"
 		resultMap="BaseResultMap">
-		SELECT * FROM FOLDER WHERE folder_parent = #{parentId,jdbcType=VARCHAR} AND
-		folder_name = #{folderName,jdbcType=VARCHAR}
+		SELECT * FROM FOLDER WHERE folder_parent =
+		#{parentId,jdbcType=VARCHAR} AND
+		folder_name =
+		#{folderName,jdbcType=VARCHAR}
 	</select>
 
 	<insert id="insertNewFolder" parameterType="kohgylw.kiftd.server.model.Folder">
@@ -33,19 +50,24 @@
 	</insert>
 
 	<delete id="deleteById" parameterType="java.lang.String">
-		DELETE FROM FOLDER WHERE folder_id=#{folderId,jdbcType=VARCHAR}
+		DELETE FROM FOLDER WHERE
+		folder_id=#{folderId,jdbcType=VARCHAR}
 	</delete>
 
 	<update id="updateFolderNameById" parameterType="java.util.Map">
-		UPDATE FOLDER SET folder_name = #{newName,jdbcType=VARCHAR} WHERE folder_id
-		= #{folderId,jdbcType=VARCHAR}
+		UPDATE FOLDER
+		SET folder_name = #{newName,jdbcType=VARCHAR} WHERE folder_id
+		=
+		#{folderId,jdbcType=VARCHAR}
 	</update>
 
 	<update id="updateFolderConstraintById" parameterType="java.util.Map">
-		UPDATE FOLDER SET folder_constraint = #{newConstraint,jdbcType=INTEGER} WHERE folder_id
+		UPDATE
+		FOLDER SET folder_constraint = #{newConstraint,jdbcType=INTEGER} WHERE
+		folder_id
 		= #{folderId,jdbcType=VARCHAR}
 	</update>
-	
+
 	<update id="moveById" parameterType="java.util.Map">
 		UPDATE FOLDER SET
 		folder_parent = #{locationpath,jdbcType=VARCHAR} WHERE folder_id =

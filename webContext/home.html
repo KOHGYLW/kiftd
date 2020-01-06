@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- 青阳网络文件传输系统 kiftd v1.0.26-RELEASE -->
+<!-- 青阳网络文件传输系统 kiftd v1.0.27-RELEASE -->
 <!-- 欢迎访问主界面 -->
 <!-- by 青阳龙野（kohgylw@163.com） -->
 <html>
@@ -40,8 +40,9 @@
 								class="graytext">KIFT</span>
 						</small>
 					</em>
-					</span> <span id="tb" class="rightbtn"></span>
-					<button class="btn btn-link rightbtn" onclick="refreshFolderView()">
+					</span> <span id="tb" class="rightbtn hidden-xs"></span>
+					<button class="btn btn-link rightbtn hidden-xs"
+						onclick="refreshFolderView()">
 						刷新 <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
 					</button>
 				</div>
@@ -51,7 +52,7 @@
 		<!-- 信息栏、操作栏与文件列表 -->
 		<div class="row">
 			<div class="col-md-12">
-				<p id="vicetbbox" class="subtitle" style="display: none;">
+				<p class="subtitle visible-xs-block">
 					<span id="tb2"></span>
 					<button class="btn btn-link" onclick="refreshFolderView()">
 						刷新 <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
@@ -83,13 +84,12 @@
 											class="caret"></span></a>
 										<ul class="dropdown-menu" id="parentFolderList"></ul></li>
 								</ul>
-								<form id="filetableoptmenusreach"
-									class="navbar-form navbar-left">
+								<form class="navbar-form navbar-left hidden-xs">
 									<div class="form-group">
 										<input id="sreachKeyWordIn" type="text" class="form-control"
 											placeholder="请输入文件名...">
 									</div>
-									<button type="button" class="btn btn-default"
+									<button id="searchbtn" type="button" class="btn btn-default"
 										onclick="doSearchFile()">搜索</button>
 								</form>
 								<ul class="nav navbar-nav navbar-right">
@@ -129,13 +129,14 @@
 							<tr>
 								<th onclick="sortbyfn()">文件名<span id="sortByFN"
 									aria-hidden="true" style="float: right"></span></th>
-								<th class="hiddenColumn" onclick="sortbycd()">创建日期<span
+								<th class="hidden-xs" onclick="sortbycd()">创建日期<span
 									id="sortByCD" aria-hidden="true" style="float: right"></span></th>
 								<th onclick="sortbyfs()">大小<span id="sortByFS"
 									aria-hidden="true" style="float: right"></span></th>
-								<th class="hiddenColumn" onclick="sortbycn()">创建者<span
+								<th class="hidden-xs" onclick="sortbycn()">创建者<span
 									id="sortByCN" aria-hidden="true" style="float: right"></span></th>
-								<th onclick="showOriginFolderView()">操作</th>
+								<th onclick="showOriginFolderView()">操作<span id="sortByOR"
+									aria-hidden="true" style="float: right"></span></th>
 							</tr>
 						</thead>
 						<tbody id="foldertable"></tbody>
@@ -797,16 +798,49 @@
 					</h4>
 				</div>
 				<div class="modal-body">
-					<textarea id="fileChainTextarea" class="form-control" rows="3" readonly></textarea>
+					<textarea id="fileChainTextarea" class="form-control" rows="3"
+						readonly></textarea>
 				</div>
 				<div class="modal-footer">
-					<button id="copyChainBtn" type="button" class="btn btn-info" onclick="copyFileChain()">复制链接</button>
+					<button id="copyChainBtn" type="button" class="btn btn-info"
+						onclick="copyFileChain()">复制链接</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 				</div>
 			</div>
 		</div>
 	</div>
 	<!-- end 永久资源链接 -->
+	<!-- 公告信息栏 -->
+	<div class="modal fade" id="noticeModal" tabindex="-1" role="dialog"
+		aria-labelledby="noticeModalLabel">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="noticeModalLabel">公告信息</h4>
+				</div>
+				<div class="modal-body" style="overflow: scroll;"
+					id="noticeModalBody"></div>
+				<div class="modal-footer">
+					<label class="text-muted"> <input type="checkbox"
+						id="dontShowSomeNoticeAt30Day"> 30天内不再显示相同的公告信息
+					</label>
+					<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end 公告信息栏 -->
+	<!-- 显示公告按钮 -->
+	<div id="shownoticebox" class="shownoticebox text-center hidden">
+		<button type="button" onclick="showNotice()" class="shownoticebutton">
+			<span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span><br />公<br />告
+		</button>
+	</div>
+	<!-- end 显示公告按钮 -->
 	<!-- 返回顶部按钮（隐藏式） -->
 	<div id="gobacktotopbox" class="gobacktopbox text-center hidden">
 		<button type="button" onclick="goBackToTop()" class="gobacktopbutton">
@@ -814,6 +848,13 @@
 		</button>
 	</div>
 	<!-- end 返回顶部按钮 -->
+	<!-- 加载余下部分的提示 -->
+	<div id="loadingremaininngbox"
+		class="loadingremaininngbox text-center bg-info hidden">
+		正在加载文件列表：<span id="loadingrate">0%</span>... <span
+			class="glyphicon glyphicon-hourglass" aria-hidden="true"></span>
+	</div>
+	<!-- end 加载余下部分的提示 -->
 </body>
 <!-- jquery基本框架 -->
 <script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>

@@ -16,6 +16,19 @@
 	<select id="queryByParentFolderId" parameterType="java.lang.String"
 		resultMap="BaseResultMap">
 		SELECT * FROM FILE WHERE file_parent_folder =
+		#{pfid,jdbcType=VARCHAR} LIMIT 0,2147483647
+	</select>
+
+	<select id="queryByParentFolderIdSection" parameterType="java.util.Map"
+		resultMap="BaseResultMap">
+		SELECT * FROM FILE WHERE file_parent_folder =
+		#{pfid,jdbcType=VARCHAR} LIMIT
+		#{offset,jdbcType=INTEGER},#{rows,jdbcType=INTEGER}
+	</select>
+
+	<select id="countByParentFolderId" parameterType="java.lang.String"
+		resultType="java.lang.Long">
+		SELECT COUNT(file_id) FROM FILE WHERE file_parent_folder =
 		#{pfid,jdbcType=VARCHAR}
 	</select>
 
@@ -57,10 +70,6 @@
 		#{fileId,jdbcType=VARCHAR}
 	</update>
 
-	<select id="queryAll" resultMap="BaseResultMap">
-		SELECT * FROM FILE
-	</select>
-
 	<select id="queryByPath" parameterType="java.lang.String"
 		resultMap="BaseResultMap">
 		SELECT * FROM FILE WHERE file_path =
@@ -72,7 +81,7 @@
 		SELECT * FROM FILE WHERE file_parent_folder in (SELECT
 		file_parent_folder
 		FROM FILE WHERE file_id =
-		#{fileId,jdbcType=VARCHAR})
+		#{fileId,jdbcType=VARCHAR}) LIMIT 0,2147483647
 	</select>
 
 	<update id="moveById" parameterType="java.util.Map">
