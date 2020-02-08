@@ -81,8 +81,10 @@ $(function() {
 	});
 	// 关闭登陆模态框自动清空输入数据
 	$('#loginModal').on('hidden.bs.modal', function(e) {
-		$("#accountid").val('');
-		$("#accountpwd").val('');
+		if($("#dologinButton").attr('disabled') !== 'disabled'){
+			$("#accountid").val('');
+			$("#accountpwd").val('');
+		}
 		$("#accountidbox").removeClass("has-error");
 		$("#accountpwdbox").removeClass("has-error");
 		$("#alertbox").removeClass("alert");
@@ -596,7 +598,6 @@ function dologin() {
 
 // 发送加密文本
 function sendLoginInfo(encrypted) {
-	
 	$.ajax({
 		type : "POST",
 		dataType : "text",
@@ -1139,8 +1140,7 @@ function createfolder() {
 						showFolderView(locationpath);
 						break;
 					default:
-						$('#newFolderModal').modal('hide');
-						showFolderView(locationpath);
+						showFolderAlert("提示：出现意外错误，可能未能创建文件夹。");
 						break;
 					}
 				}
