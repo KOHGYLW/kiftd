@@ -542,13 +542,15 @@ function startLogin(){
 	$("#accountid").attr('disabled','disabled');
 	$("#accountpwd").attr('disabled','disabled');
 	$("#dologinButton").attr('disabled','disabled');
+	$("#vercode").attr('disabled','disabled');
 }
 
 // 结束登陆加载动画
 function finishLogin(){
-	$("#accountid").removeAttr('disabled','disabled');
-	$("#accountpwd").removeAttr('disabled','disabled');
-	$("#dologinButton").removeAttr('disabled','disabled');
+	$("#accountid").removeAttr('disabled');
+	$("#accountpwd").removeAttr('disabled');
+	$("#dologinButton").removeAttr('disabled');
+	$("#vercode").removeAttr('disabled');
 }
 
 // 登录操作

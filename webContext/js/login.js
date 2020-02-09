@@ -52,6 +52,7 @@ function dologin() {
 		$("#accountpwdbox").removeClass("has-error");
 	}
 	if (check == "y") {
+		startLogin();
 		$.ajax({
 			type : "POST",
 			dataType : "text",
@@ -67,9 +68,7 @@ function dologin() {
 				sendLoginInfo(encrypted);
 			},
 			error : function() {
-				$("#alertbox").addClass("alert");
-				$("#alertbox").addClass("alert-danger");
-				$("#alertbox").text("提示：登录请求失败，请检查网络或服务器运行状态");
+				showAlert("提示：登录请求失败，请检查网络或服务器运行状态");
 			}
 		});
 	}
@@ -93,6 +92,7 @@ function sendLoginInfo(encrypted) {
 			$("#vercodebox").addClass("hidden");
 			switch (result) {
 			case "permitlogin":
+				finishLogin();
 				$("#accountidbox").removeClass("has-error");
 				$("#accountpwdbox").removeClass("has-error");
 				window.location.href = "/home.html";
@@ -100,38 +100,29 @@ function sendLoginInfo(encrypted) {
 			case "accountnotfound":
 				$("#accountidbox").addClass("has-error");
 				$("#accountpwdbox").removeClass("has-error");
-				$("#alertbox").addClass("alert");
-				$("#alertbox").addClass("alert-danger");
-				$("#alertbox").text("提示：登录失败，账户不存在或未设置");
+				showAlert("提示：登录失败，账户不存在或未设置");
 				break;
 			case "accountpwderror":
 				$("#accountpwdbox").addClass("has-error");
 				$("#accountidbox").removeClass("has-error");
-				$("#alertbox").addClass("alert");
-				$("#alertbox").addClass("alert-danger");
-				$("#alertbox").text("提示：登录失败，密码错误或未设置");
+				showAlert("提示：登录失败，密码错误或未设置");
 				break;
 			case "needsubmitvercode":
+				finishLogin();
 				$("#vercodebox").html("<label id='vercodetitle' class='col-sm-6'><img id='showvercode' class='vercodeimg' alt='点击获取验证码' src='homeController/getNewVerCode.do?s="+(new Date()).getTime()+"' onclick='getNewVerCode()'></label><div class='col-sm-6'><input type='text' class='form-control' id='vercode' placeholder='验证码……'></div>");
 				$("#vercodebox").removeClass("hidden");
 				$("#vercodebox").addClass("show");
 				break;
 			case "error":
-				$("#alertbox").addClass("alert");
-				$("#alertbox").addClass("alert-danger");
-				$("#alertbox").text("提示：登录失败，登录请求无法通过效验（可能是请求耗时过长导致的）");
+				showAlert("提示：登录失败，登录请求无法通过效验（可能是请求耗时过长导致的）");
 				break;
 			default:
-				$("#alertbox").addClass("alert");
-				$("#alertbox").addClass("alert-danger");
-				$("#alertbox").text("提示：无法登录，未知错误");
+				showAlert("提示：无法登录，未知错误");
 				break;
 			}
 		},
 		error : function() {
-			$("#alertbox").addClass("alert");
-			$("#alertbox").addClass("alert-danger");
-			$("#alertbox").text("提示：登录请求失败，请检查网络或服务器运行状态");
+			showAlert("提示：登录请求失败，请检查网络或服务器运行状态");
 		}
 	});
 }
@@ -139,4 +130,27 @@ function sendLoginInfo(encrypted) {
 //获取一个新的验证码
 function getNewVerCode(){
 	$("#showvercode").attr("src","homeController/getNewVerCode.do?s="+(new Date()).getTime());
+}
+
+function showAlert(text){
+	finishLogin();
+	$("#alertbox").addClass("alert");
+	$("#alertbox").addClass("alert-danger");
+	$("#alertbox").text(text);
+}
+
+function startLogin(){
+	$("#loginBtn").attr('disabled','disabled');
+	$("#accountid").attr('disabled','disabled');
+	$("#accountpwd").attr('disabled','disabled');
+	$("#vercode").attr('disabled','disabled');
+	$("#loginBtn").val('正在登录...');
+}
+
+function finishLogin(){
+	$("#loginBtn").removeAttr('disabled');
+	$("#accountid").removeAttr('disabled');
+	$("#accountpwd").removeAttr('disabled');
+	$("#vercode").removeAttr('disabled');
+	$("#loginBtn").val('登录');
 }
