@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- 青阳网络文件传输系统 kiftd v1.0.28-RELEASE -->
+<!-- 青阳网络文件传输系统 kiftd v1.0.29-RELEASE -->
 <!-- 欢迎访问主界面 -->
 <!-- by 青阳龙野（kohgylw@163.com） -->
 <html>
@@ -101,22 +101,31 @@
 											class="glyphicon glyphicon-cog"></span> 操作 <span
 											class="caret"></span></a>
 										<ul class="dropdown-menu" id="fileListDropDown">
-											<li id="uploadFileButtonLi"><a>上传文件 <span
+											<li id="uploadFileButtonLi"><a href="javascript:void(0);">上传文件 <span
 													class="pull-right"><span
 														class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>+U</span></a></li>
-											<li id="uploadFolderButtonLi"><a>上传文件夹 <span
+											<li id="uploadFolderButtonLi"><a href="javascript:void(0);">上传文件夹 <span
 													class="pull-right"><span
 														class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>+F</span></a></li>
 											<li role="separator" class="divider"></li>
-											<li id="createFolderButtonLi"><a>新建文件夹 <span
+											<li id="createFolderButtonLi"><a href="javascript:void(0);">新建文件夹 <span
 													class="pull-right"><span
 														class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>+N</span></a></li>
 											<li role="separator" class="divider"></li>
-											<li id="cutFileButtonLi"><a><span id='cutSignTx'>剪切
+											<li id="copyFileButtonLi"><a href="javascript:void(0);"><span id='copySignTx'>复制
 														<span class="pull-right"><span
 															class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>+C</span>
 												</span></a></li>
-											<li id="deleteSeelectFileButtonLi"><a>删除 <span
+											<li id="cutFileButtonLi"><a href="javascript:void(0);"><span id='cutSignTx'>剪切
+														<span class="pull-right"><span
+															class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>+X</span>
+												</span></a></li>
+											<li id="stickFileButtonLi" class="hidden"><a href="javascript:void(0);"><span
+													id='stickSignTx'>粘贴<span id="stickFilesCount"></span>
+														<span class="pull-right"><span
+															class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>+V</span>
+												</span></a></li>
+											<li id="deleteSeelectFileButtonLi"><a href="javascript:void(0);">删除 <span
 													class="pull-right"><span
 														class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>+D</span></a></li>
 										</ul></li>
@@ -284,7 +293,7 @@
 					<h5 id="deleteFolderMessage"></h5>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<button id="cancelDeleteFolderBtn" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 					<span id="deleteFolderBox"></span>
 				</div>
 			</div>
@@ -443,7 +452,8 @@
 						</div>
 					</div>
 					<input type="file" id="importfolder" style="display: none;"
-						onchange="getInputImport()" multiple="multiple" webkitdirectory>
+						onchange="getInputImport()" multiple="multiple"
+						webkitdirectory="true">
 					<h5>
 						上传进度：<span id="importcount"></span>
 					</h5>
@@ -535,7 +545,7 @@
 					<h5 id="deleteFileMessage" class="wordbreak"></h5>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<button id="cancelDeleteFileBox" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 					<span id="deleteFileBox"></span>
 				</div>
 			</div>
@@ -599,7 +609,7 @@
 					</h5>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<button id="cancelDownloadAllCheckedBtn" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 					<span id="downloadAllCheckedBox"></span>
 				</div>
 			</div>
@@ -688,7 +698,7 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<button id="cancelMoveFilesBtn" type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 					<span id="moveFilesBox"></span>
 				</div>
 			</div>

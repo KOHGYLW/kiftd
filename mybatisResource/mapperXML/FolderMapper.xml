@@ -74,4 +74,15 @@
 		#{folderId,jdbcType=VARCHAR}
 	</update>
 
+	<update id="update" parameterType="kohgylw.kiftd.server.model.Folder">
+		UPDATE FOLDER SET folder_name
+		=
+		#{folderName,jdbcType=VARCHAR},folder_creation_date =
+		#{folderCreationDate,jdbcType=VARCHAR},folder_creator =
+		#{folderCreator,jdbcType=VARCHAR},folder_parent =
+		#{folderParent,jdbcType=VARCHAR},folder_constraint =
+		#{folderConstraint,jdbcType=INTEGER} WHERE folder_id =
+		#{folderId,jdbcType=VARCHAR}
+	</update>
+
 </mapper>

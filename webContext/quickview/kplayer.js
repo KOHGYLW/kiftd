@@ -5,10 +5,10 @@ var tReq;
 var tTimer;
 var pingInt;
 $(function() {
-	window.onresize = function(){
+	window.onresize = function() {
 		showCloseBtn();
-    }
-	pingInt = setInterval("ping()",60000);
+	}
+	pingInt = setInterval("ping()", 60000);
 	var fileId = getFileId();
 	$
 			.ajax({
@@ -21,7 +21,9 @@ $(function() {
 				success : function(result) {
 					if (result != "ERROR") {
 						f = eval("(" + result + ")");
-						$("#vname").text(f.fileName.replace('\'','&#39;').replace('<','&lt;').replace('>','&gt;'));
+						$("#vname").text(
+								f.fileName.replace('\'', '&#39;').replace('<',
+										'&lt;').replace('>', '&gt;'));
 						$("#vcreator").text(f.fileCreator);
 						$("#vcdate").text(f.fileCreationDate);
 						$("#vsize").text(f.fileSize);
@@ -59,9 +61,9 @@ function playVideo() {
 	$("#playerbox")
 			.html(
 					"<video id='kiftplayer' class='video-js col-md-12' controls preload='auto' height='500'>"
-							+ "<source src='resourceController/getResource.do?fid="
+							+ "<source src='resourceController/getResource/"
 							+ f.fileId + "' type='video/mp4'></video>");
-	var player = videojs('kiftplayer',{
+	var player = videojs('kiftplayer', {
 		preload : 'auto'
 	});
 	player.ready(function() {
@@ -71,10 +73,10 @@ function playVideo() {
 
 // 关闭当前窗口并释放播放器
 function reMainPage() {
-	if(tReq != null){
+	if (tReq != null) {
 		tReq.abort()
 	}
-	if(tTimer != null){
+	if (tTimer != null) {
 		window.clearTimeout(tTimer);
 	}
 	window.opener = null;
@@ -84,7 +86,7 @@ function reMainPage() {
 
 // 进行转码请求并监听进度状态（轮询）
 function doTranscode() {
-	tReq=$.ajax({
+	tReq = $.ajax({
 		url : 'resourceController/getVideoTranscodeStatus.ajax',
 		type : 'POST',
 		dataType : 'text',
@@ -99,7 +101,7 @@ function doTranscode() {
 				reMainPage();
 			} else {
 				$("#transcodeProgress").text(result);
-				tTimer=setTimeout('doTranscode()', 500);// 每隔1秒询问一次进度
+				tTimer = setTimeout('doTranscode()', 500);// 每隔1秒询问一次进度
 			}
 		},
 		error : function() {
@@ -109,28 +111,28 @@ function doTranscode() {
 	});
 }
 
-function showCloseBtn(){
+function showCloseBtn() {
 	var win = $(window).width();
-    if(win < 450){
-    		$("#closeBtn").addClass("hidden");
-    }else{
-    		$("#closeBtn").removeClass("hidden");
-    }
+	if (win < 450) {
+		$("#closeBtn").addClass("hidden");
+	} else {
+		$("#closeBtn").removeClass("hidden");
+	}
 }
 
-//防止播放视频时会话超时的应答器，每分钟应答一次
-function ping(){
+// 防止播放视频时会话超时的应答器，每分钟应答一次
+function ping() {
 	$.ajax({
-		url:"homeController/ping.ajax",
-		type:"POST",
-		dataType:"text",
-		data:{},
-		success:function(result){
-			if(result != 'pong'){
+		url : "homeController/ping.ajax",
+		type : "POST",
+		dataType : "text",
+		data : {},
+		success : function(result) {
+			if (result != 'pong') {
 				window.clearInterval(pingInt);
 			}
 		},
-		error:function(){
+		error : function() {
 			window.clearInterval(pingInt);
 		}
 	});

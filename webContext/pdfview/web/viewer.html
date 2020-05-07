@@ -67,24 +67,26 @@ See https://github.com/adobe-type-tools/cmap-resources
 	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=70);
 }
 
-@-webkit-keyframes zoom {
-	from {
-		-webkit-transform:scale(0)
-	}
-	to {
-		-webkit-transform: scale(1)
-	}
+@
+-webkit-keyframes zoom {from { -webkit-transform:scale(0)
+	
 }
 
-@keyframes zoom {
-	from { 
-		transform:scale(0)
-	}
-	to {
-		transform: scale(1)
-	}
+to {
+	-webkit-transform: scale(1)
 }
 
+}
+@
+keyframes zoom {from { transform:scale(0)
+	
+}
+
+to {
+	transform: scale(1)
+}
+
+}
 .pdf-modal-body {
 	font-size: 18px;
 	box-sizing: border-box;
@@ -540,24 +542,29 @@ See https://github.com/adobe-type-tools/cmap-resources
 	//增加了加载需要耗时转换的文档时的加载提示
 	window.onload = function() {
 		var url = location.search;
-		if (url.indexOf(".block") < 0) {
+		if (url.indexOf("getResource") < 0) {
 			var modal = document.getElementById('pdf-modal');
 			if (url.indexOf("getWordView") >= 0) {
-				document.getElementById('doc-type-box').innerHTML="Word";
-			}else if(url.indexOf("getTxtView") >= 0){
-				document.getElementById('doc-type-box').innerHTML="TXT";
-			}else if(url.indexOf("getPPTView") >= 0){
-				document.getElementById('doc-type-box').innerHTML="PPT";
-			}else{
-				document.getElementById('doc-type-box').innerHTML="未知类型";
+				document.getElementById('doc-type-box').innerHTML = "Word";
+			} else if (url.indexOf("getTxtView") >= 0) {
+				document.getElementById('doc-type-box').innerHTML = "TXT";
+			} else if (url.indexOf("getPPTView") >= 0) {
+				document.getElementById('doc-type-box').innerHTML = "PPT";
+			} else {
+				document.getElementById('doc-type-box').innerHTML = "未知类型";
 			}
 			modal.style.display = "block";
-			var interval = setInterval(function() {
-				if (PDFViewerApplication.pdfDocument != null) {
-					clearInterval(interval);
-					modal.style.display = "none";
-				}
-			}, 1);
+			var interval = setInterval(
+					function() {
+						if (PDFViewerApplication.pdfDocument != null
+								|| PDFViewerApplication.appConfig.errorWrapper.container.hidden == false) {
+							clearInterval(interval);
+							modal.style.display = "none";
+							if (PDFViewerApplication.appConfig.errorWrapper.container.hidden == false) {
+								alert("提示：打开目标文档时发生意外错误（刷新页面将再次尝试打开该文档）。");
+							}
+						}
+					}, 1);
 		}
 	}
 </script>
