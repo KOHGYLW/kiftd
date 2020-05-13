@@ -108,7 +108,7 @@ function sendSignUpInfo(encrypted){
 				$("#accountidbox").addClass("has-error");
 				break;
 			case "illegalaccount":
-				showAlert("提示：注册失败，账户名中不得包含“=”或“:”。");
+				showAlert("提示：注册失败，账户名中不得包含“=”或“:”，且首个字符不能为“#”。");
 				$("#accountidbox").addClass("has-error");
 				break;
 			case "mustlogout":
