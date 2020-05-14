@@ -3481,6 +3481,9 @@ function sendChangePasswordInfo(encrypted) {
 					case "invalidnewpwd":
 						showChangePasswordAlert("提示：密码修改失败，新密码不合法。新密码的长度需为3-32个字符，且仅支持ISO-8859-1中的字符（推荐使用英文字母、英文符号及阿拉伯数字）。");
 						break;
+					case "hasescapes":
+						showChangePasswordAlert("提示：密码修改失败，新密码不合法。密码中不得包含“\\”。");
+						break;
 					case "error":
 						showChangePasswordAlert("提示：密码修改失败，修改请求无法通过加密效验（可能是请求耗时过长导致的）");
 						break;

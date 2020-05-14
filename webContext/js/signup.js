@@ -122,6 +122,9 @@ function sendSignUpInfo(encrypted){
 			case "error":
 				showAlert("提示：注册失败，注册请求无法通过加密效验（可能是请求耗时过长导致的）");
 				break;
+			case "hasescapes":
+				showAlert("提示：注册失败，账户名或密码中不得包含“\\”。");
+				break;
 			case "cannotsignup":
 				showAlert("提示：注册失败，发生意外错误，请稍后重试或联系管理员");
 				break;
