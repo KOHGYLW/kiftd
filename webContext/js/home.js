@@ -1605,8 +1605,8 @@ function doupload(count) {
 		xhr = new XMLHttpRequest();// 这东西类似于servlet里面的request
 
 		var fd = new FormData();// 用于封装文件数据的对象
-
 		fd.append("file", uploadfile);// 将文件对象添加到FormData对象中，字段名为uploadfile
+		fd.append("fname", fname);
 		fd.append("folderId", locationpath);
 		if (repeModelList != null && repeModelList[fname] != null) {
 			if (repeModelList[fname] == 'skip') {
@@ -3009,7 +3009,8 @@ function getDownloadURL() {
 							+ window.location.host
 							+ "/externalLinksController/downloadFileByKey/"
 							+ encodeURIComponent(getDownloadFileName.replace(
-									/\'/g, '')) + "?dkey=" + result;
+									/\'/g, '').replace(/\r/g, "").replace(
+									/\n/g, "")) + "?dkey=" + result;
 					// 显示链接内容
 					$("#downloadHrefBox").html(
 							"<a href='" + dlurl + "'>" + dlurl + "</a>");
@@ -3535,13 +3536,14 @@ function getFileChain(fileId, fileName) {
 				window.location.href = "prv/login.html";
 				break;
 			default:
-				var getChainFileName = fileName.replace("#", "%23").replace(
-						"%", "%25").replace("?", "%3F");
 				$("#fileChainTextarea").text(
-						encodeURI(window.location.protocol + "//"
+						window.location.protocol
+								+ "//"
 								+ window.location.host
 								+ "/externalLinksController/chain/"
-								+ getChainFileName + "?ckey=")
+								+ encodeURIComponent(fileName
+										.replace(/\'/g, '').replace(/\r/g, "")
+										.replace(/\n/g, "")) + "?ckey="
 								+ encodeURIComponent(result));
 				$("#copyChainBtn").attr('disabled', false);
 				break;
