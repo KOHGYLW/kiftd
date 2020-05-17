@@ -1007,7 +1007,7 @@ function createFileRow(fi, aL, aD, aR, aO) {
 				+ '"'
 				+ fi.fileId
 				+ '","'
-				+ fi.fileName
+				+ replaceAllQuotationMarks(fi.fileName)
 				+ '"'
 				+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-cloud-download'></span> 下载</button>";
 		// 对于各种特殊格式文件提供的预览和播放功能
@@ -1101,7 +1101,7 @@ function createFileRow(fi, aL, aD, aR, aO) {
 				+ '"'
 				+ fi.fileId
 				+ '","'
-				+ fi.fileName
+				+ replaceAllQuotationMarks(fi.fileName)
 				+ '"'
 				+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-remove'></span> 删除</button>";
 	}
@@ -1113,7 +1113,7 @@ function createFileRow(fi, aL, aD, aR, aO) {
 				+ '"'
 				+ ","
 				+ '"'
-				+ fi.fileName
+				+ replaceAllQuotationMarks(fi.fileName)
 				+ '"'
 				+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-wrench'></span> 重命名</button>";
 	}
@@ -1133,7 +1133,7 @@ function createFileRow(fi, aL, aD, aR, aO) {
 				+ '"'
 				+ fi.fileId
 				+ '","'
-				+ fi.fileName
+				+ replaceAllQuotationMarks(fi.fileName)
 				+ '"'
 				+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-link'></span> 链接</button>";
 	}
@@ -1169,7 +1169,7 @@ function createNewFolderRow(f, aD, aR, aO) {
 				+ '"'
 				+ f.folderId
 				+ '","'
-				+ f.folderName
+				+ replaceAllQuotationMarks(f.folderName)
 				+ '"'
 				+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-remove'></span> 删除</button>";
 	}
@@ -1179,7 +1179,7 @@ function createNewFolderRow(f, aD, aR, aO) {
 				+ '"'
 				+ f.folderId
 				+ '","'
-				+ f.folderName
+				+ replaceAllQuotationMarks(f.folderName)
 				+ '",'
 				+ f.folderConstraint
 				+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-wrench'></span> 编辑</button>";
@@ -3815,4 +3815,9 @@ function updateTheFolderInfo() {
 	$("#fim_statistics").text(
 			"共包含 " + folderView.folderList.length + " 个文件夹， "
 					+ folderView.fileList.length + " 个文件。");
+}
+
+// 替换所有引号，将其进一步转义，主要用于传递带引号的文件名
+function replaceAllQuotationMarks(txt) {
+	return txt.replace(/\"/g, "\\\"");
 }
