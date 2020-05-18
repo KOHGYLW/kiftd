@@ -21,9 +21,7 @@ $(function() {
 				success : function(result) {
 					if (result != "ERROR") {
 						f = eval("(" + result + ")");
-						$("#vname").text(
-								f.fileName.replace('\'', '&#39;').replace('<',
-										'&lt;').replace('>', '&gt;'));
+						$("#vname").text(f.fileName);
 						$("#vcreator").text(f.fileCreator);
 						$("#vcdate").text(f.fileCreationDate);
 						$("#vsize").text(f.fileSize);
