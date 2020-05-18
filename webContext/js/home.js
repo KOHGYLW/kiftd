@@ -1600,8 +1600,10 @@ function doupload(count) {
 			$("#filecount").text("（" + count + "/" + fcount + "）");// 显示当前进度
 		}
 		$("#uploadstatus").prepend(
-				"<p>" + fname + "<span id='uls_" + count
-						+ "'>[正在上传...]</span></p>");
+				"<p>"
+						+ fname.replace(/\'/g, '&#39;').replace(/</g, '&lt;')
+								.replace(/>/g, '&gt;') + "<span id='uls_"
+						+ count + "'>[正在上传...]</span></p>");
 		xhr = new XMLHttpRequest();// 这东西类似于servlet里面的request
 
 		var fd = new FormData();// 用于封装文件数据的对象
@@ -3275,10 +3277,11 @@ function iteratorImport(i, newFolderName) {
 		if (fcount > 1) {
 			$("#importcount").text("（" + (i + 1) + "/" + fcount + "）");// 显示当前进度
 		}
-		$("#importstatus")
-				.prepend(
-						"<p>" + fname + "<span id='ils_" + i
-								+ "'>[正在上传...]</span></p>");
+		$("#importstatus").prepend(
+				"<p>"
+						+ fname.replace(/\'/g, '&#39;').replace(/</g, '&lt;')
+								.replace(/>/g, '&gt;') + "<span id='ils_" + i
+						+ "'>[正在上传...]</span></p>");
 		xhr = new XMLHttpRequest();// 这东西类似于servlet里面的request
 
 		var fd = new FormData();// 用于封装文件数据的对象
