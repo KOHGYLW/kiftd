@@ -988,8 +988,7 @@ function showFolderTable(folderView) {
 
 // 根据一个文件对象生成对应的文件行的HTML内容
 function createFileRow(fi, aL, aD, aR, aO) {
-	fi.fileName = fi.fileName.replace(/\'/g, '&#39;').replace(/</g, '&lt;')
-			.replace(/>/g, '&gt;');
+	fi.fileName = html2Escape(fi.fileName);
 	var fileRow = "<tr id=" + fi.fileId + " onclick='checkfile(event," + '"'
 			+ fi.fileId + '"' + ")' ondblclick='checkConsFile(event," + '"'
 			+ fi.fileId + '"' + ")' id='" + fi.fileId
@@ -1146,8 +1145,7 @@ function createFileRow(fi, aL, aD, aR, aO) {
 
 // 根据一个文件夹对象生成对应的文件行的HTML内容
 function createNewFolderRow(f, aD, aR, aO) {
-	f.folderName = f.folderName.replace(/\'/g, '&#39;').replace(/</g, '&lt;')
-			.replace(/>/g, '&gt;');
+	f.folderName = html2Escape(f.folderName);
 	var folderRow = "<tr id='"
 			+ f.folderId
 			+ "' onclick='checkfile(event,"
@@ -1600,10 +1598,8 @@ function doupload(count) {
 			$("#filecount").text("（" + count + "/" + fcount + "）");// 显示当前进度
 		}
 		$("#uploadstatus").prepend(
-				"<p>"
-						+ fname.replace(/\'/g, '&#39;').replace(/</g, '&lt;')
-								.replace(/>/g, '&gt;') + "<span id='uls_"
-						+ count + "'>[正在上传...]</span></p>");
+				"<p>" + html2Escape(fname) + "<span id='uls_" + count
+						+ "'>[正在上传...]</span></p>");
 		xhr = new XMLHttpRequest();// 这东西类似于servlet里面的request
 
 		var fd = new FormData();// 用于封装文件数据的对象
@@ -1970,7 +1966,8 @@ function createViewList() {
 		for (var i = 0; i < pvl.pictureViewList.length; i++) {
 			$(images).append(
 					"<li><img src='" + pvl.pictureViewList[i].url + "' alt='"
-							+ pvl.pictureViewList[i].fileName + "' /></li>");
+							+ html2Escape(pvl.pictureViewList[i].fileName)
+							+ "' /></li>");
 		}
 		viewer = $(images);
 		viewer.viewer({
@@ -1997,11 +1994,13 @@ function createViewListByPage() {
 		for (var i = 0; i < viewerPageSize
 				&& i < (pvl.pictureViewList.length - (viewerPageIndex - 1)
 						* viewerPageSize); i++) {
-			$(images).append(
-					"<li><img src='" + pvl.pictureViewList[startIndex + i].url
-							+ "' alt='"
-							+ pvl.pictureViewList[startIndex + i].fileName
-							+ "' /></li>");
+			$(images)
+					.append(
+							"<li><img src='"
+									+ pvl.pictureViewList[startIndex + i].url
+									+ "' alt='"
+									+ html2Escape(pvl.pictureViewList[startIndex
+											+ i].fileName) + "' /></li>");
 		}
 		if (viewerPageIndex < viewerTotal) {
 			$(images).append("<li><img src='css/right.png' alt='下一页' /></li>");
@@ -3278,9 +3277,7 @@ function iteratorImport(i, newFolderName) {
 			$("#importcount").text("（" + (i + 1) + "/" + fcount + "）");// 显示当前进度
 		}
 		$("#importstatus").prepend(
-				"<p>"
-						+ fname.replace(/\'/g, '&#39;').replace(/</g, '&lt;')
-								.replace(/>/g, '&gt;') + "<span id='ils_" + i
+				"<p>" + html2Escape(fname) + "<span id='ils_" + i
 						+ "'>[正在上传...]</span></p>");
 		xhr = new XMLHttpRequest();// 这东西类似于servlet里面的request
 
@@ -3823,4 +3820,16 @@ function updateTheFolderInfo() {
 // 替换所有引号，将其进一步转义，主要用于传递带引号的文件名
 function replaceAllQuotationMarks(txt) {
 	return txt.replace(/\"/g, "\\\"");
+}
+
+// 对所有可能进入html的字符串进行转义操作
+function html2Escape(sHtml) {
+	return sHtml.replace(/[<>&\']/g, function(c) {
+		return {
+			'<' : '&lt;',
+			'>' : '&gt;',
+			'&' : '&amp;',
+			'\'' : '&#39;'
+		}[c];
+	});
 }
