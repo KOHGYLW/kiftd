@@ -3010,8 +3010,7 @@ function getDownloadURL() {
 							+ window.location.host
 							+ "/externalLinksController/downloadFileByKey/"
 							+ encodeURIComponent(getDownloadFileName.replace(
-									/\'/g, '').replace(/\r/g, "").replace(
-									/\n/g, "")) + "?dkey=" + result;
+									/\\/g, "_")) + "?dkey=" + result;
 					// 显示链接内容
 					$("#downloadHrefBox").html(
 							"<a href='" + dlurl + "'>" + dlurl + "</a>");
@@ -3541,9 +3540,8 @@ function getFileChain(fileId, fileName) {
 								+ "//"
 								+ window.location.host
 								+ "/externalLinksController/chain/"
-								+ encodeURIComponent(fileName
-										.replace(/\'/g, '').replace(/\r/g, "")
-										.replace(/\n/g, "")) + "?ckey="
+								+ encodeURIComponent(fileName.replace(/\\/g,
+										"_")) + "?ckey="
 								+ encodeURIComponent(result));
 				$("#copyChainBtn").attr('disabled', false);
 				break;
@@ -3819,7 +3817,7 @@ function updateTheFolderInfo() {
 
 // 替换所有引号，将其进一步转义，主要用于传递带引号的文件名
 function replaceAllQuotationMarks(txt) {
-	return txt.replace(/\"/g, "\\\"");
+	return txt.replace(/\\/g, "\\\\").replace(/\"/g, "\\\"");
 }
 
 // 对所有可能进入html的字符串进行转义操作
