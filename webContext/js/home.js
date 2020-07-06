@@ -20,6 +20,7 @@ var constraintLevel;// 当前文件夹限制等级
 var account;// 用户账户
 var isUpLoading = false;// 是否正在执行上传操作
 var isImporting = false;// 是否正在执行上传文件夹操作
+var uploadTargetFolder;// 执行上传操作时的目标文件夹（单独保存以避免用户切换文件夹）
 var isChangingPassword = false;// 是否正在执行修改密码操作
 var importFolderName;// 上传文件夹时保存文件夹名称
 var xhr;// 文件或文件夹上传请求对象
@@ -1489,13 +1490,14 @@ function checkUploadFile() {
 				}
 			}
 			var namelist = JSON.stringify(filenames);
+			uploadTargetFolder = locationpath;// 记录上传目标
 
 			$
 					.ajax({
 						type : "POST",
 						dataType : "text",
 						data : {
-							folderId : locationpath,
+							folderId : uploadTargetFolder,
 							namelist : namelist,
 							maxSize : maxSize,
 							maxFileIndex : maxFileIndex
@@ -1605,7 +1607,7 @@ function doupload(count) {
 		var fd = new FormData();// 用于封装文件数据的对象
 		fd.append("file", uploadfile);// 将文件对象添加到FormData对象中，字段名为uploadfile
 		fd.append("fname", fname);
-		fd.append("folderId", locationpath);
+		fd.append("folderId", uploadTargetFolder);
 		if (repeModelList != null && repeModelList[fname] != null) {
 			if (repeModelList[fname] == 'skip') {
 				$("#uls_" + count).text("[已完成]");
@@ -3126,6 +3128,7 @@ function checkImportFolder() {
 					maxFileIndex = i;
 				}
 			}
+			uploadTargetFolder = locationpath;// 记录上传目标
 			// 发送合法性检查请求
 			$
 					.ajax({
@@ -3135,7 +3138,7 @@ function checkImportFolder() {
 						data : {
 							folderName : importFolderName,
 							maxSize : maxSize,
-							folderId : locationpath
+							folderId : uploadTargetFolder
 						},
 						success : function(result) {
 							var resJson = eval("(" + result + ")");
@@ -3216,7 +3219,7 @@ function importAndCover() {
 		url : 'homeController/deleteFolderByName.ajax',
 		type : 'POST',
 		data : {
-			parentId : locationpath,
+			parentId : uploadTargetFolder,
 			folderName : importFolderName
 		},
 		dataType : 'text',
@@ -3242,7 +3245,7 @@ function importAndBoth() {
 				url : 'homeController/createNewFolderByName.ajax',
 				type : 'POST',
 				data : {
-					parentId : locationpath,
+					parentId : uploadTargetFolder,
 					folderName : importFolderName,
 					folderConstraint : fc
 				},
@@ -3283,7 +3286,7 @@ function iteratorImport(i, newFolderName) {
 		var fd = new FormData();// 用于封装文件数据的对象
 
 		fd.append("file", uploadfile);// 将文件对象添加到FormData对象中，字段名为uploadfile
-		fd.append("folderId", locationpath);
+		fd.append("folderId", uploadTargetFolder);
 		fd.append("folderConstraint", fc);
 		fd.append("originalFileName", fname);
 		if (!!newFolderName) {
