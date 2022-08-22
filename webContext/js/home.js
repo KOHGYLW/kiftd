@@ -3571,7 +3571,7 @@ function showNoticeModal() {
 // 加载公告内容并初始化公告模态框
 function initNoticeModal() {
 	$("#noticeModalBody").load(
-			"resourceController/getNoticeContext.do",
+			"resourceController/getNoticeContext.do?dms="+Date.now(),
 			function() {
 				$('#noticeModalBody img').css("max-width", "100%");
 				if (winHeight >= 300) {

@@ -35,7 +35,7 @@ _注：kift为该功能的开发名称，其实际成果命名为kiftd。_
 ## kiftd有哪些优势？
  ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 无上传限制——不足1MB的文档和超过5GB的高清电影资源？均能够随意上传和下载。
 
- ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 主流商业网盘特有的高级功能甚至需要收费的功能——文件夹访问级别控制、视频在线影院、Word/PPT/TXT/PDF文档在线预览、音乐在线欣赏、图片库在线预览...kiftd均一一具备，每一份kiftd均是“完全版”。
+ ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 主流商业网盘特有的高级功能甚至需要收费的功能——文件夹访问级别控制、视频在线影院、Word/PPT/TXT/PDF文档在线预览、音乐在线欣赏、图片库在线预览、WebDAV支持...kiftd均一一具备，每一份kiftd均是“完全版”。
 
  ![mark](https://github.com/KOHGYLW/kiftd-showPicture/blob/master/mark_icon.png?raw=true) 操作系统全兼容——无论是Windows、Linux还是Unix(包括Mac OS X)，均可运行使用。
 
@@ -77,11 +77,14 @@ _注：kift为该功能的开发名称，其实际成果命名为kiftd。_
 
 > 提示：当您更新版本后，请手动清除浏览器的缓存，之后刷新网盘主页以确保数据文件保持最新！否则可能导致新版页面功能无法使用。
 
-### 常规更新v1.0.35
-_本次更新为维护性的更新，修复一些已经发现的问题并优化使用体验，推荐所有用户升级。_
-+ 修复了当用户执行批量上传操作时，中途切换所在的文件夹可能会导致上传路径发生改变的问题。
-+ 升级了内置的MySQL数据库驱动的版本。
-
+### 新版本v1.1.0
+_本次更新大幅升级了底层框架，并加入了众多用户期待的新功能，推荐所有用户升级。_
++ 新增WebDAV支持功能！该功能允许用户将kiftd作为一个“网络驱动器”挂载至本地操作系统中，并让用户像在普通文件夹中一样访问和编辑kiftd中的文件。详细挂载方法请参阅《kiftd说明文档》。
++ 新增“删除留档”功能——当您启用该功能后，所有被删除的文件都会留档至指定文件夹中以便您做进一步的处理，从而避免因操作失误而导致重要文件被误删。详细启用方法请参阅《kiftd说明文档》。
++ 程序框架升级——kiftd现已支持新的Java版本（例如Java 17）和操作系统（例如Windows 11），并进一步提高了系统的稳定性。
++ 优化了下载限速算法，现在下载限速功能的精度更高了。
++ 修复了主页“公告栏”不能及时更新的问题。
++ 其他一些细节优化。
 
 > 需要查看更多版本历史信息？请访问： https://kohgylw.gitee.io/News.html 
 
@@ -124,4 +127,4 @@ _本次更新为维护性的更新，修复一些已经发现的问题并优化�
 
 _作者会每隔1-3周浏览一次邮箱，如未能及时回复请耐心等待。回复或许会迟到，但它不会缺席。_
 
-2018-2020 kohgylw@青阳龙野 作者保留版权
+2018-2022 kohgylw@青阳龙野 作者保留版权

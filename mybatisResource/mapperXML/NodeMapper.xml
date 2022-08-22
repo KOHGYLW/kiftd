@@ -48,11 +48,6 @@
 		#{fileId,jdbcType=VARCHAR}
 	</update>
 
-	<delete id="deleteByParentFolderId" parameterType="java.lang.String">
-		DELETE FROM
-		FILE WHERE file_parent_folder = #{pfid,jdbcType=VARCHAR}
-	</delete>
-
 	<delete id="deleteById" parameterType="java.lang.String">
 		DELETE FROM FILE WHERE
 		file_id = #{fileId,jdbcType=VARCHAR}
