@@ -4,7 +4,7 @@
 
 -------
 
-[![主页展示](https://i.postimg.cc/gjyQRFVZ/kiftd-mainpage.png)](https://postimg.cc/dZ15PfSs)
+[![kiftd-mainpage](https://s1.ax1x.com/2022/08/24/vcfGuD.png)](https://kohgylw.gitee.io/)
 
 -------
 
@@ -33,19 +33,19 @@ _注：kift为该功能的开发名称，其实际成果命名为kiftd。_
 -------
 
 ## kiftd有哪些优势？
- [![mark-icon.png](https://i.postimg.cc/9QgSyB7J/mark-icon.png)](https://postimg.cc/QF5031ST) 无上传限制——不足1MB的文档和超过5GB的高清电影资源？均能够随意上传和下载。
+ [![mark-icon](https://s1.ax1x.com/2022/08/24/vcf08P.png)](https://kohgylw.gitee.io/) 无上传限制——不足1MB的文档和超过5GB的高清电影资源？均能够随意上传和下载。
 
- [![mark-icon.png](https://i.postimg.cc/9QgSyB7J/mark-icon.png)](https://postimg.cc/QF5031ST) 主流商业网盘特有的高级功能甚至需要收费的功能——文件夹访问级别控制、视频在线影院、Word/PPT/TXT/PDF文档在线预览、音乐在线欣赏、图片库在线预览、WebDAV支持...kiftd均一一具备，每一份kiftd均是“完全版”。
+ [![mark-icon](https://s1.ax1x.com/2022/08/24/vcf08P.png)](https://kohgylw.gitee.io/) 主流商业网盘特有的高级功能甚至需要收费的功能——文件夹访问级别控制、视频在线影院、Word/PPT/TXT/PDF文档在线预览、音乐在线欣赏、图片库在线预览、WebDAV支持...kiftd均一一具备，每一份kiftd均是“完全版”。
 
- [![mark-icon.png](https://i.postimg.cc/9QgSyB7J/mark-icon.png)](https://postimg.cc/QF5031ST) 操作系统全兼容——无论是Windows、Linux还是Unix(包括Mac OS X)，均可运行使用。
+ [![mark-icon](https://s1.ax1x.com/2022/08/24/vcf08P.png)](https://kohgylw.gitee.io/) 操作系统全兼容——无论是Windows、Linux还是Unix(包括Mac OS X)，均可运行使用。
 
- [![mark-icon.png](https://i.postimg.cc/9QgSyB7J/mark-icon.png)](https://postimg.cc/QF5031ST) 支持移动端操作，即使没有数据线，手机、平板、电脑之间也能文件互传。
+ [![mark-icon](https://s1.ax1x.com/2022/08/24/vcf08P.png)](https://kohgylw.gitee.io/) 支持移动端操作，即使没有数据线，手机、平板、电脑之间也能文件互传。
 
- [![mark-icon.png](https://i.postimg.cc/9QgSyB7J/mark-icon.png)](https://postimg.cc/QF5031ST) 同时满足日常需求or专业需求——kiftd同时具备了图形界面模式和纯命令模式的双操作模式，无论您是喜欢点击鼠标的电脑小白还是需要使用命令在远程Linux上部署的运维人员，均能完美操作。
+ [![mark-icon](https://s1.ax1x.com/2022/08/24/vcf08P.png)](https://kohgylw.gitee.io/) 同时满足日常需求or专业需求——kiftd同时具备了图形界面模式和纯命令模式的双操作模式，无论您是喜欢点击鼠标的电脑小白还是需要使用命令在远程Linux上部署的运维人员，均能完美操作。
 
- [![mark-icon.png](https://i.postimg.cc/9QgSyB7J/mark-icon.png)](https://postimg.cc/QF5031ST) 无任何使用成本——kiftd完全开源免费，因此唯一的使用成本就是需要安装它。至于之后您想将其用于什么领域，哪怕是商业领域——均无任何限制。
+ [![mark-icon](https://s1.ax1x.com/2022/08/24/vcf08P.png)](https://kohgylw.gitee.io/) 无任何使用成本——kiftd完全开源免费，因此唯一的使用成本就是需要安装它。至于之后您想将其用于什么领域，哪怕是商业领域——均无任何限制。
 
- [![mark-icon.png](https://i.postimg.cc/9QgSyB7J/mark-icon.png)](https://postimg.cc/QF5031ST) 无内置代码的隐患——kiftd完全开源，您可以随意下载其源代码，并用它自己编译一份kiftd；同时，它删除即走，绝不和你撒娇卖萌。保护用户硬件环境，从开源做起。
+ [![mark-icon](https://s1.ax1x.com/2022/08/24/vcf08P.png)](https://kohgylw.gitee.io/) 无内置代码的隐患——kiftd完全开源，您可以随意下载其源代码，并用它自己编译一份kiftd；同时，它删除即走，绝不和你撒娇卖萌。保护用户硬件环境，从开源做起。
 
 ## 总之，无论您是想：
 + 安装在自己的笔记本电脑上，用于替代老旧的U盘……
@@ -92,29 +92,30 @@ _本次更新大幅升级了底层框架，并加入了众多用户期待的新�
 ## Functional Examples
 
 ### 功能速览
->注：图中涉及资源均来源于网络，仅用于展示kiftd功能，版权归其作者所有。
+
+>注：图中涉及资源均来源于网络，仅用于展示kiftd功能，版权归其作者所有。技术支持： https://imgse.com/ 
 
 + 主页与基本功能展示……
 
-[![kiftd-mainpage.png](https://i.postimg.cc/gjyQRFVZ/kiftd-mainpage.png)](https://postimg.cc/dZ15PfSs)
+[![kiftd-mainpage](https://s1.ax1x.com/2022/08/24/vcfGuD.png)](https://kohgylw.gitee.io/)
 
-[![kiftd-upload2.png](https://i.postimg.cc/nc0wt10p/kiftd-upload2.png)](https://postimg.cc/zVHkCKsc)
+[![kiftd-upload2](https://s1.ax1x.com/2022/08/24/vcfDv8.png)](https://kohgylw.gitee.io/)
 
-[![kiftd-newfolder.png](https://i.postimg.cc/MGhFFKtB/kiftd-newfolder.png)](https://postimg.cc/5HSgHJh9)
+[![kiftd-newfolder](https://s1.ax1x.com/2022/08/24/vcfUUA.png)](https://kohgylw.gitee.io/)
 
 + 各种高级功能展示……
 
-[![vadio.png](https://i.postimg.cc/JhBTZCmz/vadio.png)](https://postimg.cc/kVqFPZB0)
+[![kiftd-vadio](https://s1.ax1x.com/2022/08/24/vcfyDg.png)](https://kohgylw.gitee.io/)
 
-[![audio.png](https://i.postimg.cc/9QQK4krD/audio.png)](https://postimg.cc/svbwqwPz)
+[![kiftd-audio](https://s1.ax1x.com/2022/08/24/vcf3jO.png)](https://kohgylw.gitee.io/)
 
-[![kiftd-picture.png](https://i.postimg.cc/s2BLmZPy/kiftd-picture.png)](https://postimg.cc/06sZ2jHH)
+[![kiftd-picture](https://s1.ax1x.com/2022/08/24/vcfwCt.png)](https://kohgylw.gitee.io/)
 
-[![pdf.png](https://i.postimg.cc/s2Sc1P9B/pdf.png)](https://postimg.cc/7CH7W2RD)
+[![kiftd-pdf](https://s1.ax1x.com/2022/08/24/vcfgEj.png)](https://kohgylw.gitee.io/)
 
 + 人性化的服务器控制面板
 
-[![kiftd-ui2.png](https://i.postimg.cc/nVKP3xms/kiftd-ui2.png)](https://postimg.cc/4ndP3rBZ)
+[![kiftd-ui2](https://s1.ax1x.com/2022/08/24/vcfBgf.png)](https://kohgylw.gitee.io/)
 
 ### 想要了解更多功能？详见随程序附带的《kiftd说明文档》... 
 
