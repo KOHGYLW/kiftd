@@ -1,0 +1,21 @@
+version: "3"
+services:
+  kiftd-service:
+    # 指定容器名称
+    container_name: kiftd-container
+    # 重启机制
+    restart: always
+    image: openjdk:8-jdk-alpine
+    volumes:
+      # 本地jar包路径
+      - ../:/kiftd
+    # 访问端口
+    ports:
+      - "9000:9000"
+    environment:
+      # 指定时区
+      - TZ="Asia/Shanghai"
+    #启动容器后执行的命令
+    entrypoint: java -jar /kiftd/kiftd-1.1.0-RELEASE.jar -start
+    restart: unless-stopped
+    tty: false
