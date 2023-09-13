@@ -126,32 +126,32 @@ $(function() {
 	});
 	// 开启新建文件夹框自动初始化状态
 	$('#newFolderModal')
-			.on(
-					'show.bs.modal',
-					function(e) {
-						$("#folderalert").removeClass("alert");
-						$("#folderalert").removeClass("alert-danger");
-						$("#foldernamebox").removeClass("has-error");
-						$("#folderalert").text("");
-						$("#foldername").val("");
-						$("#foldertypelist").html("");
-						if (account != null) {
-							$("#foldername").attr("folderConstraintLevel",
-									constraintLevel + "");
-							$("#newfoldertype").text(
-									folderTypes[constraintLevel]);
-							for (var i = constraintLevel; i < folderTypes.length; i++) {
-								$("#foldertypelist").append(
-										"<li><a onclick='changeNewFolderType("
-												+ i + ")'>" + folderTypes[i]
-												+ "</a></li>");
-							}
-						} else {
-							$("#foldertypelist").append(
-									"<li><a onclick='changeNewFolderType(0)'>"
-											+ folderTypes[0] + "</a></li>");
-						}
-					});
+		.on(
+			'show.bs.modal',
+			function(e) {
+				$("#folderalert").removeClass("alert");
+				$("#folderalert").removeClass("alert-danger");
+				$("#foldernamebox").removeClass("has-error");
+				$("#folderalert").text("");
+				$("#foldername").val("");
+				$("#foldertypelist").html("");
+				if (account != null) {
+					$("#foldername").attr("folderConstraintLevel",
+						constraintLevel + "");
+					$("#newfoldertype").text(
+						folderTypes[constraintLevel]);
+					for (var i = constraintLevel; i < folderTypes.length; i++) {
+						$("#foldertypelist").append(
+							"<li><a onclick='changeNewFolderType("
+							+ i + ")'>" + folderTypes[i]
+							+ "</a></li>");
+					}
+				} else {
+					$("#foldertypelist").append(
+						"<li><a onclick='changeNewFolderType(0)'>"
+						+ folderTypes[0] + "</a></li>");
+				}
+			});
 	// 开启新建文件夹模态框自动聚焦文件名输入框
 	$('#newFolderModal').on('shown.bs.modal', function(e) {
 		$("#foldername").focus();
@@ -175,27 +175,27 @@ $(function() {
 	});
 	// 开启编辑文件夹框自动初始化状态
 	$('#renameFolderModal')
-			.on(
-					'show.bs.modal',
-					function(e) {
-						$("#editfolderalert").removeClass("alert");
-						$("#editfolderalert").removeClass("alert-danger");
-						$("#folderrenamebox").removeClass("has-error");
-						$("#editfolderalert").text("");
-						$("#editfoldertypelist").html("");
-						if (account != null) {
-							for (var i = constraintLevel; i < folderTypes.length; i++) {
-								$("#editfoldertypelist").append(
-										"<li><a onclick='changeEditFolderType("
-												+ i + ")'>" + folderTypes[i]
-												+ "</a></li>");
-							}
-						} else {
-							$("#editfoldertypelist").append(
-									"<li><a onclick='changeEditFolderType(0)'>"
-											+ folderTypes[0] + "</a></li>");
-						}
-					});
+		.on(
+			'show.bs.modal',
+			function(e) {
+				$("#editfolderalert").removeClass("alert");
+				$("#editfolderalert").removeClass("alert-danger");
+				$("#folderrenamebox").removeClass("has-error");
+				$("#editfolderalert").text("");
+				$("#editfoldertypelist").html("");
+				if (account != null) {
+					for (var i = constraintLevel; i < folderTypes.length; i++) {
+						$("#editfoldertypelist").append(
+							"<li><a onclick='changeEditFolderType("
+							+ i + ")'>" + folderTypes[i]
+							+ "</a></li>");
+					}
+				} else {
+					$("#editfoldertypelist").append(
+						"<li><a onclick='changeEditFolderType(0)'>"
+						+ folderTypes[0] + "</a></li>");
+				}
+			});
 	// 响应拖动上传文件
 	document.ondragover = function(e) {
 		if (e.preventDefault) {
@@ -231,7 +231,7 @@ $(function() {
 							for (var i = 0; i < dt.items.length; i++) {
 								var item = dt.items[i];
 								if (item.kind === "file"
-										&& item.webkitGetAsEntry().isFile) {
+									&& item.webkitGetAsEntry().isFile) {
 
 								} else {
 									testFile = false;
@@ -246,15 +246,15 @@ $(function() {
 									try {
 										var fileReader = new FileReader();
 										fileReader.readAsDataURL(dropFile
-												.slice(0, 10));
+											.slice(0, 10));
 										fileReader.addEventListener('load',
-												function(e) {
+											function(e) {
 
-												}, false);
+											}, false);
 										fileReader.addEventListener('error',
-												function(e) {
-													testFile = false;
-												}, false);
+											function(e) {
+												testFile = false;
+											}, false);
 									} catch (e) {
 										testFile = false;
 									}
@@ -282,15 +282,15 @@ $(function() {
 	}
 	// 各种快捷键绑定
 	$(document).keypress(
-			function(e) {
-				if ($('.modal.shown').length == 0
-						|| ($('.modal.shown').length == 1 && $('.modal.shown')
-								.attr('id') == 'loadingModal')) {
-					var keyCode = e.keyCode ? e.keyCode : e.which ? e.which
-							: e.charCode;
-					if (isShift(e)
-							&& document.activeElement.id != "sreachKeyWordIn") {// 在按住shift的情况下……
-						switch (keyCode) {
+		function(e) {
+			if ($('.modal.shown').length == 0
+				|| ($('.modal.shown').length == 1 && $('.modal.shown')
+					.attr('id') == 'loadingModal')) {
+				var keyCode = e.keyCode ? e.keyCode : e.which ? e.which
+					: e.charCode;
+				if (isShift(e)
+					&& document.activeElement.id != "sreachKeyWordIn") {// 在按住shift的情况下……
+					switch (keyCode) {
 						case 65:// shift+a 全选
 							checkallfile();
 							break;
@@ -308,40 +308,42 @@ $(function() {
 							break;
 						case 67:// shift+c 复制
 							if (checkedMovefiles == undefined
-									|| checkedMovefiles.size == 0) {
+								|| checkedMovefiles.size == 0) {
 								$('#copyFileButtonLi a').click();
 							}
 							break;
 						case 88:// shift+x 剪切
 							if (checkedMovefiles == undefined
-									|| checkedMovefiles.size == 0) {
+								|| checkedMovefiles.size == 0) {
 								$('#cutFileButtonLi a').click();
 							}
 							break;
 						case 86:// shift+v 粘贴
 							if (checkedMovefiles !== undefined
-									&& checkedMovefiles.size > 0) {
+								&& checkedMovefiles.size > 0) {
 								$('#stickFileButtonLi a').click();
 							}
 							break;
 						default:
 							return true;
-						}
-						return false;
 					}
+					return false;
 				}
-			});
+			}
+		});
 	// 关闭移动提示框自动取消移动
 	$('#moveFilesModal').on('hidden.bs.modal', function(e) {
-		checkedMovefiles = undefined;
-		$("#copyFileButtonLi").removeClass("hidden");
-		$("#copyFileButtonLi").addClass("show");
-		$("#cutFileButtonLi").removeClass("hidden");
-		$("#cutFileButtonLi").addClass("show");
-		$("#stickFileButtonLi").removeClass("show");
-		$("#stickFileButtonLi").addClass("hidden");
-		$("#stickFilesCount").text("");
-		$('#moveFilesBox').html("");
+		if (checkedMovefiles == undefined || checkedMovefiles.size == 0) {
+			checkedMovefiles = undefined;
+			$("#copyFileButtonLi").removeClass("hidden");
+			$("#copyFileButtonLi").addClass("show");
+			$("#cutFileButtonLi").removeClass("hidden");
+			$("#cutFileButtonLi").addClass("show");
+			$("#stickFileButtonLi").removeClass("show");
+			$("#stickFileButtonLi").addClass("hidden");
+			$("#stickFilesCount").text("");
+			$('#moveFilesBox').html("");
+		}
 	});
 	// IE内核浏览器内的startsWith方法的自实现
 	if (typeof String.prototype.startsWith != 'function') {
@@ -376,24 +378,24 @@ $(function() {
 
 	// 开启修改密码模态框时初始化状态
 	$('#changePasswordModal')
-			.on(
-					'show.bs.modal',
-					function(e) {
-						if (!isChangingPassword) {
-							$(
-									"#changepassword_oldpwd,#changepassword_newpwd,#changepassword_reqnewpwd,#changePasswordButton,#changepassword_vercode")
-									.attr('disabled', false);
-							$(
-									"#changepassword_oldepwdbox,#changepassword_newpwdbox,#changepassword_reqnewpwdbox")
-									.removeClass("has-error");
-							$(
-									"#changepassword_oldpwd,#changepassword_newpwd,#changepassword_reqnewpwd")
-									.val("");
-							$(
-									"#changepasswordalertbox,#changepassword_vccodebox")
-									.hide();
-						}
-					});
+		.on(
+			'show.bs.modal',
+			function(e) {
+				if (!isChangingPassword) {
+					$(
+						"#changepassword_oldpwd,#changepassword_newpwd,#changepassword_reqnewpwd,#changePasswordButton,#changepassword_vercode")
+						.attr('disabled', false);
+					$(
+						"#changepassword_oldepwdbox,#changepassword_newpwdbox,#changepassword_reqnewpwdbox")
+						.removeClass("has-error");
+					$(
+						"#changepassword_oldpwd,#changepassword_newpwd,#changepassword_reqnewpwd")
+						.val("");
+					$(
+						"#changepasswordalertbox,#changepassword_vccodebox")
+						.hide();
+				}
+			});
 	// 并自动聚焦旧密码输入框
 	$('#changePasswordModal').on('shown.bs.modal', function(e) {
 		if (!isChangingPassword) {
@@ -402,49 +404,49 @@ $(function() {
 	});
 	// 开启公告信息模态框前自动判断是否已经勾选“30天不再显示”
 	$('#noticeModal').on(
-			'show.bs.modal',
-			function(e) {
-				var cookieMd530 = document.cookie.match(new RegExp(
-						"(^| )notice_md5_30=([^;]*)(;|$)"));
-				if (cookieMd530) {
-					$("#dontShowSomeNoticeAt30Day").attr("checked", "checked");
-				} else {
-					$("#dontShowSomeNoticeAt30Day").attr("checked", false);
-				}
-			});
+		'show.bs.modal',
+		function(e) {
+			var cookieMd530 = document.cookie.match(new RegExp(
+				"(^| )notice_md5_30=([^;]*)(;|$)"));
+			if (cookieMd530) {
+				$("#dontShowSomeNoticeAt30Day").attr("checked", "checked");
+			} else {
+				$("#dontShowSomeNoticeAt30Day").attr("checked", false);
+			}
+		});
 	// 关闭公告信息模态框后根据是否已经勾选“30天不再显示”设置cookie
 	$('#noticeModal').on(
-			'hidden.bs.modal',
-			function(e) {
-				var noticed = new Date();
-				if ($("#dontShowSomeNoticeAt30Day").prop("checked")) {
-					noticed.setTime(noticed.getTime()
-							+ (30 * 24 * 60 * 60 * 1000));
-					var cookieMd5 = document.cookie.match(new RegExp(
-							"(^| )notice_md5=([^;]*)(;|$)"));
+		'hidden.bs.modal',
+		function(e) {
+			var noticed = new Date();
+			if ($("#dontShowSomeNoticeAt30Day").prop("checked")) {
+				noticed.setTime(noticed.getTime()
+					+ (30 * 24 * 60 * 60 * 1000));
+				var cookieMd5 = document.cookie.match(new RegExp(
+					"(^| )notice_md5=([^;]*)(;|$)"));
+				if (cookieMd5) {
+					document.cookie = "notice_md5_30="
+						+ escape(unescape(cookieMd5[2])) + ";expires="
+						+ noticed.toUTCString();
+				} else {
+					cookieMd5 = document.cookie.match(new RegExp(
+						"(^| )notice_md5_30=([^;]*)(;|$)"));
 					if (cookieMd5) {
 						document.cookie = "notice_md5_30="
-								+ escape(unescape(cookieMd5[2])) + ";expires="
-								+ noticed.toUTCString();
-					} else {
-						cookieMd5 = document.cookie.match(new RegExp(
-								"(^| )notice_md5_30=([^;]*)(;|$)"));
-						if (cookieMd5) {
-							document.cookie = "notice_md5_30="
-									+ escape(unescape(cookieMd5[2]))
-									+ ";expires=" + noticed.toUTCString();
-						}
-					}
-				} else {
-					noticed.setTime(0);
-					var cookieMd530 = document.cookie.match(new RegExp(
-							"(^| )notice_md5_30=([^;]*)(;|$)"));
-					if (cookieMd530) {
-						document.cookie = "notice_md5_30=0;expires="
-								+ noticed.toUTCString();
+							+ escape(unescape(cookieMd5[2]))
+							+ ";expires=" + noticed.toUTCString();
 					}
 				}
-			});
+			} else {
+				noticed.setTime(0);
+				var cookieMd530 = document.cookie.match(new RegExp(
+					"(^| )notice_md5_30=([^;]*)(;|$)"));
+				if (cookieMd530) {
+					document.cookie = "notice_md5_30=0;expires="
+						+ noticed.toUTCString();
+				}
+			}
+		});
 });
 
 // 更新页面高度
@@ -480,18 +482,18 @@ function doAlert() {
 // 获取服务器操作系统
 function getServerOS() {
 	$.ajax({
-		type : "POST",
-		dataType : "text",
-		data : {},
-		url : "homeController/getServerOS.ajax",
-		success : function(result) {
+		type: "POST",
+		dataType: "text",
+		data: {},
+		url: "homeController/getServerOS.ajax",
+		success: function(result) {
 			if (result == "mustLogin") {
 				window.location.href = "prv/login.html";
 				return;
 			}
 			$("#serverOS").text(result);
 		},
-		error : function() {
+		error: function() {
 			$("#serverOS").html("<a onclick='getServerOS()'>获取失败，点击重试</a>");
 		}
 	});
@@ -508,88 +510,88 @@ function showFolderView(fid, targetId) {
 		remainingLoadingRequest.abort();
 	}
 	$.ajax({
-		type : 'POST',
-		dataType : 'text',
-		data : {
-			fid : fid
+		type: 'POST',
+		dataType: 'text',
+		data: {
+			fid: fid
 		},
-		url : 'homeController/getFolderView.ajax',
-		success : function(result) {
+		url: 'homeController/getFolderView.ajax',
+		success: function(result) {
 			endLoading();
 			switch (result) {
-			case "ERROR":
-				// 获取错误直接弹出提示框并将相关内容填为提示信息
-				doAlert();
-				$("#tb").html("<span class='graytext'>获取失败，请尝试刷新</span>");
-				$("#publishTime").html(
+				case "ERROR":
+					// 获取错误直接弹出提示框并将相关内容填为提示信息
+					doAlert();
+					$("#tb").html("<span class='graytext'>获取失败，请尝试刷新</span>");
+					$("#publishTime").html(
 						"<span class='graytext'>获取失败，请尝试刷新</span>");
-				$("#parentlistbox").html(
+					$("#parentlistbox").html(
 						"<span class='graytext'>获取失败，请尝试刷新</span>");
-				break;
-			case "NOT_FOUND":
-			case "notAccess":
-				// 对于各种不能访问的情况，要先将记忆路径重置再跳转至根路径下
-				document.cookie = "folder_id=" + escape("root");
-			case "mustLogin":
-				// 如果服务器说必须登录，那么也跳转至根路径下（从而进入登录页面）
-				window.location.href = "/";
-				break;
-			default:
-				// 上述情况都不是，则返回的应该是文件夹视图数据，接下来对其进行解析
-				folderView = eval("(" + result + ")");
-				// 记录当前获取的文件夹视图的ID号，便于其他操作使用
-				locationpath = folderView.folder.folderId;
-				// 存储打开的文件夹路径至Cookie中，以便下次打开时直接显示
-				document.cookie = "folder_id=" + escape(locationpath);
-				// 记录上级目录ID，方便返回上一级
-				parentpath = folderView.folder.folderParent;
-				// 记录本文件夹的访问级别，便于在新建文件夹时判断应该从哪一个级别开始供用户选择
-				constraintLevel = folderView.folder.folderConstraint;
-				screenedFoldrView = null;
-				// 备份一份原始的文件夹视图数据，同时也记录下原始的查询偏移量
-				originFolderView = $.extend(true, {}, folderView);
-				totalFoldersOffset = folderView.foldersOffset;
-				totalFilesOffset = folderView.filesOffset;
-				// 搜索输入框重置
-				$("#sreachKeyWordIn").val("");
-				// 各项基于文件夹视图返回数据的解析操作……
-				showParentList(folderView);
-				showAccountView(folderView);
-				showPublishTime(folderView);
-				$("#sortByFN").removeClass();
-				$("#sortByCD").removeClass();
-				$("#sortByFS").removeClass();
-				$("#sortByCN").removeClass();
-				$("#sortByOR").removeClass();
-				showFolderTable(folderView);
-				// 更新文件夹信息至信息模态框
-				$("#fim_name").text(folderView.folder.folderName);
-				$("#fim_creator").text(folderView.folder.folderCreator);
-				$("#fim_folderCreationDate").text(
+					break;
+				case "NOT_FOUND":
+				case "notAccess":
+					// 对于各种不能访问的情况，要先将记忆路径重置再跳转至根路径下
+					document.cookie = "folder_id=" + escape("root");
+				case "mustLogin":
+					// 如果服务器说必须登录，那么也跳转至根路径下（从而进入登录页面）
+					window.location.href = "/";
+					break;
+				default:
+					// 上述情况都不是，则返回的应该是文件夹视图数据，接下来对其进行解析
+					folderView = eval("(" + result + ")");
+					// 记录当前获取的文件夹视图的ID号，便于其他操作使用
+					locationpath = folderView.folder.folderId;
+					// 存储打开的文件夹路径至Cookie中，以便下次打开时直接显示
+					document.cookie = "folder_id=" + escape(locationpath);
+					// 记录上级目录ID，方便返回上一级
+					parentpath = folderView.folder.folderParent;
+					// 记录本文件夹的访问级别，便于在新建文件夹时判断应该从哪一个级别开始供用户选择
+					constraintLevel = folderView.folder.folderConstraint;
+					screenedFoldrView = null;
+					// 备份一份原始的文件夹视图数据，同时也记录下原始的查询偏移量
+					originFolderView = $.extend(true, {}, folderView);
+					totalFoldersOffset = folderView.foldersOffset;
+					totalFilesOffset = folderView.filesOffset;
+					// 搜索输入框重置
+					$("#sreachKeyWordIn").val("");
+					// 各项基于文件夹视图返回数据的解析操作……
+					showParentList(folderView);
+					showAccountView(folderView);
+					showPublishTime(folderView);
+					$("#sortByFN").removeClass();
+					$("#sortByCD").removeClass();
+					$("#sortByFS").removeClass();
+					$("#sortByCN").removeClass();
+					$("#sortByOR").removeClass();
+					showFolderTable(folderView);
+					// 更新文件夹信息至信息模态框
+					$("#fim_name").text(folderView.folder.folderName);
+					$("#fim_creator").text(folderView.folder.folderCreator);
+					$("#fim_folderCreationDate").text(
 						folderView.folder.folderCreationDate);
-				$("#fim_folderId").text(folderView.folder.folderId);
-				updateTheFolderInfo();
-				// 判断是否还需要加载后续数据
-				if (folderView.foldersOffset > folderView.selectStep
+					$("#fim_folderId").text(folderView.folder.folderId);
+					updateTheFolderInfo();
+					// 判断是否还需要加载后续数据
+					if (folderView.foldersOffset > folderView.selectStep
 						|| folderView.filesOffset > folderView.selectStep) {
-					// 如果文件夹偏移量或文件偏移量大于查询步进长度，则说明一定还有后续数据需要加载，那么继续加载后续数据
-					showLoadingRemaininngBox();
-					loadingRemainingFolderView(targetId);
-				} else {
-					// 否则，说明文件夹视图加载完成，进行定位工作即可
-					hiddenLoadingRemaininngBox();
-					doFixedRow(targetId);
-				}
-				break;
+						// 如果文件夹偏移量或文件偏移量大于查询步进长度，则说明一定还有后续数据需要加载，那么继续加载后续数据
+						showLoadingRemaininngBox();
+						loadingRemainingFolderView(targetId);
+					} else {
+						// 否则，说明文件夹视图加载完成，进行定位工作即可
+						hiddenLoadingRemaininngBox();
+						doFixedRow(targetId);
+					}
+					break;
 			}
 		},
-		error : function(XMLHttpRequest, textStatus, errorThrown) {
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
 			endLoading();
 			doAlert();
 			$("#tb").html("<span class='graytext'>获取失败，请尝试刷新</span>");
 			$("#publishTime").html("<span class='graytext'>获取失败，请尝试刷新</span>");
 			$("#parentlistbox")
-					.html("<span class='graytext'>获取失败，请尝试刷新</span>");
+				.html("<span class='graytext'>获取失败，请尝试刷新</span>");
 		}
 	});
 }
@@ -598,8 +600,8 @@ function showFolderView(fid, targetId) {
 function startLoading() {
 	loadingFolderView = true;
 	$('#loadingModal').modal({
-		backdrop : 'static',
-		keyboard : false
+		backdrop: 'static',
+		keyboard: false
 	});
 	$('#loadingModal').modal('show');
 	$('#loadingModal').addClass("shown");
@@ -649,21 +651,21 @@ function dologin() {
 		startLogin();
 		// 加密认证-获取公钥并将请求加密发送给服务器，避免中途被窃取
 		$.ajax({
-			url : 'homeController/getPublicKey.ajax',
-			type : 'POST',
-			data : {},
-			dataType : 'text',
-			success : function(result) {
+			url: 'homeController/getPublicKey.ajax',
+			type: 'POST',
+			data: {},
+			dataType: 'text',
+			success: function(result) {
 				var publicKeyInfo = eval("(" + result + ")");
 				var date = new Date();// 这个是客户浏览器上的当前时间
 				var loginInfo = '{accountId:"' + accountId + '",accountPwd:"'
-						+ accountPwd + '",time:"' + publicKeyInfo.time + '"}';
+					+ accountPwd + '",time:"' + publicKeyInfo.time + '"}';
 				var encrypt = new JSEncrypt();// 加密插件对象
 				encrypt.setPublicKey(publicKeyInfo.publicKey);// 设置公钥
 				var encrypted = encrypt.encrypt(loginInfo);// 进行加密
 				sendLoginInfo(encrypted);
 			},
-			error : function() {
+			error: function() {
 				finishLogin();
 				$("#alertbox").addClass("alert");
 				$("#alertbox").addClass("alert-danger");
@@ -676,23 +678,23 @@ function dologin() {
 // 发送加密文本
 function sendLoginInfo(encrypted) {
 	$
-			.ajax({
-				type : "POST",
-				dataType : "text",
-				url : "homeController/doLogin.ajax",
-				data : {
-					encrypted : encrypted,
-					vercode : $("#vercode").val()
-				},
-				success : function(result) {
-					finishLogin();
-					$("#alertbox").removeClass("alert");
-					$("#alertbox").removeClass("alert-danger");
-					$("#alertbox").text("");
-					$("#vercodebox").html("");
-					$("#vercodebox").removeClass("show");
-					$("#vercodebox").addClass("hidden");
-					switch (result) {
+		.ajax({
+			type: "POST",
+			dataType: "text",
+			url: "homeController/doLogin.ajax",
+			data: {
+				encrypted: encrypted,
+				vercode: $("#vercode").val()
+			},
+			success: function(result) {
+				finishLogin();
+				$("#alertbox").removeClass("alert");
+				$("#alertbox").removeClass("alert-danger");
+				$("#alertbox").text("");
+				$("#vercodebox").html("");
+				$("#vercodebox").removeClass("show");
+				$("#vercodebox").addClass("hidden");
+				switch (result) {
 					case "permitlogin":
 						$("#accountidbox").removeClass("has-error");
 						$("#accountpwdbox").removeClass("has-error");
@@ -715,10 +717,10 @@ function sendLoginInfo(encrypted) {
 						break;
 					case "needsubmitvercode":
 						$("#vercodebox")
-								.html(
-										"<label id='vercodetitle' class='col-sm-7'><img id='showvercode' class='vercodeimg' alt='点击获取验证码' src='homeController/getNewVerCode.do?s="
-												+ (new Date()).getTime()
-												+ "' onclick='getNewVerCode()'></label><div class='col-sm-5'><input type='text' class='form-control' id='vercode' placeholder='验证码……'></div>");
+							.html(
+								"<label id='vercodetitle' class='col-sm-7'><img id='showvercode' class='vercodeimg' alt='点击获取验证码' src='homeController/getNewVerCode.do?s="
+								+ (new Date()).getTime()
+								+ "' onclick='getNewVerCode()'></label><div class='col-sm-5'><input type='text' class='form-control' id='vercode' placeholder='验证码……'></div>");
 						$("#vercodebox").removeClass("hidden");
 						$("#vercodebox").addClass("show");
 						break;
@@ -726,44 +728,44 @@ function sendLoginInfo(encrypted) {
 						$("#alertbox").addClass("alert");
 						$("#alertbox").addClass("alert-danger");
 						$("#alertbox").text(
-								"提示：登录失败，登录请求无法通过加密效验（可能是请求耗时过长导致的）");
+							"提示：登录失败，登录请求无法通过加密效验（可能是请求耗时过长导致的）");
 						break;
 					default:
 						$("#alertbox").addClass("alert");
 						$("#alertbox").addClass("alert-danger");
 						$("#alertbox").text("提示：无法登录，未知错误");
 						break;
-					}
-				},
-				error : function() {
-					finishLogin();
-					$("#alertbox").addClass("alert");
-					$("#alertbox").addClass("alert-danger");
-					$("#alertbox").text("提示：登录请求失败，请检查网络或服务器运行状态");
 				}
-			});
+			},
+			error: function() {
+				finishLogin();
+				$("#alertbox").addClass("alert");
+				$("#alertbox").addClass("alert-danger");
+				$("#alertbox").text("提示：登录请求失败，请检查网络或服务器运行状态");
+			}
+		});
 }
 
 // 获取一个新的验证码
 function getNewVerCode() {
 	$("#showvercode").attr("src",
-			"homeController/getNewVerCode.do?s=" + (new Date()).getTime());
+		"homeController/getNewVerCode.do?s=" + (new Date()).getTime());
 }
 
 // 注销操作
 function dologout() {
 	$('#logoutModal').modal('hide');
 	$.ajax({
-		url : 'homeController/doLogout.ajax',
-		type : 'POST',
-		data : {},
-		dataType : 'text',
-		success : function(result) {
+		url: 'homeController/doLogout.ajax',
+		type: 'POST',
+		data: {},
+		dataType: 'text',
+		success: function(result) {
 			if (result == "SUCCESS") {
 				showFolderView(locationpath);
 			}
 		},
-		error : function() {
+		error: function() {
 			doAlert();
 		}
 	});
@@ -776,9 +778,9 @@ function showParentList(folderView) {
 	if (folderView.parentList.length > 0) {
 		$.each(folderView.parentList, function(n, val) {
 			$("#parentFolderList").append(
-					"<li><a href='javascript:void(0);' onclick='entryFolder("
-							+ '"' + val.folderId + '"' + ")'>" + val.folderName
-							+ "</a></li>");
+				"<li><a href='javascript:void(0);' onclick='entryFolder("
+				+ '"' + val.folderId + '"' + ")'>" + val.folderName
+				+ "</a></li>");
 		});
 	} else {
 		$("#parentFolderList").html("<li class='disabled'><a>无</a></li>");
@@ -810,38 +812,38 @@ function showAccountView(folderView) {
 	if (folderView.account != null) {
 		// 说明已经登录，显示注销按钮
 		$("#tb")
-				.append(
-						"<button class='btn btn-link rightbtn hidden-xs' data-toggle='modal' data-target='#logoutModal'>注销 ["
-								+ folderView.account
-								+ "] <span class='glyphicon glyphicon-off' aria-hidden='true'></span></button>");
+			.append(
+				"<button class='btn btn-link rightbtn hidden-xs' data-toggle='modal' data-target='#logoutModal'>注销 ["
+				+ folderView.account
+				+ "] <span class='glyphicon glyphicon-off' aria-hidden='true'></span></button>");
 		$("#tb2")
-				.append(
-						"<button class='btn btn-link' data-toggle='modal' data-target='#logoutModal'>注销 ["
-								+ folderView.account
-								+ "] <span class='glyphicon glyphicon-off' aria-hidden='true'></span></button>");
+			.append(
+				"<button class='btn btn-link' data-toggle='modal' data-target='#logoutModal'>注销 ["
+				+ folderView.account
+				+ "] <span class='glyphicon glyphicon-off' aria-hidden='true'></span></button>");
 		if (folderView.allowChangePassword == 'true') {
 			$("#tb")
-					.append(
-							" <button class='btn btn-link rightbtn hidden-xs' data-toggle='modal' data-target='#changePasswordModal'>修改密码 <span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button>");
+				.append(
+					" <button class='btn btn-link rightbtn hidden-xs' data-toggle='modal' data-target='#changePasswordModal'>修改密码 <span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button>");
 			$("#tb2")
-					.append(
-							" <button class='btn btn-link' data-toggle='modal' data-target='#changePasswordModal'>修改密码 <span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button>");
+				.append(
+					" <button class='btn btn-link' data-toggle='modal' data-target='#changePasswordModal'>修改密码 <span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button>");
 		}
 	} else {
 		// 说明用户未登录，显示登录按钮
 		$("#tb")
-				.append(
-						"<button class='btn btn-link rightbtn hidden-xs' data-toggle='modal' data-target='#loginModal'>登入 <span class='glyphicon glyphicon-user' aria-hidden='true'></span></button>");
+			.append(
+				"<button class='btn btn-link rightbtn hidden-xs' data-toggle='modal' data-target='#loginModal'>登入 <span class='glyphicon glyphicon-user' aria-hidden='true'></span></button>");
 		$("#tb2")
-				.append(
-						"<button class='btn btn-link' data-toggle='modal' data-target='#loginModal'>登入 <span class='glyphicon glyphicon-user' aria-hidden='true'></span></button>");
+			.append(
+				"<button class='btn btn-link' data-toggle='modal' data-target='#loginModal'>登入 <span class='glyphicon glyphicon-user' aria-hidden='true'></span></button>");
 		if (folderView.allowSignUp == 'true') {
 			$("#tb")
-					.append(
-							" <button class='btn btn-link rightbtn hidden-xs' onclick='window.location.href = \"/prv/signup.html\"'>立即注册 <span class='glyphicon glyphicon-log-in' aria-hidden='true'></span></button>");
+				.append(
+					" <button class='btn btn-link rightbtn hidden-xs' onclick='window.location.href = \"/prv/signup.html\"'>立即注册 <span class='glyphicon glyphicon-log-in' aria-hidden='true'></span></button>");
 			$("#tb2")
-					.append(
-							" <button class='btn btn-link' onclick='window.location.href = \"prv/signup.html\"'>立即注册 <span class='glyphicon glyphicon-log-in' aria-hidden='true'></span></button>");
+				.append(
+					" <button class='btn btn-link' onclick='window.location.href = \"prv/signup.html\"'>立即注册 <span class='glyphicon glyphicon-log-in' aria-hidden='true'></span></button>");
 		}
 	}
 	var authList = folderView.authList;
@@ -852,7 +854,7 @@ function showAccountView(folderView) {
 		if (checkAuth(authList, "C")) {
 			$("#createFolderButtonLi").removeClass("disabled");
 			$("#createFolderButtonLi a")
-					.attr("onclick", "showNewFolderModel()");
+				.attr("onclick", "showNewFolderModel()");
 		}
 		if (checkAuth(authList, "U")) {
 			$("#uploadFileButtonLi").removeClass("disabled");
@@ -860,20 +862,20 @@ function showAccountView(folderView) {
 			if (checkAuth(authList, "C") && isSupportWebkitdirectory()) {// 若浏览器支持文件夹选择，且具备新建文件夹权限，则允许进行文件夹上传
 				$("#uploadFolderButtonLi").removeClass("disabled");
 				$("#uploadFolderButtonLi a").attr("onclick",
-						"showUploadFolderModel()");
+					"showUploadFolderModel()");
 			}
 		}
 		if (folderView.enableDownloadZip && checkAuth(authList, "L")) {
 			$("#packageDownloadBox")
-					.html(
-							"<button class='btn btn-link navbar-btn' onclick='showDownloadAllCheckedModel()'><span class='glyphicon glyphicon-briefcase'></span> 打包下载</button>");
+				.html(
+					"<button class='btn btn-link navbar-btn' onclick='showDownloadAllCheckedModel()'><span class='glyphicon glyphicon-briefcase'></span> 打包下载</button>");
 		} else {
 			$("#packageDownloadBox").html("");
 		}
 		if (checkAuth(authList, "D")) {
 			$("#deleteSeelectFileButtonLi").removeClass("disabled");
 			$("#deleteSeelectFileButtonLi a").attr("onclick",
-					"showDeleteAllCheckedModel()");
+				"showDeleteAllCheckedModel()");
 		}
 		if (checkAuth(authList, "M")) {
 			$("#cutFileButtonLi").removeClass("disabled");
@@ -885,14 +887,10 @@ function showAccountView(folderView) {
 			if (checkedMovefiles !== undefined && checkedMovefiles.size > 0) {
 				if (checkedMovefiles.size < 100) {
 					$("#stickFilesCount").text(
-							"（" + checkedMovefiles.size + "）");
+						"（" + checkedMovefiles.size + "）");
 				} else {
 					$("#stickFilesCount").text("（99+）");
 				}
-				$("#copyFileButtonLi").removeClass("show");
-				$("#copyFileButtonLi").addClass("hidden");
-				$("#cutFileButtonLi").removeClass("show");
-				$("#cutFileButtonLi").addClass("hidden");
 				$("#stickFileButtonLi").removeClass("hidden");
 				$("#stickFileButtonLi").addClass("show");
 			} else {
@@ -955,8 +953,8 @@ function showFolderTable(folderView) {
 	$("#foldertable").html("");
 	if (parentpath != null && parentpath != "null") {
 		$("#foldertable")
-				.append(
-						"<tr onclick='returnPF()'><td><button onclick='' class='btn btn-link btn-xs'>../</button></td><td class='hidden-xs'>--</td><td>--</td><td class='hidden-xs'>--</td><td>--</td></tr>");
+			.append(
+				"<tr onclick='returnPF()'><td><button onclick='' class='btn btn-link btn-xs'>../</button></td><td class='hidden-xs'>--</td><td>--</td><td class='hidden-xs'>--</td><td>--</td></tr>");
 	}
 	var authList = folderView.authList;
 	var aD = false;
@@ -991,151 +989,160 @@ function showFolderTable(folderView) {
 function createFileRow(fi, aL, aD, aR, aO) {
 	fi.fileName = html2Escape(fi.fileName);
 	var fileRow = "<tr id=" + fi.fileId + " onclick='checkfile(event," + '"'
-			+ fi.fileId + '"' + ")' ondblclick='checkConsFile(event," + '"'
-			+ fi.fileId + '"' + ")' id='" + fi.fileId
-			+ "' class='filerow'><td>" + fi.fileName
-			+ "</td><td class='hidden-xs'>" + fi.fileCreationDate + "</td>";
-	if (fi.fileSize == "0") {
+		+ fi.fileId + '"' + ")' ondblclick='checkConsFile(event," + '"'
+		+ fi.fileId + '"' + ")' id='" + fi.fileId
+		+ "' class='filerow'><td>" + fi.fileName
+		+ "</td><td class='hidden-xs'>" + fi.fileCreationDate + "</td>";
+	var fileSizeToInt = parseInt(fi.fileSize);// 将文件体积（MB）数值转化为整型
+	if (fileSizeToInt == 0) {
+		// 文件体积小于1MB时
 		fileRow = fileRow + "<td>&lt;1MB</td>";
+	} else if (fileSizeToInt < 1000) {
+		// 文件体积大于1MB但小于1000MB时
+		fileRow = fileRow + "<td>" + fileSizeToInt + "MB</td>";
+	} else if (fileSizeToInt < 1024000) {
+		// 文件体积大于1000MB但小于1000GB时
+		fileRow = fileRow + "<td>" + (fileSizeToInt / 1024).toFixed(2) + "GB</td>";
 	} else {
-		fileRow = fileRow + "<td>" + fi.fileSize + "MB</td>";
+		// 文件体积大于1000GB
+		fileRow = fileRow + "<td>" + (fileSizeToInt / 1048576).toFixed(2) + "TB</td>";
 	}
 	fileRow = fileRow + "<td class='hidden-xs'>" + fi.fileCreator + "</td><td>";
 	if (aL) {
 		fileRow = fileRow
-				+ "<button onclick='showDownloadModel("
-				+ '"'
-				+ fi.fileId
-				+ '","'
-				+ replaceAllQuotationMarks(fi.fileName)
-				+ '"'
-				+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-cloud-download'></span> 下载</button>";
+			+ "<button onclick='showDownloadModel("
+			+ '"'
+			+ fi.fileId
+			+ '","'
+			+ replaceAllQuotationMarks(fi.fileName)
+			+ '"'
+			+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-cloud-download'></span> 下载</button>";
 		// 对于各种特殊格式文件提供的预览和播放功能
 		var suffix = getSuffix(fi.fileName);
 		switch (suffix) {
-		case "mp4":
-			fileRow = fileRow
+			case "mp4":
+				fileRow = fileRow
 					+ "<button onclick='playVideo("
 					+ '"'
 					+ fi.fileId
 					+ '"'
 					+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-play'></span> 播放</button>";
-			break;
-		case "webm":
-		case "mov":
-		case "avi":
-		case "wmv":
-		case "mkv":
-		case "flv":
-			if (folderView.enableFFMPEG) {
-				fileRow = fileRow
+				break;
+			case "webm":
+			case "mov":
+			case "avi":
+			case "wmv":
+			case "mkv":
+			case "flv":
+				if (folderView.enableFFMPEG) {
+					fileRow = fileRow
 						+ "<button onclick='playVideo("
 						+ '"'
 						+ fi.fileId
 						+ '"'
 						+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-play'></span> 播放</button>";
-			}
-			break;
-		case "pdf":
-			fileRow = fileRow
+				}
+				break;
+			case "pdf":
+				fileRow = fileRow
 					+ "<button onclick='pdfView("
 					+ '"'
 					+ fi.fileId
 					+ '"'
 					+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-eye-open'></span> 预览</button>";
-			break;
-		case "jpg":
-		case "jpeg":
-		case "gif":
-		case "png":
-		case "bmp":
-			fileRow = fileRow
+				break;
+			case "jpg":
+			case "jpeg":
+			case "gif":
+			case "png":
+			case "bmp":
+				fileRow = fileRow
 					+ "<button onclick='showPicture("
 					+ '"'
 					+ fi.fileId
 					+ '"'
 					+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-picture'></span> 查看</button>";
-			break;
-		case "mp3":
-		case "wav":
-		case "ogg":
-			fileRow = fileRow
+				break;
+			case "mp3":
+			case "wav":
+			case "ogg":
+				fileRow = fileRow
 					+ "<button onclick='playAudio("
 					+ '"'
 					+ fi.fileId
 					+ '"'
 					+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-play'></span> 播放</button>";
-			break;
-		case "docx":
-			fileRow = fileRow
+				break;
+			case "docx":
+				fileRow = fileRow
 					+ "<button onclick='docxView("
 					+ '"'
 					+ fi.fileId
 					+ '"'
 					+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-eye-open'></span> 预览</button>";
-			break;
-		case "txt":
-			fileRow = fileRow
+				break;
+			case "txt":
+				fileRow = fileRow
 					+ "<button onclick='txtView("
 					+ '"'
 					+ fi.fileId
 					+ '"'
 					+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-eye-open'></span> 预览</button>";
-			break;
-		case "ppt":
-		case "pptx":
-			fileRow = fileRow
+				break;
+			case "ppt":
+			case "pptx":
+				fileRow = fileRow
 					+ "<button onclick='pptView("
 					+ '"'
 					+ fi.fileId
 					+ '"'
 					+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-eye-open'></span> 预览</button>";
-			break;
-		default:
-			break;
+				break;
+			default:
+				break;
 		}
 	}
 	if (aD) {
 		fileRow = fileRow
-				+ "<button onclick='showDeleteFileModel("
-				+ '"'
-				+ fi.fileId
-				+ '","'
-				+ replaceAllQuotationMarks(fi.fileName)
-				+ '"'
-				+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-remove'></span> 删除</button>";
+			+ "<button onclick='showDeleteFileModel("
+			+ '"'
+			+ fi.fileId
+			+ '","'
+			+ replaceAllQuotationMarks(fi.fileName)
+			+ '"'
+			+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-remove'></span> 删除</button>";
 	}
 	if (aR) {
 		fileRow = fileRow
-				+ "<button onclick='showRenameFileModel("
-				+ '"'
-				+ fi.fileId
-				+ '"'
-				+ ","
-				+ '"'
-				+ replaceAllQuotationMarks(fi.fileName)
-				+ '"'
-				+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-wrench'></span> 重命名</button>";
+			+ "<button onclick='showRenameFileModel("
+			+ '"'
+			+ fi.fileId
+			+ '"'
+			+ ","
+			+ '"'
+			+ replaceAllQuotationMarks(fi.fileName)
+			+ '"'
+			+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-wrench'></span> 重命名</button>";
 	}
 	if (aO) {
 		fileRow = fileRow
-				+ "<button onclick='showFolderView("
-				+ '"'
-				+ fi.fileParentFolder
-				+ '","'
-				+ fi.fileId
-				+ '"'
-				+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-sunglasses'></span> 定位</button>";
+			+ "<button onclick='showFolderView("
+			+ '"'
+			+ fi.fileParentFolder
+			+ '","'
+			+ fi.fileId
+			+ '"'
+			+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-sunglasses'></span> 定位</button>";
 	}
 	if (aL && folderView.showFileChain == 'true') {
 		fileRow = fileRow
-				+ "<button onclick='getFileChain("
-				+ '"'
-				+ fi.fileId
-				+ '","'
-				+ replaceAllQuotationMarks(fi.fileName)
-				+ '"'
-				+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-link'></span> 链接</button>";
+			+ "<button onclick='getFileChain("
+			+ '"'
+			+ fi.fileId
+			+ '","'
+			+ replaceAllQuotationMarks(fi.fileName)
+			+ '"'
+			+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-link'></span> 链接</button>";
 	}
 	if (!aR && !aD && !aL && !aO) {
 		fileRow = fileRow + "--";
@@ -1148,50 +1155,50 @@ function createFileRow(fi, aL, aD, aR, aO) {
 function createNewFolderRow(f, aD, aR, aO) {
 	f.folderName = html2Escape(f.folderName);
 	var folderRow = "<tr id='"
-			+ f.folderId
-			+ "' onclick='checkfile(event,"
-			+ '"'
-			+ f.folderId
-			+ '"'
-			+ ")' ondblclick='checkConsFile(event,"
-			+ '"'
-			+ f.folderId
-			+ '"'
-			+ ")' class='filerow' iskfolder='true' ><td><button onclick='entryFolder("
-			+ '"' + f.folderId + '"' + ")' class='btn btn-link btn-xs'>/"
-			+ f.folderName + "</button></td><td class='hidden-xs'>"
-			+ f.folderCreationDate + "</td><td>--</td><td class='hidden-xs'>"
-			+ f.folderCreator + "</td><td>";
+		+ f.folderId
+		+ "' onclick='checkfile(event,"
+		+ '"'
+		+ f.folderId
+		+ '"'
+		+ ")' ondblclick='checkConsFile(event,"
+		+ '"'
+		+ f.folderId
+		+ '"'
+		+ ")' class='filerow' iskfolder='true' ><td><button onclick='entryFolder("
+		+ '"' + f.folderId + '"' + ")' class='btn btn-link btn-xs'>/"
+		+ f.folderName + "</button></td><td class='hidden-xs'>"
+		+ f.folderCreationDate + "</td><td>--</td><td class='hidden-xs'>"
+		+ f.folderCreator + "</td><td>";
 	if (aD) {
 		folderRow = folderRow
-				+ "<button onclick='showDeleteFolderModel("
-				+ '"'
-				+ f.folderId
-				+ '","'
-				+ replaceAllQuotationMarks(f.folderName)
-				+ '"'
-				+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-remove'></span> 删除</button>";
+			+ "<button onclick='showDeleteFolderModel("
+			+ '"'
+			+ f.folderId
+			+ '","'
+			+ replaceAllQuotationMarks(f.folderName)
+			+ '"'
+			+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-remove'></span> 删除</button>";
 	}
 	if (aR) {
 		folderRow = folderRow
-				+ "<button onclick='showRenameFolderModel("
-				+ '"'
-				+ f.folderId
-				+ '","'
-				+ replaceAllQuotationMarks(f.folderName)
-				+ '",'
-				+ f.folderConstraint
-				+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-wrench'></span> 编辑</button>";
+			+ "<button onclick='showRenameFolderModel("
+			+ '"'
+			+ f.folderId
+			+ '","'
+			+ replaceAllQuotationMarks(f.folderName)
+			+ '",'
+			+ f.folderConstraint
+			+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-wrench'></span> 编辑</button>";
 	}
 	if (aO) {
 		folderRow = folderRow
-				+ "<button onclick='showFolderView("
-				+ '"'
-				+ f.folderParent
-				+ '","'
-				+ f.folderId
-				+ '"'
-				+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-sunglasses'></span> 定位</button>";
+			+ "<button onclick='showFolderView("
+			+ '"'
+			+ f.folderParent
+			+ '","'
+			+ f.folderId
+			+ '"'
+			+ ")' class='btn btn-link btn-xs'><span class='glyphicon glyphicon-sunglasses'></span> 定位</button>";
 	}
 	if (!aR && !aD && !aO) {
 		folderRow = folderRow + "--";
@@ -1200,7 +1207,7 @@ function createNewFolderRow(f, aD, aR, aO) {
 	return folderRow;
 }
 
-var folderTypes = [ '公开的', '仅小组', '仅创建者' ];// 文件夹约束条件（由小至大）
+var folderTypes = ['公开的', '仅小组', '仅创建者'];// 文件夹约束条件（由小至大）
 
 // 显示新建文件夹模态框
 function showNewFolderModel() {
@@ -1228,45 +1235,45 @@ function createfolder() {
 		$("#foldernamebox").removeClass("has-error");
 		$("#folderalert").text("");
 		$.ajax({
-			type : "POST",
-			dataType : "text",
-			data : {
-				parentId : locationpath,
-				folderName : fn,
-				folderConstraint : fc
+			type: "POST",
+			dataType: "text",
+			data: {
+				parentId: locationpath,
+				folderName: fn,
+				folderConstraint: fc
 			},
-			url : "homeController/newFolder.ajax",
-			success : function(result) {
+			url: "homeController/newFolder.ajax",
+			success: function(result) {
 				if (result == "mustLogin") {
 					window.location.href = "prv/login.html";
 				} else {
 					switch (result) {
-					case "noAuthorized":
-						showFolderAlert("提示：您的操作未被授权，创建文件夹失败。");
-						break;
-					case "errorParameter":
-						showFolderAlert("提示：参数不正确，创建文件夹失败。");
-						break;
-					case "cannotCreateFolder":
-						showFolderAlert("提示：出现意外错误，可能未能创建文件夹。");
-						break;
-					case "nameOccupied":
-						showFolderAlert("提示：该名称已被占用，请选取其他名称。");
-						break;
-					case "foldersTotalOutOfLimit":
-						showFolderAlert("提示：该文件夹内存储的文件夹数量已达上限，无法在其中创建更多文件夹。");
-						break;
-					case "createFolderSuccess":
-						$('#newFolderModal').modal('hide');
-						showFolderView(locationpath);
-						break;
-					default:
-						showFolderAlert("提示：出现意外错误，可能未能创建文件夹。");
-						break;
+						case "noAuthorized":
+							showFolderAlert("提示：您的操作未被授权，创建文件夹失败。");
+							break;
+						case "errorParameter":
+							showFolderAlert("提示：参数不正确，创建文件夹失败。");
+							break;
+						case "cannotCreateFolder":
+							showFolderAlert("提示：出现意外错误，可能未能创建文件夹。");
+							break;
+						case "nameOccupied":
+							showFolderAlert("提示：该名称已被占用，请选取其他名称。");
+							break;
+						case "foldersTotalOutOfLimit":
+							showFolderAlert("提示：该文件夹内存储的文件夹数量已达上限，无法在其中创建更多文件夹。");
+							break;
+						case "createFolderSuccess":
+							$('#newFolderModal').modal('hide');
+							showFolderView(locationpath);
+							break;
+						default:
+							showFolderAlert("提示：出现意外错误，可能未能创建文件夹。");
+							break;
 					}
 				}
 			},
-			error : function() {
+			error: function() {
 				showFolderAlert("提示：出现意外错误，可能未能创建文件夹");
 			}
 		});
@@ -1291,13 +1298,13 @@ function entryFolder(folderId) {
 // 显示删除文件夹模态框
 function showDeleteFolderModel(folderId, folderName) {
 	$('#deleteFolderBox')
-			.html(
-					"<button id='dmbutton' type='button' class='btn btn-danger' onclick='deleteFolder("
-							+ '"' + folderId + '"' + ")'>删除</button>");
+		.html(
+			"<button id='dmbutton' type='button' class='btn btn-danger' onclick='deleteFolder("
+			+ '"' + folderId + '"' + ")'>删除</button>");
 	$("#dmbutton").attr('disabled', false);
 	$("#cancelDeleteFolderBtn").attr('disabled', false);
 	$('#deleteFolderMessage').text(
-			"提示：确定要彻底删除文件夹：[" + folderName + "]及其全部内容么？该操作不可恢复");
+		"提示：确定要彻底删除文件夹：[" + folderName + "]及其全部内容么？该操作不可恢复");
 	$('#deleteFolderModal').modal('toggle');
 }
 
@@ -1307,13 +1314,13 @@ function deleteFolder(folderId) {
 	$("#cancelDeleteFolderBtn").attr('disabled', true);
 	$('#deleteFolderMessage').text("提示：正在删除，请稍候...");
 	$.ajax({
-		type : "POST",
-		dataType : "text",
-		data : {
-			folderId : folderId
+		type: "POST",
+		dataType: "text",
+		data: {
+			folderId: folderId
 		},
-		url : "homeController/deleteFolder.ajax",
-		success : function(result) {
+		url: "homeController/deleteFolder.ajax",
+		success: function(result) {
 			if (result == "mustLogin") {
 				window.location.href = "prv/login.html";
 			} else {
@@ -1339,7 +1346,7 @@ function deleteFolder(folderId) {
 				}
 			}
 		},
-		error : function() {
+		error: function() {
 			$('#deleteFolderMessage').text("提示：出现意外错误，可能未能删除文件夹");
 			$("#dmbutton").attr('disabled', false);
 			$("#cancelDeleteFolderBtn").attr('disabled', true);
@@ -1350,8 +1357,8 @@ function deleteFolder(folderId) {
 // 显示重命名文件夹模态框
 function showRenameFolderModel(folderId, folderName, type) {
 	$("#renameFolderBox").html(
-			"<button type='button' class='btn btn-primary' onclick='renameFolder("
-					+ '"' + folderId + '"' + ")'>修改</button>");
+		"<button type='button' class='btn btn-primary' onclick='renameFolder("
+		+ '"' + folderId + '"' + ")'>修改</button>");
 	$("#newfoldername").val(folderName);
 	changeEditFolderType(type);
 	$("#renameFolderModal").modal('show');
@@ -1378,15 +1385,15 @@ function renameFolder(folderId) {
 		$("#folderrenamebox").removeClass("has-error");
 		$("#newfolderalert").text("");
 		$.ajax({
-			type : "POST",
-			dataType : "text",
-			data : {
-				folderId : folderId,
-				newName : newName,
-				folderConstraint : fc
+			type: "POST",
+			dataType: "text",
+			data: {
+				folderId: folderId,
+				newName: newName,
+				folderConstraint: fc
 			},
-			url : "homeController/renameFolder.ajax",
-			success : function(result) {
+			url: "homeController/renameFolder.ajax",
+			success: function(result) {
 				if (result == "mustLogin") {
 					window.location.href = "prv/login.html";
 				} else {
@@ -1404,7 +1411,7 @@ function renameFolder(folderId) {
 					}
 				}
 			},
-			error : function() {
+			error: function() {
 				showRFolderAlert("提示：出现意外错误，可能未能编辑文件夹，请刷新后重试。");
 			}
 		});
@@ -1493,21 +1500,21 @@ function checkUploadFile() {
 			uploadTargetFolder = locationpath;// 记录上传目标
 
 			$
-					.ajax({
-						type : "POST",
-						dataType : "text",
-						data : {
-							folderId : uploadTargetFolder,
-							namelist : namelist,
-							maxSize : maxSize,
-							maxFileIndex : maxFileIndex
-						},
-						url : "homeController/checkUploadFile.ajax",
-						success : function(result) {
-							if (result == "mustLogin") {
-								window.location.href = "prv/login.html";
-							} else {
-								switch (result) {
+				.ajax({
+					type: "POST",
+					dataType: "text",
+					data: {
+						folderId: uploadTargetFolder,
+						namelist: namelist,
+						maxSize: maxSize,
+						maxFileIndex: maxFileIndex
+					},
+					url: "homeController/checkUploadFile.ajax",
+					success: function(result) {
+						if (result == "mustLogin") {
+							window.location.href = "prv/login.html";
+						} else {
+							switch (result) {
 								case "errorParameter":
 									showUploadFileAlert("提示：参数不正确，无法开始上传");
 									break;
@@ -1521,10 +1528,10 @@ function checkUploadFile() {
 									var resp = eval("(" + result + ")");
 									if (resp.checkResult == "fileTooLarge") {
 										showUploadFileAlert("提示：文件["
-												+ resp.overSizeFile
-												+ "]的体积超过最大限制（"
-												+ resp.maxUploadFileSize
-												+ "），无法开始上传");
+											+ resp.overSizeFile
+											+ "]的体积超过最大限制（"
+											+ resp.maxUploadFileSize
+											+ "），无法开始上传");
 									} else if (resp.checkResult == "hasExistsNames") {
 										repeList = resp.pereFileNameList;
 										repeIndex = 0;
@@ -1535,13 +1542,13 @@ function checkUploadFile() {
 										showUploadFileAlert("提示：出现意外错误，无法开始上传");
 									}
 									break;
-								}
 							}
-						},
-						error : function() {
-							showUploadFileAlert("提示：出现意外错误，无法开始上传");
 						}
-					});
+					},
+					error: function() {
+						showUploadFileAlert("提示：出现意外错误，无法开始上传");
+					}
+				});
 		} else {
 			showUploadFileAlert("提示：您未选择任何文件，无法开始上传");
 		}
@@ -1600,8 +1607,8 @@ function doupload(count) {
 			$("#filecount").text("（" + count + "/" + fcount + "）");// 显示当前进度
 		}
 		$("#uploadstatus").prepend(
-				"<p>" + html2Escape(fname) + "<span id='uls_" + count
-						+ "'>[正在上传...]</span></p>");
+			"<p>" + html2Escape(fname) + "<span id='uls_" + count
+			+ "'>[正在上传...]</span></p>");
 		xhr = new XMLHttpRequest();// 这东西类似于servlet里面的request
 
 		var fd = new FormData();// 用于封装文件数据的对象
@@ -1675,15 +1682,15 @@ function doupload(count) {
 					}
 				} else if (result == "uploaderror") {
 					showUploadFileAlert("提示：出现意外错误，文件：[" + fname
-							+ "]上传失败，上传被中断。");
+						+ "]上传失败，上传被中断。");
 					$("#uls_" + count).text("[失败]");
 				} else if (result == 'filesTotalOutOfLimit') {
 					showUploadFileAlert("提示：该文件夹内存储的文件数量已达上限，文件：[" + fname
-							+ "]上传失败。您可以尝试将其上传至其他文件夹内。");
+						+ "]上传失败。您可以尝试将其上传至其他文件夹内。");
 					$("#uls_" + count).text("[失败]");
 				} else {
 					showUploadFileAlert("提示：出现意外错误，文件：[" + fname
-							+ "]上传失败，上传被中断。");
+						+ "]上传失败，上传被中断。");
 					$("#uls_" + count).text("[失败]");
 				}
 			} else {
@@ -1694,7 +1701,7 @@ function doupload(count) {
 	} else {
 		showUploadFileAlert("提示：要上传的文件不存在。");
 		$("#uploadstatus").prepend(
-				"<p>未找到要上传的文件<span id='uls_" + count + "'>[失败]</span></p>");
+			"<p>未找到要上传的文件<span id='uls_" + count + "'>[失败]</span></p>");
 	}
 }
 
@@ -1737,9 +1744,9 @@ function showDownloadModel(fileId, fileName) {
 	getDownloadFileId = fileId;
 	getDownloadFileName = fileName;
 	$("#downloadFileBox")
-			.html(
-					"<button id='dlmbutton' type='button' class='btn btn-primary' onclick='dodownload("
-							+ '"' + fileId + '"' + ")'>开始下载</button>");
+		.html(
+			"<button id='dlmbutton' type='button' class='btn btn-primary' onclick='dodownload("
+			+ '"' + fileId + '"' + ")'>开始下载</button>");
 	$("#dlmbutton").attr('disabled', false);
 	$("#downloadModal").modal('show');
 }
@@ -1755,9 +1762,9 @@ function dodownload(fileId) {
 // 显示删除文件模态框
 function showDeleteFileModel(fileId, fileName) {
 	$('#deleteFileBox')
-			.html(
-					"<button id='dfmbutton' type='button' class='btn btn-danger' onclick='deleteFile("
-							+ '"' + fileId + '"' + ")'>删除</button>");
+		.html(
+			"<button id='dfmbutton' type='button' class='btn btn-danger' onclick='deleteFile("
+			+ '"' + fileId + '"' + ")'>删除</button>");
 	$("#dfmbutton").attr('disabled', false);
 	$("#cancelDeleteFileBox").attr('disabled', false);
 	$('#deleteFileMessage').text("提示：确定要彻底删除文件：[" + fileName + "]么？该操作不可恢复");
@@ -1770,13 +1777,13 @@ function deleteFile(fileId) {
 	$("#cancelDeleteFileBox").attr('disabled', true);
 	$('#deleteFileMessage').text("提示：正在删除，请稍候...");
 	$.ajax({
-		type : "POST",
-		dataType : "text",
-		data : {
-			fileId : fileId
+		type: "POST",
+		dataType: "text",
+		data: {
+			fileId: fileId
 		},
-		url : "homeController/deleteFile.ajax",
-		success : function(result) {
+		url: "homeController/deleteFile.ajax",
+		success: function(result) {
 			if (result == "mustLogin") {
 				window.location.href = "prv/login.html";
 			} else {
@@ -1802,7 +1809,7 @@ function deleteFile(fileId) {
 				}
 			}
 		},
-		error : function() {
+		error: function() {
 			$('#deleteFileMessage').text("提示：出现意外错误，可能未能删除文件");
 			$("#dfmbutton").attr('disabled', false);
 			$("#cancelDeleteFileBox").attr('disabled', false);
@@ -1817,8 +1824,8 @@ function showRenameFileModel(fileId, fileName) {
 	$("#filerenamebox").removeClass("has-error");
 	$("#newFileNamealert").text("");
 	$("#renameFileBox").html(
-			"<button type='button' class='btn btn-primary' onclick='renameFile("
-					+ '"' + fileId + '"' + ")'>修改</button>");
+		"<button type='button' class='btn btn-primary' onclick='renameFile("
+		+ '"' + fileId + '"' + ")'>修改</button>");
 	$("#newfilename").val(fileName);
 	$("#renameFileModal").modal('toggle');
 }
@@ -1831,14 +1838,14 @@ function renameFile(fileId) {
 		if (newFileName.length < 128) {
 			if (!reg.test(newFileName) && newFileName.indexOf(".") != 0) {
 				$.ajax({
-					type : "POST",
-					dataType : "text",
-					data : {
-						fileId : fileId,
-						newFileName : newFileName
+					type: "POST",
+					dataType: "text",
+					data: {
+						fileId: fileId,
+						newFileName: newFileName
 					},
-					url : "homeController/renameFile.ajax",
-					success : function(result) {
+					url: "homeController/renameFile.ajax",
+					success: function(result) {
 						if (result == "mustLogin") {
 							window.location.href = "prv/login.html";
 						} else {
@@ -1858,7 +1865,7 @@ function renameFile(fileId) {
 							}
 						}
 					},
-					error : function() {
+					error: function() {
 						showRFileAlert("提示：出现意外错误，可能未能重命名文件。");
 					}
 				});
@@ -1897,39 +1904,39 @@ function playVideo(fileId) {
 // 预览PDF文档
 function pdfView(fileId) {
 	window
-			.open("/pdfview/web/viewer.html?file=/resourceController/getResource/"
-					+ fileId);
+		.open("/pdfview/web/viewer.html?file=/resourceController/getResource/"
+			+ fileId);
 }
 
 // 预览Docx文档
 function docxView(fileId) {
 	window
-			.open("/pdfview/web/viewer.html?file=/resourceController/getWordView/"
-					+ fileId);
+		.open("/pdfview/web/viewer.html?file=/resourceController/getWordView/"
+			+ fileId);
 }
 
 // 预览TXT文档
 function txtView(fileId) {
 	window.open("/pdfview/web/viewer.html?file=/resourceController/getTxtView/"
-			+ fileId);
+		+ fileId);
 }
 
 // 预览PPT文档
 function pptView(fileId) {
 	window.open("/pdfview/web/viewer.html?file=/resourceController/getPPTView/"
-			+ fileId);
+		+ fileId);
 }
 
 // 查看图片
 function showPicture(fileId) {
 	$.ajax({
-		url : "homeController/getPrePicture.ajax",
-		data : {
-			fileId : fileId
+		url: "homeController/getPrePicture.ajax",
+		data: {
+			fileId: fileId
 		},
-		type : "POST",
-		dataType : "text",
-		success : function(result) {
+		type: "POST",
+		dataType: "text",
+		success: function(result) {
 			if (result != "ERROR") {
 				pvl = eval("(" + result + ")");
 				// TODO 整合viewer.js插件
@@ -1938,12 +1945,12 @@ function showPicture(fileId) {
 				} else {
 					// 以分页方式显示图片列表
 					viewerPageIndex = Math.ceil((pvl.index + 1)
-							/ viewerPageSize);
+						/ viewerPageSize);
 					viewerTotal = Math.ceil(pvl.pictureViewList.length
-							/ viewerPageSize);
+						/ viewerPageSize);
 					createViewListByPage();
 					var innerIndex = pvl.index
-							- ((viewerPageIndex - 1) * viewerPageSize);
+						- ((viewerPageIndex - 1) * viewerPageSize);
 					if (viewerPageIndex > 1) {
 						innerIndex++;
 					}
@@ -1955,7 +1962,7 @@ function showPicture(fileId) {
 				alert("错误：无法定位要预览的文件或该操作未被授权。");
 			}
 		},
-		error : function() {
+		error: function() {
 			alert("错误：请求失败，请刷新重试。");
 		}
 	});
@@ -1967,14 +1974,14 @@ function createViewList() {
 		var images = document.createElement("ul");
 		for (var i = 0; i < pvl.pictureViewList.length; i++) {
 			$(images).append(
-					"<li><img src='" + pvl.pictureViewList[i].url + "' alt='"
-							+ html2Escape(pvl.pictureViewList[i].fileName)
-							+ "' /></li>");
+				"<li><img src='" + pvl.pictureViewList[i].url + "' alt='"
+				+ html2Escape(pvl.pictureViewList[i].fileName)
+				+ "' /></li>");
 		}
 		viewer = $(images);
 		viewer.viewer({
-			loop : false,
-			hidden : function() {
+			loop: false,
+			hidden: function() {
 				viewer.data('viewer').destroy();
 				viewer = null;
 			}
@@ -1994,52 +2001,52 @@ function createViewListByPage() {
 			$(images).append("<li><img src='css/left.png' alt='上一页' /></li>");
 		}
 		for (var i = 0; i < viewerPageSize
-				&& i < (pvl.pictureViewList.length - (viewerPageIndex - 1)
-						* viewerPageSize); i++) {
+			&& i < (pvl.pictureViewList.length - (viewerPageIndex - 1)
+				* viewerPageSize); i++) {
 			$(images)
-					.append(
-							"<li><img src='"
-									+ pvl.pictureViewList[startIndex + i].url
-									+ "' alt='"
-									+ html2Escape(pvl.pictureViewList[startIndex
-											+ i].fileName) + "' /></li>");
+				.append(
+					"<li><img src='"
+					+ pvl.pictureViewList[startIndex + i].url
+					+ "' alt='"
+					+ html2Escape(pvl.pictureViewList[startIndex
+						+ i].fileName) + "' /></li>");
 		}
 		if (viewerPageIndex < viewerTotal) {
 			$(images).append("<li><img src='css/right.png' alt='下一页' /></li>");
 		}
 		viewer = $(images);
 		viewer
-				.viewer({
-					loop : false,
-					view : function(event) {
-						// 点击的计数为event.detail.index;
-						if (event.detail.index == 0 && viewerPageIndex != 1) {
-							viewerPageIndex--;
-							viewer.data('viewer').destroy();
-							viewer.empty();
-							viewer = null;
-							createViewListByPage();
-							if (viewerPageIndex > 1) {
-								viewer.viewer('view', viewerPageSize);
-							} else {
-								viewer.viewer('view', viewerPageSize - 1);
-							}
-						} else if (event.detail.index == viewerPageSize + 1
-								|| (event.detail.index == viewerPageSize && viewerPageIndex == 1)) {
-							viewerPageIndex++;
-							viewer.data('viewer').destroy();
-							viewer.empty();
-							viewer = null;
-							createViewListByPage();
-							viewer.viewer('view', 1);
-						}
-					},
-					hidden : function() {
+			.viewer({
+				loop: false,
+				view: function(event) {
+					// 点击的计数为event.detail.index;
+					if (event.detail.index == 0 && viewerPageIndex != 1) {
+						viewerPageIndex--;
 						viewer.data('viewer').destroy();
 						viewer.empty();
 						viewer = null;
+						createViewListByPage();
+						if (viewerPageIndex > 1) {
+							viewer.viewer('view', viewerPageSize);
+						} else {
+							viewer.viewer('view', viewerPageSize - 1);
+						}
+					} else if (event.detail.index == viewerPageSize + 1
+						|| (event.detail.index == viewerPageSize && viewerPageIndex == 1)) {
+						viewerPageIndex++;
+						viewer.data('viewer').destroy();
+						viewer.empty();
+						viewer = null;
+						createViewListByPage();
+						viewer.viewer('view', 1);
 					}
-				});
+				},
+				hidden: function() {
+					viewer.data('viewer').destroy();
+					viewer.empty();
+					viewer = null;
+				}
+			});
 	}
 }
 
@@ -2132,8 +2139,8 @@ function showDownloadAllCheckedModel() {
 	} else {
 		$("#downloadAllCheckedName").text("提示：您确认要打包并下载这" + faf.size + "项么？");
 		$("#downloadAllCheckedBox")
-				.html(
-						"<button id='dclmbutton' type='button' class='btn btn-primary' onclick='downloadAllChecked()'>开始下载</button>");
+			.html(
+				"<button id='dclmbutton' type='button' class='btn btn-primary' onclick='downloadAllChecked()'>开始下载</button>");
 		$("#dclmbutton").attr('disabled', false);
 	}
 	$("#cancelDownloadAllCheckedBtn").attr('disabled', false);
@@ -2146,26 +2153,26 @@ function downloadAllChecked() {
 	$("#cancelDownloadAllCheckedBtn").attr('disabled', true);
 	var faf = getCheckedFilesAndFolders();
 	$("#downloadAllCheckedName").text(
-			"提示：服务器正在对选中资源进行压缩（共" + faf.size
-					+ "项），这可能需要一些时间（文件越大耗时越长），压缩完成将自动开始下载。");
+		"提示：服务器正在对选中资源进行压缩（共" + faf.size
+		+ "项），这可能需要一些时间（文件越大耗时越长），压缩完成将自动开始下载。");
 	// 计算预计耗时
 	$.ajax({
-		url : 'homeController/getPackTime.ajax',
-		type : 'POST',
-		data : {
-			strIdList : faf.filesId,
-			strFidList : faf.foldersId
+		url: 'homeController/getPackTime.ajax',
+		type: 'POST',
+		data: {
+			strIdList: faf.filesId,
+			strFidList: faf.foldersId
 		},
-		dataType : 'text',
-		success : function(result) {
+		dataType: 'text',
+		success: function(result) {
 			if (result != "0") {
 				var count = 0;
 				$("#downloadAllCheckedLoad").text(
-						"已耗时：" + count + "秒（预计耗时：" + result + "）");
+					"已耗时：" + count + "秒（预计耗时：" + result + "）");
 				zipTimer = setInterval(function() {
 					count++;
 					$("#downloadAllCheckedLoad").text(
-							"已耗时：" + count + "秒（预计耗时：" + result + "）");
+						"已耗时：" + count + "秒（预计耗时：" + result + "）");
 				}, 1000);
 			} else {
 				var count = 0;
@@ -2176,33 +2183,33 @@ function downloadAllChecked() {
 				}, 1000);
 			}
 		},
-		error : function() {
+		error: function() {
 			$("#downloadAllCheckedLoad").text("（无法获取预计耗时）");
 		}
 	});
 	// 同时发送压缩下载请求
 	$.ajax({
-		type : "POST",
-		url : "homeController/downloadCheckedFiles.ajax",
-		data : {
-			strIdList : faf.filesId,
-			strFidList : faf.foldersId
+		type: "POST",
+		url: "homeController/downloadCheckedFiles.ajax",
+		data: {
+			strIdList: faf.filesId,
+			strFidList: faf.foldersId
 		},
-		dataType : "text",
-		success : function(result) {
+		dataType: "text",
+		success: function(result) {
 			if (zipTimer != null) {
 				window.clearInterval(zipTimer);
 			}
 			if (result == "ERROR") {
 				$("#downloadAllCheckedName")
-						.text("提示：压缩过程出错。无法完成压缩，请重试或告知管理员。");
+					.text("提示：压缩过程出错。无法完成压缩，请重试或告知管理员。");
 				$("#dclmbutton").attr('disabled', false);
 				$("#cancelDownloadAllCheckedBtn").attr('disabled', false);
 			} else {
 				$("#downloadAllCheckedLoad").text("");
 				$("#downloadAllCheckedName").text("提示：压缩完成！准备开始下载...");
 				var t = setTimeout(
-						"$('#downloadAllCheckedModal').modal('hide');", 800);
+					"$('#downloadAllCheckedModal').modal('hide');", 800);
 				// POST提交全部下载请求
 				var temp = document.createElement("form");
 				temp.action = 'homeController/downloadCheckedFilesZip.do';
@@ -2216,7 +2223,7 @@ function downloadAllChecked() {
 				temp.submit();
 			}
 		},
-		error : function() {
+		error: function() {
 			$("#downloadAllCheckedName").text("提示：请求失败。无法完成压缩，请重试或告知管理员。");
 			$("#dclmbutton").attr('disabled', false);
 			$("#cancelDownloadAllCheckedBtn").attr('disabled', false);
@@ -2234,8 +2241,8 @@ function showDeleteAllCheckedModel() {
 		$('#deleteFileMessage').html(checkFilesTip);
 	} else {
 		$('#deleteFileBox')
-				.html(
-						"<button id='dfmbutton' type='button' class='btn btn-danger' onclick='deleteAllChecked()'>全部删除</button>");
+			.html(
+				"<button id='dfmbutton' type='button' class='btn btn-danger' onclick='deleteAllChecked()'>全部删除</button>");
 		$('#deleteFileMessage').text("提示：确定要彻底删除这" + faf.size + "项么？该操作不可恢复！");
 	}
 	$('#deleteFileModal').modal('toggle');
@@ -2249,14 +2256,14 @@ function deleteAllChecked() {
 	$("#cancelDeleteFileBox").attr('disabled', true);
 	$('#deleteFileMessage').text("提示：正在删除，请稍候...");
 	$.ajax({
-		type : "POST",
-		dataType : "text",
-		data : {
-			strIdList : faf.filesId,
-			strFidList : faf.foldersId
+		type: "POST",
+		dataType: "text",
+		data: {
+			strIdList: faf.filesId,
+			strFidList: faf.foldersId
 		},
-		url : "homeController/deleteCheckedFiles.ajax",
-		success : function(result) {
+		url: "homeController/deleteCheckedFiles.ajax",
+		success: function(result) {
 			if (result == "mustLogin") {
 				window.location.href = "prv/login.html";
 			} else {
@@ -2282,7 +2289,7 @@ function deleteAllChecked() {
 				}
 			}
 		},
-		error : function() {
+		error: function() {
 			$('#deleteFileMessage').text("提示：出现意外错误，可能未能删除全部文件");
 			$("#dfmbutton").attr('disabled', false);
 			$("#cancelDeleteFileBox").attr('disabled', false);
@@ -2298,54 +2305,54 @@ function playAudio(fileId) {
 	}
 	if (ap == null) {
 		ap = new APlayer({
-			container : document.getElementById('aplayer'),
-			lrcType : 3,
-			mutex : true,
-			volume : 0.7,
-			theme : '#EDEDED',
-			audio : []
+			container: document.getElementById('aplayer'),
+			lrcType: 3,
+			mutex: true,
+			volume: 0.7,
+			theme: '#EDEDED',
+			audio: []
 		});
 		ap
-				.on(
-						'pause',
-						function() {
-							$("#playOrPause")
-									.html(
-											"<span class='glyphicon glyphicon-play' aria-hidden='true'></span>");
-						});
+			.on(
+				'pause',
+				function() {
+					$("#playOrPause")
+						.html(
+							"<span class='glyphicon glyphicon-play' aria-hidden='true'></span>");
+				});
 		ap
-				.on(
-						'play',
-						function() {
-							$("#playOrPause")
-									.html(
-											"<span class='glyphicon glyphicon-pause' aria-hidden='true'></span>");
-						});
+			.on(
+				'play',
+				function() {
+					$("#playOrPause")
+						.html(
+							"<span class='glyphicon glyphicon-pause' aria-hidden='true'></span>");
+				});
 	}
 	ap.list.clear();
 	$.ajax({
-		url : 'homeController/playAudios.ajax',
-		data : {
-			fileId : fileId
+		url: 'homeController/playAudios.ajax',
+		data: {
+			fileId: fileId
 		},
-		type : 'POST',
-		dataType : 'text',
-		success : function(result) {
+		type: 'POST',
+		dataType: 'text',
+		success: function(result) {
 			var ail = eval("(" + result + ")");
 			// 避免存在恶意标签注入在文件名中
 			for (var i = ail.index; i < ail.as.length; i++) {
 				ail.as[i].name = ail.as[i].name.replace('\'', '&#39;').replace(
-						'<', '&lt;').replace('>', '&gt;');
+					'<', '&lt;').replace('>', '&gt;');
 				ap.list.add(ail.as[i]);
 			}
 			for (var i = 0; i < ail.index; i++) {
 				ail.as[i].name = ail.as[i].name.replace('\'', '&#39;').replace(
-						'<', '&lt;').replace('>', '&gt;');
+					'<', '&lt;').replace('>', '&gt;');
 				ap.list.add(ail.as[i]);
 			}
 			audio_play();
 		},
-		error : function() {
+		error: function() {
 			alert("错误：无法获取音乐列表，请稍后再试");
 			closeAudioPlayer();
 		}
@@ -2398,7 +2405,7 @@ function sortbyfn() {
 		return;
 	}
 	if ($("#sortByCD,#sortByFS,#sortByCN,#sortByOR").hasClass(
-			"glyphicon glyphicon-hourglass")) {
+		"glyphicon glyphicon-hourglass")) {
 		return;
 	}
 	$("#sortByCD").removeClass();
@@ -2435,7 +2442,7 @@ function sortbycd() {
 		return;
 	}
 	if ($("#sortByFN,#sortByFS,#sortByCN,#sortByOR").hasClass(
-			"glyphicon glyphicon-hourglass")) {
+		"glyphicon glyphicon-hourglass")) {
 		return;
 	}
 	$("#sortByFN").removeClass();
@@ -2451,20 +2458,20 @@ function sortbycd() {
 	setTimeout(function() {
 		folderView.fileList.sort(function(v1, v2) {
 			var v1DateStr = v1.fileCreationDate.replace("年", "-").replace("月",
-					"-").replace("日", "");
+				"-").replace("日", "");
 			var v2DateStr = v2.fileCreationDate.replace("年", "-").replace("月",
-					"-").replace("日", "");
+				"-").replace("日", "");
 			var res = ((new Date(Date.parse(v1DateStr)).getTime()) - (new Date(
-					Date.parse(v2DateStr)).getTime()));
+				Date.parse(v2DateStr)).getTime()));
 			return order * res;
 		});
 		folderView.folderList.sort(function(v1, v2) {
 			var v1DateStr = v1.folderCreationDate.replace("年", "-").replace(
-					"月", "-").replace("日", "");
+				"月", "-").replace("日", "");
 			var v2DateStr = v2.folderCreationDate.replace("年", "-").replace(
-					"月", "-").replace("日", "");
+				"月", "-").replace("日", "");
 			var res = ((new Date(Date.parse(v1DateStr)).getTime()) - (new Date(
-					Date.parse(v2DateStr)).getTime()));
+				Date.parse(v2DateStr)).getTime()));
 			return order * res;
 		});
 		showFolderTable(folderView);
@@ -2483,7 +2490,7 @@ function sortbyfs() {
 		return;
 	}
 	if ($("#sortByFN,#sortByCD,#sortByCN,#sortByOR").hasClass(
-			"glyphicon glyphicon-hourglass")) {
+		"glyphicon glyphicon-hourglass")) {
 		return;
 	}
 	$("#sortByFN").removeClass();
@@ -2516,7 +2523,7 @@ function sortbycn() {
 		return;
 	}
 	if ($("#sortByFN,#sortByCD,#sortByFS,#sortByOR").hasClass(
-			"glyphicon glyphicon-hourglass")) {
+		"glyphicon glyphicon-hourglass")) {
 		return;
 	}
 	$("#sortByFN").removeClass();
@@ -2535,7 +2542,7 @@ function sortbycn() {
 		});
 		folderView.folderList.sort(function(v1, v2) {
 			return order
-					* v2.folderCreator.localeCompare(v1.folderCreator, "zh");
+				* v2.folderCreator.localeCompare(v1.folderCreator, "zh");
 		});
 		showFolderTable(folderView);
 		$("#sortByCN").removeClass();
@@ -2553,7 +2560,7 @@ function showOriginFolderView() {
 		return;
 	}
 	if ($("#sortByFN,#sortByCD,#sortByFS,#sortByCN").hasClass(
-			"glyphicon glyphicon-hourglass")) {
+		"glyphicon glyphicon-hourglass")) {
 		return;
 	}
 	$("#sortByFN").removeClass();
@@ -2574,24 +2581,22 @@ function showOriginFolderView() {
 
 // 执行“剪切”操作
 function cutFile() {
-	checkedMovefiles = getCheckedFilesAndFolders();
-	if (checkedMovefiles == undefined || checkedMovefiles.size == 0) {
+	var checkedfiles = getCheckedFilesAndFolders();
+	if (checkedfiles == undefined || checkedfiles.size == 0) {
 		// 如果未选中任何文件，则提示用户要先选
 		$('#moveFilesMessage').html(checkFilesTip);
 		$("#selectFileMoveModelAsAll").removeAttr("checked");
 		$("#selectFileMoveModelAlert").hide();
+		$("#dmvfbutton").remove();
 		$('#moveFilesModal').modal('show');
 	} else {
-		// 否则，隐藏“剪切”和“复制”按钮，显示“粘贴”按钮
+		// 否则，显示“粘贴”按钮
+		checkedMovefiles = checkedfiles;
 		if (checkedMovefiles.size < 100) {
 			$("#stickFilesCount").text("（" + checkedMovefiles.size + "）");
 		} else {
 			$("#stickFilesCount").text("（99+）");
 		}
-		$("#copyFileButtonLi").removeClass("show");
-		$("#copyFileButtonLi").addClass("hidden");
-		$("#cutFileButtonLi").removeClass("show");
-		$("#cutFileButtonLi").addClass("hidden");
 		$("#stickFileButtonLi").removeClass("hidden");
 		$("#stickFileButtonLi").addClass("show");
 		isCopy = false;
@@ -2600,24 +2605,22 @@ function cutFile() {
 
 // 执行“复制”操作
 function copyFile() {
-	checkedMovefiles = getCheckedFilesAndFolders();
-	if (checkedMovefiles == undefined || checkedMovefiles.size == 0) {
+	var checkedfiles = getCheckedFilesAndFolders();
+	if (checkedfiles == undefined || checkedfiles.size == 0) {
 		// 如果未选中任何文件，则提示用户要先选
 		$('#moveFilesMessage').html(checkFilesTip);
 		$("#selectFileMoveModelAsAll").removeAttr("checked");
 		$("#selectFileMoveModelAlert").hide();
+		$("#dmvfbutton").remove();
 		$('#moveFilesModal').modal('show');
 	} else {
-		// 否则，隐藏“剪切”和“复制”按钮，显示“粘贴”按钮
+		// 否则，显示“粘贴”按钮
+		checkedMovefiles = checkedfiles;
 		if (checkedMovefiles.size < 100) {
 			$("#stickFilesCount").text("（" + checkedMovefiles.size + "）");
 		} else {
 			$("#stickFilesCount").text("（99+）");
 		}
-		$("#copyFileButtonLi").removeClass("show");
-		$("#copyFileButtonLi").addClass("hidden");
-		$("#cutFileButtonLi").removeClass("show");
-		$("#cutFileButtonLi").addClass("hidden");
 		$("#stickFileButtonLi").removeClass("hidden");
 		$("#stickFileButtonLi").addClass("show");
 		isCopy = true;
@@ -2629,16 +2632,16 @@ function stickFile() {
 	if (checkedMovefiles !== undefined && checkedMovefiles.size > 0) {
 		if (isCopy) {
 			$('#moveFilesMessage').text(
-					"提示：确定将这" + checkedMovefiles.size + "项复制到当前位置么？");
+				"提示：确定将这" + checkedMovefiles.size + "项复制到当前位置么？");
 			$('#moveFilesBox')
-					.html(
-							"<button id='dmvfbutton' type='button' class='btn btn-primary' onclick='doMoveFiles()'>全部复制</button>");
+				.html(
+					"<button id='dmvfbutton' type='button' class='btn btn-primary' onclick='doMoveFiles()'>全部复制</button>");
 		} else {
 			$('#moveFilesMessage').text(
-					"提示：确定将这" + checkedMovefiles.size + "项移动到当前位置么？");
+				"提示：确定将这" + checkedMovefiles.size + "项移动到当前位置么？");
 			$('#moveFilesBox')
-					.html(
-							"<button id='dmvfbutton' type='button' class='btn btn-danger' onclick='doMoveFiles()'>全部移动</button>");
+				.html(
+					"<button id='dmvfbutton' type='button' class='btn btn-danger' onclick='doMoveFiles()'>全部移动</button>");
 		}
 		$("#selectFileMoveModelAsAll").removeAttr("checked");
 		$("#cancelMoveFilesBtn").attr('disabled', false);
@@ -2660,21 +2663,21 @@ function doMoveFiles() {
 	}
 	// 确认移动目标位置
 	$
-			.ajax({
-				type : "POST",
-				dataType : "text",
-				data : {
-					strIdList : checkedMovefiles.filesId,
-					strFidList : checkedMovefiles.foldersId,
-					locationpath : locationpath,
-					method : method
-				},
-				url : "homeController/confirmMoveFiles.ajax",
-				success : function(result) {
-					if (result == "mustLogin") {
-						window.location.href = "prv/login.html";
-					} else {
-						switch (result) {
+		.ajax({
+			type: "POST",
+			dataType: "text",
+			data: {
+				strIdList: checkedMovefiles.filesId,
+				strFidList: checkedMovefiles.foldersId,
+				locationpath: locationpath,
+				method: method
+			},
+			url: "homeController/confirmMoveFiles.ajax",
+			success: function(result) {
+				if (result == "mustLogin") {
+					window.location.href = "prv/login.html";
+				} else {
+					switch (result) {
 						case "noAuthorized":
 							$('#moveFilesMessage').text("提示：您的操作未被授权，操作失败");
 							$("#dmvfbutton").attr('disabled', false);
@@ -2682,25 +2685,25 @@ function doMoveFiles() {
 							break;
 						case "errorParameter":
 							$('#moveFilesMessage').text(
-									"提示：参数不正确，无法完成此操作，请刷新后重试");
+								"提示：参数不正确，无法完成此操作，请刷新后重试");
 							$("#dmvfbutton").attr('disabled', false);
 							$("#cancelMoveFilesBtn").attr('disabled', false);
 							break;
 						case "cannotMoveFiles":
 							$('#moveFilesMessage').text(
-									"提示：出现意外错误，可能未能完成此操作，请刷新后重试");
+								"提示：出现意外错误，可能未能完成此操作，请刷新后重试");
 							$("#dmvfbutton").attr('disabled', false);
 							$("#cancelMoveFilesBtn").attr('disabled', false);
 							break;
 						case "filesTotalOutOfLimit":
 							$('#moveFilesMessage').text(
-									"提示：该文件夹内存储的文件数量已达上限，无法添加更多文件");
+								"提示：该文件夹内存储的文件数量已达上限，无法添加更多文件");
 							$("#dmvfbutton").attr('disabled', false);
 							$("#cancelMoveFilesBtn").attr('disabled', false);
 							break;
 						case "foldersTotalOutOfLimit":
 							$('#moveFilesMessage').text(
-									"提示：该文件夹内存储的文件夹数量已达上限，无法添加更多文件夹");
+								"提示：该文件夹内存储的文件夹数量已达上限，无法添加更多文件夹");
 							$("#dmvfbutton").attr('disabled', false);
 							$("#cancelMoveFilesBtn").attr('disabled', false);
 							break;
@@ -2714,15 +2717,15 @@ function doMoveFiles() {
 								repeIndex = 0;
 								strMoveOptMap = {};
 								mRepeSize = repeMap.repeFolders.length
-										+ repeMap.repeNodes.length;
+									+ repeMap.repeNodes.length;
 								if (repeMap.repeFolders.length > 0) {
 									$("#mrepeFileName")
-											.text(
-													repeMap.repeFolders[repeIndex].folderName);
+										.text(
+											repeMap.repeFolders[repeIndex].folderName);
 								} else {
 									$("#mrepeFileName")
-											.text(
-													repeMap.repeNodes[repeIndex].fileName);
+										.text(
+											repeMap.repeNodes[repeIndex].fileName);
 								}
 								var authList = originFolderView.authList;
 								if (checkAuth(authList, "D")) {
@@ -2732,27 +2735,27 @@ function doMoveFiles() {
 								}
 								$("#selectFileMoveModelAlert").show();
 							} else if (result
-									.startsWith("CANT_MOVE_TO_INSIDE:")) {
+								.startsWith("CANT_MOVE_TO_INSIDE:")) {
 								$('#moveFilesMessage').text(
-										"错误：不能将一个文件夹移动到其自身内部："
-												+ result.substring(20));
+									"错误：不能将一个文件夹移动到其自身内部："
+									+ result.substring(20));
 							} else {
 								$('#moveFilesMessage').text(
-										"提示：出现意外错误，可能未能完成此操作，请刷新后重试");
+									"提示：出现意外错误，可能未能完成此操作，请刷新后重试");
 								$("#dmvfbutton").attr('disabled', false);
 								$("#cancelMoveFilesBtn")
-										.attr('disabled', false);
+									.attr('disabled', false);
 							}
 							break;
-						}
 					}
-				},
-				error : function() {
-					$('#moveFilesMessage').text("提示：出现意外错误，可能未能完成此操作，请刷新后重试");
-					$("#dmvfbutton").attr('disabled', false);
-					$("#cancelMoveFilesBtn").attr('disabled', false);
 				}
-			});
+			},
+			error: function() {
+				$('#moveFilesMessage').text("提示：出现意外错误，可能未能完成此操作，请刷新后重试");
+				$("#dmvfbutton").attr('disabled', false);
+				$("#cancelMoveFilesBtn").attr('disabled', false);
+			}
+		});
 }
 
 // 移动或复制——对冲突的文件进行依次询问
@@ -2763,7 +2766,7 @@ function selectFileMoveModel(t) {
 				strMoveOptMap[repeMap.repeFolders[repeIndex].folderId] = t;
 			} else {
 				strMoveOptMap[repeMap.repeNodes[repeIndex
-						- repeMap.repeFolders.length].fileId] = t;
+					- repeMap.repeFolders.length].fileId] = t;
 			}
 			repeIndex++;
 		}
@@ -2781,9 +2784,9 @@ function selectFileMoveModel(t) {
 			$("#mrepeFileName").text(repeMap.repeFolders[repeIndex].folderName);
 		} else {
 			$("#mrepeFileName")
-					.text(
-							repeMap.repeNodes[repeIndex
-									- repeMap.repeFolders.length].fileName);
+				.text(
+					repeMap.repeNodes[repeIndex
+						- repeMap.repeFolders.length].fileName);
 		}
 	} else {
 		$("#selectFileMoveModelAlert").hide();
@@ -2801,22 +2804,22 @@ function sendMoveFilesReq() {
 		method = "COPY";
 	}
 	$
-			.ajax({
-				type : "POST",
-				dataType : "text",
-				data : {
-					strIdList : checkedMovefiles.filesId,
-					strFidList : checkedMovefiles.foldersId,
-					strOptMap : strOptMap,
-					locationpath : locationpath,
-					method : method
-				},
-				url : "homeController/moveCheckedFiles.ajax",
-				success : function(result) {
-					if (result == "mustLogin") {
-						window.location.href = "prv/login.html";
-					} else {
-						switch (result) {
+		.ajax({
+			type: "POST",
+			dataType: "text",
+			data: {
+				strIdList: checkedMovefiles.filesId,
+				strFidList: checkedMovefiles.foldersId,
+				strOptMap: strOptMap,
+				locationpath: locationpath,
+				method: method
+			},
+			url: "homeController/moveCheckedFiles.ajax",
+			success: function(result) {
+				if (result == "mustLogin") {
+					window.location.href = "prv/login.html";
+				} else {
+					switch (result) {
 						case "noAuthorized":
 							$('#moveFilesMessage').text("提示：您的操作未被授权，操作失败");
 							$("#dmvfbutton").attr('disabled', false);
@@ -2824,47 +2827,49 @@ function sendMoveFilesReq() {
 							break;
 						case "errorParameter":
 							$('#moveFilesMessage').text(
-									"提示：参数不正确，无法完成此操作，请刷新后重试");
+								"提示：参数不正确，无法完成此操作，请刷新后重试");
 							$("#dmvfbutton").attr('disabled', false);
 							$("#cancelMoveFilesBtn").attr('disabled', false);
 							break;
 						case "filesTotalOutOfLimit":
 							$('#moveFilesMessage').text(
-									"提示：该文件夹内存储的文件数量已达上限，无法添加更多文件");
+								"提示：该文件夹内存储的文件数量已达上限，无法添加更多文件");
 							$("#dmvfbutton").attr('disabled', false);
 							$("#cancelMoveFilesBtn").attr('disabled', false);
 							break;
 						case "foldersTotalOutOfLimit":
 							$('#moveFilesMessage').text(
-									"提示：该文件夹内存储的文件夹数量已达上限，无法添加更多文件夹");
+								"提示：该文件夹内存储的文件夹数量已达上限，无法添加更多文件夹");
 							$("#dmvfbutton").attr('disabled', false);
 							$("#cancelMoveFilesBtn").attr('disabled', false);
 							break;
 						case "cannotMoveFiles":
 							$('#moveFilesMessage').text(
-									"提示：出现意外错误，可能未能完成此操作，请刷新后重试");
+								"提示：出现意外错误，可能未能完成此操作，请刷新后重试");
 							$("#dmvfbutton").attr('disabled', false);
 							$("#cancelMoveFilesBtn").attr('disabled', false);
 							break;
 						case "moveFilesSuccess":
+							checkedMovefiles = undefined;
 							$('#moveFilesModal').modal('hide');
+							$("#cancelMoveFilesBtn").attr('disabled', false);
 							showFolderView(locationpath);
 							break;
 						default:
 							$('#moveFilesMessage').text(
-									"提示：出现意外错误，可能未能完成此操作，请刷新后重试");
+								"提示：出现意外错误，可能未能完成此操作，请刷新后重试");
 							$("#dmvfbutton").attr('disabled', false);
 							$("#cancelMoveFilesBtn").attr('disabled', false);
 							break;
-						}
 					}
-				},
-				error : function() {
-					$('#moveFilesMessage').text("提示：出现意外错误，可能未能完成此操作，请刷新后重试");
-					$("#dmvfbutton").attr('disabled', false);
-					$("#cancelMoveFilesBtn").attr('disabled', false);
 				}
-			});
+			},
+			error: function() {
+				$('#moveFilesMessage').text("提示：出现意外错误，可能未能完成此操作，请刷新后重试");
+				$("#dmvfbutton").attr('disabled', false);
+				$("#cancelMoveFilesBtn").attr('disabled', false);
+			}
+		});
 }
 
 var screenedFoldrView;// 经过排序的文件视图
@@ -2894,18 +2899,18 @@ function doSearchFile() {
 // 在本级内搜索
 function selectInThisPath(keyworld) {
 	try {
-		var reg = new RegExp(keyworld + "+");
+		var upperCasekeyworld = keyworld.toUpperCase();
 		screenedFoldrView = $.extend(true, {}, originFolderView);
 		screenedFoldrView.folderList = [];
 		screenedFoldrView.fileList = [];
 		for (var i = 0, j = originFolderView.folderList.length; i < j; i++) {
-			if (reg.test(originFolderView.folderList[i].folderName)) {
+			if (originFolderView.folderList[i].folderName.toUpperCase().indexOf(upperCasekeyworld) >= 0) {
 				screenedFoldrView.folderList
-						.push(originFolderView.folderList[i]);
+					.push(originFolderView.folderList[i]);
 			}
 		}
 		for (var i = 0, j = originFolderView.fileList.length; i < j; i++) {
-			if (reg.test(originFolderView.fileList[i].fileName)) {
+			if (originFolderView.fileList[i].fileName.toUpperCase().indexOf(upperCasekeyworld) >= 0) {
 				screenedFoldrView.fileList.push(originFolderView.fileList[i]);
 			}
 		}
@@ -2929,22 +2934,22 @@ function selectInCompletePath(keyworld) {
 	}
 	startLoading();
 	$.ajax({
-		type : 'POST',
-		dataType : 'text',
-		data : {
-			fid : locationpath,
-			keyworld : keyworld
+		type: 'POST',
+		dataType: 'text',
+		data: {
+			fid: locationpath,
+			keyworld: keyworld
 		},
-		url : 'homeController/sreachInCompletePath.ajax',
-		success : function(result) {
+		url: 'homeController/sreachInCompletePath.ajax',
+		success: function(result) {
 			endLoading();
 			if (result == "ERROR") {
 				doAlert();
 				$("#tb").html("<span class='graytext'>获取失败，请尝试刷新</span>");
 				$("#publishTime").html(
-						"<span class='graytext'>获取失败，请尝试刷新</span>");
+					"<span class='graytext'>获取失败，请尝试刷新</span>");
 				$("#parentlistbox").html(
-						"<span class='graytext'>获取失败，请尝试刷新</span>");
+					"<span class='graytext'>获取失败，请尝试刷新</span>");
 			} else if (result == "mustLogin") {
 				window.location.href = "prv/login.html";
 			} else if (result == "notAccess") {
@@ -2974,13 +2979,13 @@ function selectInCompletePath(keyworld) {
 				updateTheFolderInfo();
 			}
 		},
-		error : function() {
+		error: function() {
 			endLoading();
 			doAlert();
 			$("#tb").html("<span class='graytext'>获取失败，请尝试刷新</span>");
 			$("#publishTime").html("<span class='graytext'>获取失败，请尝试刷新</span>");
 			$("#parentlistbox")
-					.html("<span class='graytext'>获取失败，请尝试刷新</span>");
+				.html("<span class='graytext'>获取失败，请尝试刷新</span>");
 		}
 	});
 }
@@ -2988,7 +2993,7 @@ function selectInCompletePath(keyworld) {
 // 返回顶部实现
 function goBackToTop() {
 	$('html,body').animate({
-		scrollTop : 0
+		scrollTop: 0
 	}, 'slow');
 }
 
@@ -2998,41 +3003,41 @@ var getDownloadFileName;// 下载链接的文件名（便于下载工具识别�
 // 获取某一文件的下载链接
 function getDownloadURL() {
 	$
-			.ajax({
-				url : 'externalLinksController/getDownloadKey.ajax',
-				type : 'POST',
-				dataType : 'text',
-				data : {
-					fId : getDownloadFileId
-				},
-				success : function(result) {
-					// 获取链接
-					var dlurl = window.location.protocol
-							+ "//"
-							+ window.location.host
-							+ "/externalLinksController/downloadFileByKey/"
-							+ encodeURIComponent(getDownloadFileName.replace(
-									/\\/g, "_")) + "?dkey=" + result;
-					// 显示链接内容
-					$("#downloadHrefBox").html(
-							"<a href='" + dlurl + "'>" + dlurl + "</a>");
-				},
-				error : function() {
-					$("#downloadHrefBox")
-							.html(
-									"<span class='text-muted'>获取失败，请检查网络状态或<a href='javascript:void(0);' onclick='getDownloadURL()'>点此</a>重新获取。</span>");
-				}
-			});
+		.ajax({
+			url: 'externalLinksController/getDownloadKey.ajax',
+			type: 'POST',
+			dataType: 'text',
+			data: {
+				fId: getDownloadFileId
+			},
+			success: function(result) {
+				// 获取链接
+				var dlurl = window.location.protocol
+					+ "//"
+					+ window.location.host
+					+ "/externalLinksController/downloadFileByKey/"
+					+ encodeURIComponent(getDownloadFileName.replace(
+						/\\/g, "_")) + "?dkey=" + result;
+				// 显示链接内容
+				$("#downloadHrefBox").html(
+					"<a href='" + dlurl + "'>" + dlurl + "</a>");
+			},
+			error: function() {
+				$("#downloadHrefBox")
+					.html(
+						"<span class='text-muted'>获取失败，请检查网络状态或<a href='javascript:void(0);' onclick='getDownloadURL()'>点此</a>重新获取。</span>");
+			}
+		});
 }
 
 // 防止长耗时待机时会话超时的应答器，每分钟应答一次
 function ping() {
 	$.ajax({
-		url : "homeController/ping.ajax",
-		type : "POST",
-		dataType : "text",
-		data : {},
-		success : function(result) {
+		url: "homeController/ping.ajax",
+		type: "POST",
+		dataType: "text",
+		data: {},
+		success: function(result) {
 			if (result != 'pong') {
 				if (pingInt != null) {
 					window.clearInterval(pingInt);
@@ -3040,7 +3045,7 @@ function ping() {
 				}
 			}
 		},
-		error : function() {
+		error: function() {
 			if (pingInt != null) {
 				window.clearInterval(pingInt);
 				pingInt = null;
@@ -3053,7 +3058,7 @@ function ping() {
 function isSupportWebkitdirectory() {
 	var testWebkitdirectory = document.createElement("input");
 	if ("webkitdirectory" in testWebkitdirectory
-			&& !(/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent))) {
+		&& !(/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent))) {
 		return true;
 	} else {
 		return false;
@@ -3078,17 +3083,17 @@ function showUploadFolderModel() {
 		$("#selectFolderImportModelAlert").hide();
 		if (account != null) {
 			$("#folderpath")
-					.attr("folderConstraintLevel", constraintLevel + "");
+				.attr("folderConstraintLevel", constraintLevel + "");
 			$("#importfoldertype").text(folderTypes[constraintLevel]);
 			for (var i = constraintLevel; i < folderTypes.length; i++) {
 				$("#importfoldertypelist").append(
-						"<li><a onclick='changeImportFolderType(" + i + ")'>"
-								+ folderTypes[i] + "</a></li>");
+					"<li><a onclick='changeImportFolderType(" + i + ")'>"
+					+ folderTypes[i] + "</a></li>");
 			}
 		} else {
 			$("#importfoldertypelist").append(
-					"<li><a onclick='changeImportFolderType(0)'>"
-							+ folderTypes[0] + "</a></li>");
+				"<li><a onclick='changeImportFolderType(0)'>"
+				+ folderTypes[0] + "</a></li>");
 		}
 	}
 	$("#importFolderModal").modal('show');
@@ -3104,7 +3109,7 @@ function getInputImport() {
 	ifs = $("#importfolder")[0].files;
 	if (ifs.length > 0) {
 		importFolderName = ifs[0].webkitRelativePath.substring(0,
-				ifs[0].webkitRelativePath.indexOf("/"));
+			ifs[0].webkitRelativePath.indexOf("/"));
 		$("#folderpath").val(importFolderName);
 	}
 }
@@ -3131,18 +3136,18 @@ function checkImportFolder() {
 			uploadTargetFolder = locationpath;// 记录上传目标
 			// 发送合法性检查请求
 			$
-					.ajax({
-						url : 'homeController/checkImportFolder.ajax',
-						type : 'POST',
-						dataType : 'text',
-						data : {
-							folderName : importFolderName,
-							maxSize : maxSize,
-							folderId : uploadTargetFolder
-						},
-						success : function(result) {
-							var resJson = eval("(" + result + ")");
-							switch (resJson.result) {
+				.ajax({
+					url: 'homeController/checkImportFolder.ajax',
+					type: 'POST',
+					dataType: 'text',
+					data: {
+						folderName: importFolderName,
+						maxSize: maxSize,
+						folderId: uploadTargetFolder
+					},
+					success: function(result) {
+						var resJson = eval("(" + result + ")");
+						switch (resJson.result) {
 							case 'noAuthorized':
 								showImportFolderAlert("提示：您的操作未被授权，无法开始上传");
 								break;
@@ -3154,9 +3159,9 @@ function checkImportFolder() {
 								break;
 							case 'fileOverSize':
 								showImportFolderAlert("提示：文件["
-										+ ifs[maxFileIndex].webkitRelativePath
-										+ "]的体积超过最大限制（" + resJson.maxSize
-										+ "），无法开始上传");
+									+ ifs[maxFileIndex].webkitRelativePath
+									+ "]的体积超过最大限制（" + resJson.maxSize
+									+ "），无法开始上传");
 								break;
 							case 'foldersTotalOutOfLimit':
 								showImportFolderAlert("提示：该文件夹内存储的文件夹数量已达上限，无法在其中上传更多文件夹。您可以尝试将其上传至其他文件夹内。");
@@ -3177,12 +3182,12 @@ function checkImportFolder() {
 							default:
 								showImportFolderAlert("提示：出现意外错误，无法开始上传");
 								break;
-							}
-						},
-						error : function() {
-							showImportFolderAlert("提示：出现意外错误，无法开始上传");
 						}
-					});
+					},
+					error: function() {
+						showImportFolderAlert("提示：出现意外错误，无法开始上传");
+					}
+				});
 		} else {
 			showImportFolderAlert("提示：您未选择任何文件夹，无法开始上传");
 		}
@@ -3216,21 +3221,21 @@ function importProgress(evt) {
 function importAndCover() {
 	$("#selectFolderImportModelAlert").hide();
 	$.ajax({
-		url : 'homeController/deleteFolderByName.ajax',
-		type : 'POST',
-		data : {
-			parentId : uploadTargetFolder,
-			folderName : importFolderName
+		url: 'homeController/deleteFolderByName.ajax',
+		type: 'POST',
+		data: {
+			parentId: uploadTargetFolder,
+			folderName: importFolderName
 		},
-		dataType : 'text',
-		success : function(result) {
+		dataType: 'text',
+		success: function(result) {
 			if (result == 'deleteSuccess') {
 				iteratorImport(0);// 若覆盖成功，则开始上传
 			} else {
 				showImportFolderAlert("提示：无法覆盖原文件夹，上传失败");
 			}
 		},
-		error : function() {
+		error: function() {
 			showImportFolderAlert("提示：无法覆盖原文件夹，上传失败");
 		}
 	});
@@ -3241,29 +3246,29 @@ function importAndBoth() {
 	$("#selectFolderImportModelAlert").hide();
 	var fc = $("#folderpath").attr("folderConstraintLevel");// 文件夹访问级别
 	$
-			.ajax({
-				url : 'homeController/createNewFolderByName.ajax',
-				type : 'POST',
-				data : {
-					parentId : uploadTargetFolder,
-					folderName : importFolderName,
-					folderConstraint : fc
-				},
-				dataType : 'text',
-				success : function(result) {
-					var resJson = eval("(" + result + ")");
-					if (resJson.result == 'success') {
-						iteratorImport(0, resJson.newName);// 若新建成功，则使用新文件夹名称开始上传
-					} else if (resJson.result == 'foldersTotalOutOfLimit') {
-						showImportFolderAlert("提示：该文件夹内存储的文件夹数量已达上限，无法上传同名文件夹并保留两者。您可以尝试将其上传至其他文件夹内。");
-					} else {
-						showImportFolderAlert("提示：生成新文件夹名称失败，无法开始上传");
-					}
-				},
-				error : function() {
+		.ajax({
+			url: 'homeController/createNewFolderByName.ajax',
+			type: 'POST',
+			data: {
+				parentId: uploadTargetFolder,
+				folderName: importFolderName,
+				folderConstraint: fc
+			},
+			dataType: 'text',
+			success: function(result) {
+				var resJson = eval("(" + result + ")");
+				if (resJson.result == 'success') {
+					iteratorImport(0, resJson.newName);// 若新建成功，则使用新文件夹名称开始上传
+				} else if (resJson.result == 'foldersTotalOutOfLimit') {
+					showImportFolderAlert("提示：该文件夹内存储的文件夹数量已达上限，无法上传同名文件夹并保留两者。您可以尝试将其上传至其他文件夹内。");
+				} else {
 					showImportFolderAlert("提示：生成新文件夹名称失败，无法开始上传");
 				}
-			});
+			},
+			error: function() {
+				showImportFolderAlert("提示：生成新文件夹名称失败，无法开始上传");
+			}
+		});
 }
 
 // 迭代上传文件夹内的文件（直接上传）
@@ -3279,8 +3284,8 @@ function iteratorImport(i, newFolderName) {
 			$("#importcount").text("（" + (i + 1) + "/" + fcount + "）");// 显示当前进度
 		}
 		$("#importstatus").prepend(
-				"<p>" + html2Escape(fname) + "<span id='ils_" + i
-						+ "'>[正在上传...]</span></p>");
+			"<p>" + html2Escape(fname) + "<span id='ils_" + i
+			+ "'>[正在上传...]</span></p>");
 		xhr = new XMLHttpRequest();// 这东西类似于servlet里面的request
 
 		var fd = new FormData();// 用于封装文件数据的对象
@@ -3335,19 +3340,19 @@ function iteratorImport(i, newFolderName) {
 					}
 				} else if (result == "uploaderror") {
 					showImportFolderAlert("提示：出现意外错误，文件：[" + fname
-							+ "]上传失败，上传被中断。");
+						+ "]上传失败，上传被中断。");
 					$("#ils_" + i).text("[失败]");
 				} else if (result == "foldersTotalOutOfLimit") {
 					showImportFolderAlert("提示：该文件夹内存储的文件夹数量已达上限，文件：[" + fname
-							+ "]上传失败，上传被中断。");
+						+ "]上传失败，上传被中断。");
 					$("#ils_" + i).text("[失败]");
 				} else if (result == "filesTotalOutOfLimit") {
 					showImportFolderAlert("提示：该文件夹内存储的文件数量已达上限，文件：[" + fname
-							+ "]上传失败，上传被中断。");
+						+ "]上传失败，上传被中断。");
 					$("#ils_" + i).text("[失败]");
 				} else {
 					showImportFolderAlert("提示：出现意外错误，文件：[" + fname
-							+ "]上传失败，上传被中断。");
+						+ "]上传失败，上传被中断。");
 					$("#ils_" + i).text("[失败]");
 				}
 			} else {
@@ -3358,7 +3363,7 @@ function iteratorImport(i, newFolderName) {
 	} else {
 		showImportFolderAlert("提示：要上传的文件不存在。");
 		$("#importstatus").prepend(
-				"<p>未找到要上传的文件<span id='ils_" + i + "'>[失败]</span></p>");
+			"<p>未找到要上传的文件<span id='ils_" + i + "'>[失败]</span></p>");
 	}
 }
 
@@ -3384,8 +3389,8 @@ function changeImportFolderType(type) {
 function doChangePassword() {
 	// 还原提示状态
 	$(
-			"#changepassword_oldepwdbox,#changepassword_newpwdbox,#changepassword_reqnewpwdbox")
-			.removeClass("has-error");
+		"#changepassword_oldepwdbox,#changepassword_newpwdbox,#changepassword_reqnewpwdbox")
+		.removeClass("has-error");
 	$("#changepasswordalertbox").hide();
 	var change_oldPassword = $("#changepassword_oldpwd").val();
 	var change_newPassword = $("#changepassword_newpwd").val();
@@ -3409,8 +3414,8 @@ function doChangePassword() {
 	// 确认密码检查
 	isChangingPassword = true;
 	$(
-			"#changepassword_oldpwd,#changepassword_newpwd,#changepassword_reqnewpwd,#changePasswordButton,#changepassword_vercode")
-			.attr('disabled', true);
+		"#changepassword_oldpwd,#changepassword_newpwd,#changepassword_reqnewpwd,#changePasswordButton,#changepassword_vercode")
+		.attr('disabled', true);
 	if (change_newPassword + "" != change_reqNewPassword + "") {
 		showChangePasswordAlert("提示：两次输入的新密码不一致，请检查确认");
 		$("#changepassword_newpwdbox").addClass("has-error");
@@ -3419,23 +3424,23 @@ function doChangePassword() {
 	}
 	// 以加密方式发送修改密码请求
 	$.ajax({
-		url : 'homeController/getPublicKey.ajax',
-		type : 'POST',
-		data : {},
-		dataType : 'text',
-		success : function(result) {
+		url: 'homeController/getPublicKey.ajax',
+		type: 'POST',
+		data: {},
+		dataType: 'text',
+		success: function(result) {
 			// 获取公钥
 			var changepwd_publicKeyInfo = eval("(" + result + ")");
 			// 生成JSON对象格式的信息
 			var changePasswordInfo = '{oldPwd:"' + change_oldPassword
-					+ '",newPwd:"' + change_newPassword + '",time:"'
-					+ changepwd_publicKeyInfo.time + '"}';
+				+ '",newPwd:"' + change_newPassword + '",time:"'
+				+ changepwd_publicKeyInfo.time + '"}';
 			var encrypt = new JSEncrypt();// 加密插件对象
 			encrypt.setPublicKey(changepwd_publicKeyInfo.publicKey);// 设置公钥
 			var encrypted = encrypt.encrypt(changePasswordInfo);// 进行加密
 			sendChangePasswordInfo(encrypted);
 		},
-		error : function() {
+		error: function() {
 			showChangePasswordAlert("提示：密码修改失败，请检查网络链接或服务器运行状态");
 		}
 	});
@@ -3444,18 +3449,18 @@ function doChangePassword() {
 // 将加密数据发送至服务器并显示操作结果
 function sendChangePasswordInfo(encrypted) {
 	$
-			.ajax({
-				type : "POST",
-				dataType : "text",
-				url : "homeController/doChangePassword.ajax",
-				data : {
-					encrypted : encrypted,
-					vercode : $("#changepassword_vercode").val()
-				},
-				success : function(result) {
-					$("#changepassword_vccodebox").hide();
-					isChangingPassword = false;
-					switch (result) {
+		.ajax({
+			type: "POST",
+			dataType: "text",
+			url: "homeController/doChangePassword.ajax",
+			data: {
+				encrypted: encrypted,
+				vercode: $("#changepassword_vercode").val()
+			},
+			success: function(result) {
+				$("#changepassword_vccodebox").hide();
+				isChangingPassword = false;
+				switch (result) {
 					case "success":
 						$('#changePasswordModal').modal('hide');
 						break;
@@ -3471,13 +3476,13 @@ function sendChangePasswordInfo(encrypted) {
 						break;
 					case "needsubmitvercode":
 						$(
-								"#changepassword_oldpwd,#changepassword_newpwd,#changepassword_reqnewpwd,#changePasswordButton")
-								.attr('disabled', false);
+							"#changepassword_oldpwd,#changepassword_newpwd,#changepassword_reqnewpwd,#changePasswordButton")
+							.attr('disabled', false);
 						$("#changepassword_vccodebox")
-								.html(
-										"<label id='changepassword_vercodetitle' class='col-sm-5'><img id='changepassword_showvercode' class='vercodeimg' alt='点击获取验证码' src='homeController/getNewVerCode.do?s="
-												+ (new Date()).getTime()
-												+ "' onclick='changePasswordGetNewVerCode()'></label><div class='col-sm-7'><input type='text' class='form-control' id='changepassword_vercode' placeholder='验证码……'></div>");
+							.html(
+								"<label id='changepassword_vercodetitle' class='col-sm-5'><img id='changepassword_showvercode' class='vercodeimg' alt='点击获取验证码' src='homeController/getNewVerCode.do?s="
+								+ (new Date()).getTime()
+								+ "' onclick='changePasswordGetNewVerCode()'></label><div class='col-sm-7'><input type='text' class='form-control' id='changepassword_vercode' placeholder='验证码……'></div>");
 						$("#changepassword_vccodebox").show();
 						isChangingPassword = false;
 						break;
@@ -3493,20 +3498,20 @@ function sendChangePasswordInfo(encrypted) {
 					default:
 						showChangePasswordAlert("提示：密码修改失败，发生未知错误");
 						break;
-					}
-				},
-				error : function() {
-					showChangePasswordAlert("提示：密码修改失败，请检查网络链接或服务器运行状态");
 				}
-			});
+			},
+			error: function() {
+				showChangePasswordAlert("提示：密码修改失败，请检查网络链接或服务器运行状态");
+			}
+		});
 }
 
 // 显示修改密码错误提示
 function showChangePasswordAlert(txt) {
 	isChangingPassword = false;
 	$(
-			"#changepassword_oldpwd,#changepassword_newpwd,#changepassword_reqnewpwd,#changePasswordButton,#changepassword_vercode")
-			.attr('disabled', false);
+		"#changepassword_oldpwd,#changepassword_newpwd,#changepassword_reqnewpwd,#changePasswordButton,#changepassword_vercode")
+		.attr('disabled', false);
 	$("#changepasswordalertbox").show();
 	$("#changepasswordalertbox").text(txt);
 }
@@ -3514,7 +3519,7 @@ function showChangePasswordAlert(txt) {
 // （修改密码版本的）获取一个新的验证码
 function changePasswordGetNewVerCode() {
 	$("#changepassword_showvercode").attr("src",
-			"homeController/getNewVerCode.do?s=" + (new Date()).getTime());
+		"homeController/getNewVerCode.do?s=" + (new Date()).getTime());
 }
 
 // 获取永久资源链接
@@ -3523,34 +3528,34 @@ function getFileChain(fileId, fileName) {
 	$("#copyChainBtn").attr('disabled', true);
 	$('#fileChainModal').modal('show');
 	$.ajax({
-		type : "POST",
-		dataType : "text",
-		url : "homeController/getFileChainKey.ajax",
-		data : {
-			fid : fileId
+		type: "POST",
+		dataType: "text",
+		url: "homeController/getFileChainKey.ajax",
+		data: {
+			fid: fileId
 		},
-		success : function(result) {
+		success: function(result) {
 			switch (result) {
-			case "ERROR":
-				$("#fileChainTextarea").text("提示：获取失败，请刷新页面或稍后再试。");
-				break;
-			case "mustlogin":
-				window.location.href = "prv/login.html";
-				break;
-			default:
-				$("#fileChainTextarea").text(
+				case "ERROR":
+					$("#fileChainTextarea").text("提示：获取失败，请刷新页面或稍后再试。");
+					break;
+				case "mustlogin":
+					window.location.href = "prv/login.html";
+					break;
+				default:
+					$("#fileChainTextarea").text(
 						window.location.protocol
-								+ "//"
-								+ window.location.host
-								+ "/externalLinksController/chain/"
-								+ encodeURIComponent(fileName.replace(/\\/g,
-										"_")) + "?ckey="
-								+ encodeURIComponent(result));
-				$("#copyChainBtn").attr('disabled', false);
-				break;
+						+ "//"
+						+ window.location.host
+						+ "/externalLinksController/chain/"
+						+ encodeURIComponent(fileName.replace(/\\/g,
+							"_")) + "?ckey="
+						+ encodeURIComponent(result));
+					$("#copyChainBtn").attr('disabled', false);
+					break;
 			}
 		},
-		error : function() {
+		error: function() {
 			$("#fileChainTextarea").text("提示：获取失败，无法连接服务器。");
 		}
 	});
@@ -3571,32 +3576,32 @@ function showNoticeModal() {
 // 加载公告内容并初始化公告模态框
 function initNoticeModal() {
 	$("#noticeModalBody").load(
-			"resourceController/getNoticeContext.do?dms="+Date.now(),
-			function() {
-				$('#noticeModalBody img').css("max-width", "100%");
-				if (winHeight >= 300) {
-					$('#noticeModalBody').css("max-height",
-							(winHeight - 180) + "px");
-				} else {
-					$('#noticeModalBody').css("max-height", "300px");
-				}
-				noticeInited = true;
-				showNoticeModal();
-				showNoticeBtn();
-			});
+		"resourceController/getNoticeContext.do?dms=" + Date.now(),
+		function() {
+			$('#noticeModalBody img').css("max-width", "100%");
+			if (winHeight >= 300) {
+				$('#noticeModalBody').css("max-height",
+					(winHeight - 180) + "px");
+			} else {
+				$('#noticeModalBody').css("max-height", "300px");
+			}
+			noticeInited = true;
+			showNoticeModal();
+			showNoticeBtn();
+		});
 }
 
 // 打开主页时自动订阅未阅读过的公告信息并显示，如果该公告已经阅读过则不会显示。
 function subscribeNotice() {
 	$.ajax({
-		url : 'resourceController/getNoticeMD5.ajax',
-		data : {},
-		type : 'POST',
-		dataType : 'text',
-		success : function(result) {
+		url: 'resourceController/getNoticeMD5.ajax',
+		data: {},
+		type: 'POST',
+		dataType: 'text',
+		success: function(result) {
 			if (result != "") {
 				var cookieMd5 = document.cookie.match(new RegExp(
-						"(^| )notice_md5=([^;]*)(;|$)"));
+					"(^| )notice_md5=([^;]*)(;|$)"));
 				if (cookieMd5) {
 					if (result == unescape(cookieMd5[2])) {
 						showNoticeBtn();
@@ -3604,7 +3609,7 @@ function subscribeNotice() {
 					}
 				} else {
 					cookieMd5 = document.cookie.match(new RegExp(
-							"(^| )notice_md5_30=([^;]*)(;|$)"));
+						"(^| )notice_md5_30=([^;]*)(;|$)"));
 					if (cookieMd5) {
 						if (result == unescape(cookieMd5[2])) {
 							showNoticeBtn();
@@ -3616,7 +3621,7 @@ function subscribeNotice() {
 				document.cookie = "notice_md5=" + escape(result);
 			}
 		},
-		error : function() {
+		error: function() {
 			alert("错误：无法从服务器获取公告信息，请尝试刷新页面。");
 		}
 	});
@@ -3662,27 +3667,27 @@ function loadingRemainingFolderView(targetId) {
 	var loadingRemainingRate_files = 1;
 	if (totalFoldersOffset > 0) {
 		loadingRemainingRate_folders = (totalFoldersOffset - newfoldersOffset)
-				/ totalFoldersOffset;
+			/ totalFoldersOffset;
 	}
 	if (totalFilesOffset > 0) {
 		loadingRemainingRate_files = (totalFilesOffset - newfilesOffset)
-				/ totalFilesOffset;
+			/ totalFilesOffset;
 	}
 	var loadingRemainingRate = (loadingRemainingRate_folders + loadingRemainingRate_files) / 2;
 	$("#loadingrate").text(parseInt(loadingRemainingRate * 100) + "%");
 	remainingLoadingRequest = $
-			.ajax({
-				url : 'homeController/getRemainingFolderView.ajax',
-				data : {
-					fid : locationpath,
-					foldersOffset : newfoldersOffset,
-					filesOffset : newfilesOffset
-				},
-				type : 'POST',
-				dataType : 'text',
-				success : function(result) {
-					remainingLoadingRequest = null;
-					switch (result) {
+		.ajax({
+			url: 'homeController/getRemainingFolderView.ajax',
+			data: {
+				fid: locationpath,
+				foldersOffset: newfoldersOffset,
+				filesOffset: newfilesOffset
+			},
+			type: 'POST',
+			dataType: 'text',
+			success: function(result) {
+				remainingLoadingRequest = null;
+				switch (result) {
 					case "ERROR":
 						alert("错误：无法加载剩余文件列表，文件数据可能未显示完全，请刷新重试！");
 						hiddenLoadingRemaininngBox();
@@ -3701,7 +3706,7 @@ function loadingRemainingFolderView(targetId) {
 						updateFolderTable(remainingFV);
 						updateTheFolderInfo();
 						if (folderView.foldersOffset > 0
-								|| folderView.filesOffset > 0) {
+							|| folderView.filesOffset > 0) {
 							loadingRemainingFolderView(targetId);
 						} else {
 							originFolderView = $.extend(true, {}, folderView);
@@ -3709,16 +3714,16 @@ function loadingRemainingFolderView(targetId) {
 							doFixedRow(targetId);
 						}
 						break;
-					}
-				},
-				error : function(jqXHR, textStatus, errorThrown) {
-					remainingLoadingRequest = null;
-					hiddenLoadingRemaininngBox();
-					if ('abort' != textStatus) {
-						alert("错误：无法连接服务器，文件列表加载被中断。请刷新重试！");
-					}
 				}
-			});
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				remainingLoadingRequest = null;
+				hiddenLoadingRemaininngBox();
+				if ('abort' != textStatus) {
+					alert("错误：无法连接服务器，文件列表加载被中断。请刷新重试！");
+				}
+			}
+		});
 }
 
 // 定位指定文件所在行
@@ -3726,7 +3731,7 @@ function doFixedRow(targetId) {
 	if (targetId && targetId.length > 0) {
 		$("#" + targetId).addClass("info");
 		$("html,body").animate({
-			scrollTop : $("#" + targetId).offset().top - $(window).height() / 2
+			scrollTop: $("#" + targetId).offset().top - $(window).height() / 2
 		}, 'slow');
 	}
 }
@@ -3773,7 +3778,7 @@ function updateFolderTable(remainingFV) {
 				if (!folderContains(folderView.folderList, f.folderId)) {
 					folderView.folderList.unshift(f);
 					$("[iskfolder=true]:last").after(
-							createNewFolderRow(f, aD, aR, aO));
+						createNewFolderRow(f, aD, aR, aO));
 				}
 			}
 		}
@@ -3814,8 +3819,8 @@ function fileContains(fileList, targetFileId) {
 // 更新文件夹视图信息
 function updateTheFolderInfo() {
 	$("#fim_statistics").text(
-			"共包含 " + folderView.folderList.length + " 个文件夹， "
-					+ folderView.fileList.length + " 个文件。");
+		"共包含 " + folderView.folderList.length + " 个文件夹， "
+		+ folderView.fileList.length + " 个文件。");
 }
 
 // 替换所有引号，将其进一步转义，主要用于传递带引号的文件名
@@ -3827,10 +3832,10 @@ function replaceAllQuotationMarks(txt) {
 function html2Escape(sHtml) {
 	return sHtml.replace(/[<>&\']/g, function(c) {
 		return {
-			'<' : '&lt;',
-			'>' : '&gt;',
-			'&' : '&amp;',
-			'\'' : '&#39;'
+			'<': '&lt;',
+			'>': '&gt;',
+			'&': '&amp;',
+			'\'': '&#39;'
 		}[c];
 	});
 }
