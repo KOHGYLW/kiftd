@@ -1,6 +1,6 @@
 # kiftd——青阳网络文件传输系统 #
 ## 一款面向个人、团队、小型组织的网盘应用系统，免费、开源、完善。 ##
-### 欢迎访问kiftd官方资源站！官方网站：https://kohgylw.gitee.io/ 
+### 欢迎访问kiftd官方资源站！官方网站：https://kohgylw.github.io/ 
 
 -------
 
@@ -9,7 +9,7 @@
 -------
 
 ## 快速导航
-* 访问kiftd官方主页来快速了解kiftd？ -- [kiftd官方主页](https://kohgylw.gitee.io/)
+* 访问kiftd官方主页来快速了解kiftd？ -- [kiftd官方主页](https://kohgylw.github.io/)
 * 国内托管地址——GitCode上的项目主页：https://gitcode.net/qq_25670227/kiftd -- [点击下载](https://gitcode.net/qq_25670227/kiftd/-/archive/master/kiftd-master.zip)
 * 国内托管地址——码云上的项目主页： https://gitee.com/kohgylw/kiftd -- [点击下载](https://gitee.com/kohgylw/kiftd/repository/archive/master.zip)
 * 国际托管地址——github上的项目主页： https://github.com/KOHGYLW/kiftd -- [点击下载](https://github.com/KOHGYLW/kiftd/archive/master.zip)
@@ -84,7 +84,7 @@ _本次更新为常规更新，修复了一些已知问题并进一步提高了�
 + 优化了剪切和复制操作，使其操作逻辑更贴合主流操作系统中的“剪切板”逻辑。
 + 解决了文件功能中存在的Java高版本兼容性问题。
 
-> 需要查看更多版本历史信息？请访问： https://kohgylw.gitee.io/News.html 
+> 需要查看更多版本历史信息？请访问： https://kohgylw.github.io/News.html 
 
 --------------------
 ## Functional Examples
@@ -103,11 +103,11 @@ _本次更新为常规更新，修复了一些已知问题并进一步提高了�
 
 + 各种高级功能展示……
 
-[![kiftd-vadio](https://s1.ax1x.com/2022/08/24/vcfyDg.png)](https://kohgylw.gitee.io/)
+[![kiftd-video](https://s11.ax1x.com/2024/01/07/pizTS6P.png)](https://kohgylw.gitee.io/)
 
-[![kiftd-audio](https://s1.ax1x.com/2022/08/24/vcf3jO.png)](https://kohgylw.gitee.io/)
+[![kiftd-audio](https://s11.ax1x.com/2024/01/07/pizTP0S.png)](https://kohgylw.gitee.io/)
 
-[![kiftd-picture](https://s1.ax1x.com/2022/08/24/vcfwCt.png)](https://kohgylw.gitee.io/)
+[![kiftd-picture](https://s11.ax1x.com/2024/01/07/pizTkkQ.png)](https://kohgylw.gitee.io/)
 
 [![kiftd-pdf](https://s1.ax1x.com/2022/08/24/vcfgEj.png)](https://kohgylw.gitee.io/)
 
@@ -126,4 +126,4 @@ _本次更新为常规更新，修复了一些已知问题并进一步提高了�
 
 _作者会每隔1-3周浏览一次邮箱，如未能及时回复请耐心等待。回复或许会迟到，但它不会缺席。_
 
-2018-2023 kohgylw@青阳龙野 作者保留版权
+2018-2024 kohgylw@青阳龙野 作者保留版权
