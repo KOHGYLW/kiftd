@@ -24,19 +24,25 @@ $(function() {
 					$("#vname").text(f.fileName);
 					$("#vcreator").text(f.fileCreator);
 					$("#vcdate").text(f.fileCreationDate);
-					var fileSizeToInt = parseInt(f.fileSize);// 将文件体积（MB）数值转化为整型
-					if (fileSizeToInt == 0) {
-						// 文件体积小于1MB时
-						$("#vsize").text("<1 MB");
-					} else if (fileSizeToInt < 1000) {
-						// 文件体积大于1MB但小于1000MB时
-						$("#vsize").text(fileSizeToInt + " MB");
-					} else if (fileSizeToInt < 1024000) {
-						// 文件体积大于1000MB但小于1000GB时
-						$("#vsize").text((fileSizeToInt / 1024).toFixed(2) + " GB");
+					var fileSizeToInt = parseInt(f.fileSize);// 换算文件体积
+					if (fileSizeToInt < 1024) {
+						// 文件体积小于1KB时
+						$("#vsize").text(fileSizeToInt + " B");
+					} else if (fileSizeToInt < 1048576) {
+						// 文件体积介于1KB至1MB时
+						$("#vsize").text((fileSizeToInt / 1024).toFixed(1) + " KB");
+					} else if (fileSizeToInt < 1073741824) {
+						// 文件体积介于1MB至1GB时
+						$("#vsize").text((fileSizeToInt / 1048576).toFixed(1) + " MB");
+					} else if (fileSizeToInt < 1099511627776) {
+						// 文件体积介于1GB至1TB时
+						$("#vsize").text((fileSizeToInt / 1073741824).toFixed(1) + " GB");
+					} else if (fileSizeToInt < 9007199254740991) {
+						// 文件体积介于1TB至8192TB时
+						$("#vsize").text((fileSizeToInt / 1099511627776).toFixed(1) + " TB");
 					} else {
-						// 文件体积大于1000GB
-						$("#vsize").text((fileSizeToInt / 1048576).toFixed(2) + " TB");
+						// 文件体积已经大得无法描述时
+						$("#vsize").text(">= 8192 TB");
 					}
 					if (f.needEncode == "N") {
 						playVideo();

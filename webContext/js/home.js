@@ -38,6 +38,7 @@ var totalFoldersOffset;// 记录文件夹原始的查询偏移量，便于计算
 var totalFilesOffset;// 记录文件原始的查询偏移量，便于计算加载进度
 var remainingLoadingRequest;// 后续数据加载请求的索引，便于中途取消
 var loadingFolderView;// 是否正在加载文件夹视图的判断，避免重复操作
+var folderCountRequest;// 文件夹内容统计请求对象，该对象可用于判断当前是否在进行文件夹内容的统计，同时可用于取消该操作
 
 // 界面功能方法定义
 // 页面初始化
@@ -85,7 +86,7 @@ $(function() {
 		}
 	});
 	// 关闭登陆模态框自动清空输入数据
-	$('#loginModal').on('hidden.bs.modal', function(e) {
+	$('#loginModal').on('hidden.bs.modal', function() {
 		if ($("#dologinButton").attr('disabled') !== 'disabled') {
 			$("#accountid").val('');
 			$("#accountpwd").val('');
@@ -100,10 +101,10 @@ $(function() {
 		$("#vercodebox").addClass("hidden");
 	});
 	// 各个模态框的打开判定及回车响应功能。该功能仅对“首选”的按钮有效，对其他按钮无效，以避免用户误操作。
-	$('.modal').on('shown.bs.modal', function(e) {
+	$('.modal').on('shown.bs.modal', function() {
 		$(this).addClass("shown");
 	});
-	$('.modal').on('hidden.bs.modal', function(e) {
+	$('.modal').on('hidden.bs.modal', function() {
 		$(this).removeClass("shown");
 	});
 	$("body").keypress(function(e) {
@@ -121,14 +122,14 @@ $(function() {
 		}
 	});
 	// 开启登陆模态框自动聚焦账户输入框
-	$('#loginModal').on('shown.bs.modal', function(e) {
+	$('#loginModal').on('shown.bs.modal', function() {
 		$("#accountid").focus();
 	});
 	// 开启新建文件夹框自动初始化状态
 	$('#newFolderModal')
 		.on(
 			'show.bs.modal',
-			function(e) {
+			function() {
 				$("#folderalert").removeClass("alert");
 				$("#folderalert").removeClass("alert-danger");
 				$("#foldernamebox").removeClass("has-error");
@@ -153,7 +154,7 @@ $(function() {
 				}
 			});
 	// 开启新建文件夹模态框自动聚焦文件名输入框
-	$('#newFolderModal').on('shown.bs.modal', function(e) {
+	$('#newFolderModal').on('shown.bs.modal', function() {
 		$("#foldername").focus();
 	});
 	// 关闭上传模态框时自动提示如何查看上传进度
@@ -447,6 +448,45 @@ $(function() {
 				}
 			}
 		});
+	// 打开文件夹详情模态框时自动请求文件夹统计数据
+	$('#folderInfoModal').on('shown.bs.modal', function(e) {
+		// 是否正在执行请求？
+		if (folderCountRequest == undefined || folderCountRequest == null) {
+			// 该文件夹视图是否是一个搜索视图？
+			if (!checkAuth(folderView.authList, "O") && folderView.keyWorld == undefined) {
+				// 向服务器发送文件夹内容统计请求
+				$("#fim_folderSize").text("计算中...");
+				$("#fim_statistics_total").text("（计算中...）");
+				$.ajax({
+					url: 'homeController/countFolderContent.ajax',
+					type: 'POST',
+					data: {
+						folderId: locationpath
+					},
+					dataType: 'text',
+					success: function(result) {
+						if (result == "ERROR") {
+							// 如果发生错误，则显示获取失败
+							$("#fim_folderSize").text("获取失败");
+							$("#fim_statistics_total").text("（获取失败）");
+						} else {
+							// 获取成功，则解析其中的信息并显示
+							var folderCountResult = eval("(" + result + ")");
+							$("#fim_folderSize").text(formatFileSize(folderCountResult.totalSize));
+							$("#fim_statistics_total").html("（总计包含" + folderCountResult.folderNum + "个文件夹，" + folderCountResult.fileNum + "个文件）");
+						}
+						// 最后请求完成，清空请求对象
+						folderCountRequest = null;
+					},
+					error: function() {
+						$("#fim_folderSize").text("获取失败");
+						$("#fim_statistics_total").text("（获取失败）");
+						folderCountRequest = null;
+					}
+				});
+			}
+		}
+	});
 });
 
 // 更新页面高度
@@ -504,6 +544,11 @@ function showFolderView(fid, targetId) {
 	// 判断是否正在进行另一个相同的请求，如果是则取消本次操作
 	if (loadingFolderView) {
 		return;
+	}
+	// 如果正在进行文件夹内容统计，则取消此请求
+	if (folderCountRequest != undefined && folderCountRequest != null) {
+		folderCountRequest.abort();
+		folderCountRequest = null;
 	}
 	startLoading();
 	if (remainingLoadingRequest) {
@@ -569,6 +614,8 @@ function showFolderView(fid, targetId) {
 					$("#fim_creator").text(folderView.folder.folderCreator);
 					$("#fim_folderCreationDate").text(
 						folderView.folder.folderCreationDate);
+					$("#fim_folderSize").text("--");
+					$("#fim_statistics_total").text("");
 					$("#fim_folderId").text(folderView.folder.folderId);
 					updateTheFolderInfo();
 					// 判断是否还需要加载后续数据
@@ -878,13 +925,22 @@ function showAccountView(folderView) {
 				"showDeleteAllCheckedModel()");
 		}
 		if (checkAuth(authList, "M")) {
-			$("#cutFileButtonLi").removeClass("disabled");
-			$("#stickFileButtonLi").removeClass("disabled");
+			// 若具备M权限，则允许复制文件
 			$("#copyFileButtonLi").removeClass("disabled");
-			$("#cutFileButtonLi a").attr("onclick", "cutFile()");
+			$("#stickFileButtonLi").removeClass("disabled");
 			$("#copyFileButtonLi a").attr("onclick", "copyFile()");
 			$("#stickFileButtonLi a").attr("onclick", "stickFile()");
+			$("#copyFileButtonLi").removeClass("hidden");
+			$("#copyFileButtonLi").addClass("show");
+			if (checkAuth(authList, "D")) {
+				// 若同时具备D权限，则允许剪切文件
+				$("#cutFileButtonLi").removeClass("disabled");
+				$("#cutFileButtonLi a").attr("onclick", "cutFile()");
+				$("#cutFileButtonLi").removeClass("hidden");
+				$("#cutFileButtonLi").addClass("show");
+			}
 			if (checkedMovefiles !== undefined && checkedMovefiles.size > 0) {
+				// 如果移动目标列表已经有项目，则启用“粘贴”按钮
 				if (checkedMovefiles.size < 100) {
 					$("#stickFilesCount").text(
 						"（" + checkedMovefiles.size + "）");
@@ -894,10 +950,7 @@ function showAccountView(folderView) {
 				$("#stickFileButtonLi").removeClass("hidden");
 				$("#stickFileButtonLi").addClass("show");
 			} else {
-				$("#copyFileButtonLi").removeClass("hidden");
-				$("#copyFileButtonLi").addClass("show");
-				$("#cutFileButtonLi").removeClass("hidden");
-				$("#cutFileButtonLi").addClass("show");
+				// 如果移动目标列表没有项目，则隐藏“粘贴”按钮
 				$("#stickFileButtonLi").removeClass("show");
 				$("#stickFileButtonLi").addClass("hidden");
 				$("#stickFilesCount").text("");
@@ -988,26 +1041,17 @@ function showFolderTable(folderView) {
 // 根据一个文件对象生成对应的文件行的HTML内容
 function createFileRow(fi, aL, aD, aR, aO) {
 	fi.fileName = html2Escape(fi.fileName);
+	// 文件名称
 	var fileRow = "<tr id=" + fi.fileId + " onclick='checkfile(event," + '"'
 		+ fi.fileId + '"' + ")' ondblclick='checkConsFile(event," + '"'
 		+ fi.fileId + '"' + ")' id='" + fi.fileId
 		+ "' class='filerow'><td>" + fi.fileName
 		+ "</td><td class='hidden-xs'>" + fi.fileCreationDate + "</td>";
-	var fileSizeToInt = parseInt(fi.fileSize);// 将文件体积（MB）数值转化为整型
-	if (fileSizeToInt == 0) {
-		// 文件体积小于1MB时
-		fileRow = fileRow + "<td>&lt;1MB</td>";
-	} else if (fileSizeToInt < 1000) {
-		// 文件体积大于1MB但小于1000MB时
-		fileRow = fileRow + "<td>" + fileSizeToInt + "MB</td>";
-	} else if (fileSizeToInt < 1024000) {
-		// 文件体积大于1000MB但小于1000GB时
-		fileRow = fileRow + "<td>" + (fileSizeToInt / 1024).toFixed(2) + "GB</td>";
-	} else {
-		// 文件体积大于1000GB
-		fileRow = fileRow + "<td>" + (fileSizeToInt / 1048576).toFixed(2) + "TB</td>";
-	}
+	// 文件大小
+	fileRow = fileRow + "<td>" + formatFileSize(fi.fileSize) + "</td>";
+	// 文件创建者
 	fileRow = fileRow + "<td class='hidden-xs'>" + fi.fileCreator + "</td><td>";
+	// 文件操作按钮
 	if (aL) {
 		fileRow = fileRow
 			+ "<button onclick='showDownloadModel("
@@ -1149,6 +1193,38 @@ function createFileRow(fi, aL, aD, aR, aO) {
 	}
 	fileRow = fileRow + "</td></tr>";
 	return fileRow;
+}
+
+// 将字符串形式的文件体积格式化为“数字+单位”的形式，内容符合标准html规范。
+function formatFileSize(size) {
+	var fileSizeToInt = parseInt(size);// 将文件体积（字符标识）转化为整型
+	var formatSize;
+	var formatUnit;
+	if (fileSizeToInt < 1024) {
+		// 文件体积小于1KB时
+		formatSize = fileSizeToInt;
+		formatUnit = "B";
+	} else if (fileSizeToInt < 1048576) {
+		// 文件体积介于1KB至1MB时
+		formatSize = (fileSizeToInt / 1024);
+		formatUnit = "KB";
+	} else if (fileSizeToInt < 1073741824) {
+		// 文件体积介于1MB至1GB时
+		formatSize = (fileSizeToInt / 1048576);
+		formatUnit = "MB";
+	} else if (fileSizeToInt < 1099511627776) {
+		// 文件体积介于1GB至1TB时
+		formatSize = (fileSizeToInt / 1073741824);
+		formatUnit = "GB";
+	} else if (fileSizeToInt < 9007199254740991) {
+		// 文件体积介于1TB至8192TB时
+		formatSize = (fileSizeToInt / 1099511627776);
+		formatUnit = "TB";
+	} else {
+		// 文件体积已经大得无法描述时
+		return "&gt;=8192TB";
+	}
+	return formatSize.toFixed(1) + formatUnit;
 }
 
 // 根据一个文件夹对象生成对应的文件行的HTML内容
@@ -1659,7 +1735,7 @@ function doupload(count) {
 				pingInt = null;
 			}
 			if (xhr.status === 200) {
-				// TODO 上传成功
+				// 上传成功
 				var result = xhr.responseText;
 				if (result == "uploadsuccess") {
 					$("#uls_" + count).text("[已完成]");
@@ -1939,7 +2015,7 @@ function showPicture(fileId) {
 		success: function(result) {
 			if (result != "ERROR") {
 				pvl = eval("(" + result + ")");
-				// TODO 整合viewer.js插件
+				// 整合viewer.js插件
 				if (pvl.pictureViewList.length <= viewerPageSize) {
 					createViewList();// 以全列方式显示图片列表
 				} else {
@@ -2250,7 +2326,7 @@ function showDeleteAllCheckedModel() {
 
 // 删除选中的所有文件
 function deleteAllChecked() {
-	// TODO 提交全部删除请求
+	// 提交全部删除请求
 	var faf = getCheckedFilesAndFolders();
 	$("#dfmbutton").attr('disabled', true);
 	$("#cancelDeleteFileBox").attr('disabled', true);
@@ -2932,6 +3008,11 @@ function selectInCompletePath(keyworld) {
 		showFolderView(locationpath);
 		return;
 	}
+	// 如果正在进行文件夹内容统计，则取消此请求
+	if (folderCountRequest != undefined && folderCountRequest != null) {
+		folderCountRequest.abort();
+		folderCountRequest = null;
+	}
 	startLoading();
 	$.ajax({
 		type: 'POST',
@@ -2974,7 +3055,9 @@ function selectInCompletePath(keyworld) {
 				showFolderTable(folderView);
 				$("#fim_name").text(folderView.folder.folderName);
 				$("#fim_creator").text("--");
+				$("#fim_statistics_total").text("");
 				$("#fim_folderCreationDate").text("--");
+				$("#fim_folderSize").text("--");
 				$("#fim_folderId").text("--");
 				updateTheFolderInfo();
 			}
@@ -3819,8 +3902,8 @@ function fileContains(fileList, targetFileId) {
 // 更新文件夹视图信息
 function updateTheFolderInfo() {
 	$("#fim_statistics").text(
-		"共包含 " + folderView.folderList.length + " 个文件夹， "
-		+ folderView.fileList.length + " 个文件。");
+		"本级包含 " + folderView.folderList.length + " 个文件夹， "
+		+ folderView.fileList.length + " 个文件");
 }
 
 // 替换所有引号，将其进一步转义，主要用于传递带引号的文件名
