@@ -65,10 +65,34 @@ _注：kift为该功能的开发名称，其实际成果命名为kiftd。_
 ### 现在，您只需抽出3分钟时间，就可以立即体验这款专业快捷的网盘服务器了。
 
 * 马上下载本网盘服务器？请点击右上方绿色按钮“Clone or Download”，之后选择“Download ZIP”进行下载（Github）,也可以前往国内托管的下载地址： https://gitee.com/kohgylw/kiftd （码云）或 https://gitcode.net/qq_25670227/kiftd （GitCode）
+
 * 想要开始使用？您应该从阅读《kiftd说明文档》开始，这是一份十分全面的官方介绍文档，简单易懂且图文并茂，相信您能很快学会它。想在线阅读？请直接点击上方文件列表中的《kiftd说明文档》来在线预览（该操作仅GitHub有效）
+
 * 立刻获取源代码？请访问本应用代码托管地址：https://github.com/KOHGYLW/kiftd-source （Github）
+
 * 使用中遇到问题？请将您的发现提交到 https://github.com/KOHGYLW/kiftd/issues (Github)
+
 * 需要联系作者？请立即发件至 kohgylw@163.com ，描述您所遇到的任何问题
+
+-----------------------------------------------------------------
+
+## docker安装
+
+### windows
+```
+docker run --name kiftd -d --restart=always -p 8080:8080 -v E:/kiftd/filesystem:/data/filesystem -v E:/kiftd/conf:/data/conf registry.cn-hangzhou.aliyuncs.com/shiningrise/kiftd:1.2.2-RELEASE-alpine
+或者
+docker run --name kiftd -d --restart=always -p 8080:8080 -v E:/kiftd/filesystem:/data/filesystem -v E:/kiftd/conf:/data/conf shiningrise/kiftd:1.2.2-RELEASE-alpine
+```
+### Linux
+```
+docker run --name kiftd -d --restart=always -p 8080:8080 -v /data/kiftd/filesystem:/data/filesystem -v /data/kiftd/conf:/data/conf registry.cn-hangzhou.aliyuncs.com/shiningrise/kiftd:1.2.2-RELEASE-alpine
+或者
+docker run --name kiftd -d --restart=always -p 8080:8080 -v /data/kiftd/filesystem:/data/filesystem -v /data/kiftd/conf:/data/conf shiningrise/kiftd:1.2.2-RELEASE-alpine
+
+```
+
+  
 
 -------------------
 ## News
